@@ -25,12 +25,12 @@ The project is currently still under development. A release is planned for 2026.
 | Layer | Technology |
 |---|---|
 | Framework | [React](https://github.com/facebook/react) + [TypeScript](https://github.com/microsoft/Typescript) |
-| Build tool | Vite 6 |
-| Email rendering | mjml-browser |
-| Drag & Drop | @hello-pangea/dnd |
-| Styling | Tailwind CSS 4 |
-| State | Zustand 5 + zundo (undo/redo) |
-| i18n | react-i18next 16 |
+| Build tool | [Vite](https://github.com/vitejs/vite) |
+| Email rendering | [mjml-browser](https://github.com/mjmlio/mjml/) |
+| Drag & Drop | [@hello-pangea/dnd](https://github.com/hello-pangea/dnd) |
+| Styling | [Tailwind CSS](https://github.com/tailwindlabs/tailwindcss) |
+| State | [Zustand](https://github.com/pmndrs/zustand) + [zundo](https://github.com/charkour/zundo) |
+| i18n | [react-i18next](https://github.com/i18next/react-i18next) |
 
 ## License
 
