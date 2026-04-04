@@ -16,9 +16,9 @@ The project is currently still under development. A release is planned for 2026.
 - **Template library** — start from a curated set of pre-built templates
 - **Undo / Redo** — full history via Zustand temporal middleware
 - **Multi-tab** — work on multiple templates simultaneously
-- **Dark / Light themes** — GitHub-style theme presets with accent color options
+- **Dark / Light themes** — theme presets with accent color options
 - **22 languages** — UI fully localized (Arabic, Chinese, Czech, Dutch, English, Finnish, French, German, Greek, Croatian, Hungarian, Italian, Japanese, Norwegian, Polish, Portuguese, Russian, Slovak, Slovenian, Spanish, Swedish, Turkish)
-- **Offline-first** — images stored as Base64; no backend required
+- **Offline-first** — images stored as Base64 (no backend required)
 
 ## Tech Stack
 
