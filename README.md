@@ -1,6 +1,6 @@
 # Visemte
 
-A template generator for creating responsive emails — built with React 19, TypeScript, and MJML.
+A template generator for creating responsive emails — built with React, TypeScript, and MJML.
 
 ## Status
 
@@ -24,7 +24,7 @@ The project is currently still under development. A release is planned for 2026.
 
 | Layer | Technology |
 |---|---|
-| Framework | React 19 + TypeScript |
+| Framework | [React](https://github.com/facebook/react) + [TypeScript](https://github.com/microsoft/Typescript) |
 | Build tool | Vite 6 |
 | Email rendering | mjml-browser |
 | Drag & Drop | @hello-pangea/dnd |
