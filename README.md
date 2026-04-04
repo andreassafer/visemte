@@ -8,9 +8,9 @@ The project is currently still under development. A release is planned for 2026.
 
 ## Features
 
-- **Drag & Drop Editor** — build email templates visually by dragging blocks onto the canvas
-- **MJML-powered** — renders to battle-tested, cross-client compatible HTML entirely in the browser
+- **Editor** — create email templates visually by adding blocks to the structure tree
 - **Block library** — Text, Image, Button, Divider, Spacer, Columns, Hero, Navbar, Icons, Video, Countdown, FAQ, Quote
+- **MJML-powered** — renders to battle-tested, cross-client compatible HTML entirely in the browser
 - **Live preview** — see changes instantly as you edit
 - **HTML export** — download the finished HTML or copy it to the clipboard
 - **Template library** — start from a curated set of pre-built templates
