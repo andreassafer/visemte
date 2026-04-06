@@ -1,5 +1,5 @@
 <div align="center">
-    <img valign="middle" src="public/social-preview-visemte.jpg" alt="Visemte - a template generator for creating responsive emails" />
+    <img valign="middle" src="/public/social-preview-visemte.jpg" alt="Visemte - a template generator for creating responsive emails" />
 </div>
 
 ## Status
