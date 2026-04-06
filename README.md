@@ -1,6 +1,6 @@
-# Visemte
-
-A template generator for creating responsive emails — built with React, TypeScript, and MJML.
+<div align="center">
+    <img valign="middle" src="public/social-preview-visemte.jpg" alt="Visemte - a template generator for creating responsive emails" />
+</div>
 
 ## Status
 
