@@ -1,4 +1,4 @@
-![Visemte - a template generator for creating responsive emails](public/social-preview-visemte.jpg)
+![Visemte - a template generator for creating responsive emails](public/social-preview-visemte-2.jpg)
 
 ## Status
 
