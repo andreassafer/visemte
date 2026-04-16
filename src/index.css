@@ -1,0 +1,103 @@
+@import 'tailwindcss';
+
+/* Wire Tailwind's dark: variant to data-theme="dark" instead of OS media query */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* ─── CSS Custom Properties ──────────────────────────────────────────────────── */
+:root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --text-primary: #1a1a1a;
+  --text-secondary: #6b7280;
+  --border: #e5e7eb;
+  --accent: #3b82f6;
+  --accent-hover: #2563eb;
+  --accent-subtle: #eff6ff;
+  --accent-ring: #93c5fd;
+  --preview-bg: #e8edf4;
+  --preview-dot: #d2dae6;
+}
+
+[data-theme='dark'] {
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2d2d2d;
+  --text-primary: #f9fafb;
+  --text-secondary: #9ca3af;
+  --border: #374151;
+  --preview-bg: #1c232f;
+  --preview-dot: #0f1829;
+}
+
+/* ─── Light theme: slightly muted, same neutral tone as dark ─────────────────── */
+[data-theme='light'] {
+  --color-white: #f0f2f5; /* panels        */
+  --color-gray-50: #e6e9ed; /* secondary bg  */
+  --color-gray-100: #dadde3; /* hover / tertiary */
+  --color-gray-200: #c4c9d2; /* borders       */
+}
+
+/* ─── Base ───────────────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Hidden scrollbar (scrollable but no visible bar) ──────────────────────── */
+.scrollbar-hidden {
+  scrollbar-width: none;
+}
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+/* ─── Focus styles ───────────────────────────────────────────────────────────── */
+:focus-visible:not(input):not(select):not(textarea) {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: none;
+}
+
+/* ─── Scrollbar ──────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+/* ─── datetime-local dark mode ───────────────────────────────────────────────── */
+[data-theme='dark'] input[type='datetime-local'] {
+  color-scheme: dark;
+}
