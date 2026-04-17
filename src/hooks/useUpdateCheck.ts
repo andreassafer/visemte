@@ -29,6 +29,7 @@ async function checkForUpdates(t: (key: string, opts?: Record<string, string>) =
 
     if (isNewer(latest, CURRENT_VERSION)) {
       const go = await ask(t('updates.available', { latest }), {
+        title: ' ',
         kind: 'info',
         okLabel: t('updates.downloadBtn'),
         cancelLabel: t('updates.cancelBtn'),
@@ -39,12 +40,13 @@ async function checkForUpdates(t: (key: string, opts?: Record<string, string>) =
       }
     } else {
       await message(t('updates.upToDate'), {
+        title: ' ',
         kind: 'info',
       })
     }
   } catch {
     const { message } = await import('@tauri-apps/plugin-dialog')
-    await message(t('updates.error'), { kind: 'error' })
+    await message(t('updates.error'), { title: ' ', kind: 'error' })
   }
 }
 
