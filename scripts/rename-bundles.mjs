@@ -1,62 +1,87 @@
 /**
- * Renames Tauri bundle output files – replaces underscores with hyphens
- * and lowercases the filename for all supported bundle types:
+ * Renames Tauri bundle output files:
+ *   - Inserts OS prefix (mac/win/lin) after the version number
+ *   - Replaces underscores with hyphens and lowercases
+ *   - Strips WiX locale suffix from MSI  (e.g. _en-US → removed)
+ *   - Strips RPM release number          (e.g. -1.x86_64 → .x86_64)
  *
- *   macOS:    Visemte_0.1.23_universal.dmg       →  visemte-0.1.23-universal.dmg
- *             Visemte_0.1.23_aarch64.dmg          →  visemte-0.1.23-aarch64.dmg
- *             Visemte_0.1.23_x86_64.dmg           →  visemte-0.1.23-x86_64.dmg
- *   Windows:  Visemte_0.1.23_x64-setup.exe       →  visemte-0.1.23-x64-setup.exe
- *             Visemte_0.1.23_arm64-setup.exe      →  visemte-0.1.23-arm64-setup.exe
- *             Visemte_0.1.23_x64_en-US.msi        →  visemte-0.1.23-x64-en-us.msi
- *   Linux:    visemte_0.1.23_amd64.deb            →  visemte-0.1.23-amd64.deb
- *             Visemte_0.1.23_amd64.AppImage       →  visemte-0.1.23-amd64.appimage
+ * Examples:
+ *   Visemte_0.1.4_universal.dmg       →  visemte-0.1.4-mac-universal.dmg
+ *   Visemte_0.1.4_aarch64.dmg         →  visemte-0.1.4-mac-aarch64.dmg
+ *   Visemte_0.1.4_x64-setup.exe       →  visemte-0.1.4-win-x64-setup.exe
+ *   Visemte_0.1.4_x64_en-US.msi       →  visemte-0.1.4-win-x64.msi
+ *   Visemte_0.1.4_amd64.deb           →  visemte-0.1.4-lin-amd64.deb
+ *   Visemte_0.1.4_amd64.AppImage      →  visemte-0.1.4-lin-amd64.appimage
+ *   Visemte-0.1.4-1.x86_64.rpm        →  visemte-0.1.4-lin-x86-64.rpm
  */
 
 import { readdirSync, renameSync, existsSync } from 'fs'
 import { join } from 'path'
 
-// Tauri output directories per platform and target
+// Map from bundle subdirectory name → OS prefix
+const DIR_TO_OS = {
+  dmg:      'mac',
+  nsis:     'win',
+  msi:      'win',
+  deb:      'lin',
+  appimage: 'lin',
+  rpm:      'lin',
+}
+
 const BUNDLE_DIRS = [
-  // macOS – universal
+  // macOS
   'src-tauri/target/universal-apple-darwin/release/bundle/dmg',
-  // macOS – aarch64
   'src-tauri/target/aarch64-apple-darwin/release/bundle/dmg',
-  // macOS – x86_64
   'src-tauri/target/x86_64-apple-darwin/release/bundle/dmg',
-  // macOS – default (release without explicit target)
   'src-tauri/target/release/bundle/dmg',
-  // Windows – x64
+  // Windows
   'src-tauri/target/x86_64-pc-windows-msvc/release/bundle/nsis',
   'src-tauri/target/x86_64-pc-windows-msvc/release/bundle/msi',
-  // Windows – arm64
   'src-tauri/target/aarch64-pc-windows-msvc/release/bundle/nsis',
   'src-tauri/target/aarch64-pc-windows-msvc/release/bundle/msi',
-  // Windows – default
   'src-tauri/target/release/bundle/nsis',
   'src-tauri/target/release/bundle/msi',
-  // Linux – x86_64
+  // Linux
   'src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/deb',
   'src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage',
-  // Linux – aarch64
+  'src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/rpm',
   'src-tauri/target/aarch64-unknown-linux-gnu/release/bundle/deb',
   'src-tauri/target/aarch64-unknown-linux-gnu/release/bundle/appimage',
-  // Linux – default
+  'src-tauri/target/aarch64-unknown-linux-gnu/release/bundle/rpm',
   'src-tauri/target/release/bundle/deb',
   'src-tauri/target/release/bundle/appimage',
+  'src-tauri/target/release/bundle/rpm',
 ]
 
-const EXTENSIONS = new Set(['.dmg', '.exe', '.msi', '.deb', '.appimage'])
+const EXTENSIONS = new Set(['.dmg', '.exe', '.msi', '.deb', '.appimage', '.rpm'])
+
+function normalize(file, osPrefix) {
+  let name = file.replace(/_/g, '-').toLowerCase()
+
+  // Strip WiX locale suffix: -en-us.msi → .msi
+  name = name.replace(/-[a-z]{2}-[a-z]{2}(\.msi)$/, '$1')
+
+  // Strip RPM release number: -1.x86-64.rpm → .x86-64.rpm
+  name = name.replace(/(-\d+)(\.[a-z0-9-]+\.rpm)$/, '$2')
+
+  // Insert OS prefix after version number (e.g. visemte-0.1.4-universal → visemte-0.1.4-mac-universal)
+  name = name.replace(/^(visemte-\d+\.\d+\.\d+-)/, `$1${osPrefix}-`)
+
+  return name
+}
 
 let renamed = 0
 
 for (const dir of BUNDLE_DIRS) {
   if (!existsSync(dir)) continue
-  for (const file of readdirSync(dir)) {
-    const lower = file.toLowerCase()
-    const ext = EXTENSIONS.has('.' + lower.split('.').pop()) ? '.' + lower.split('.').pop() : null
-    if (!ext) continue
+  const bundleType = dir.split('/').pop()
+  const osPrefix = DIR_TO_OS[bundleType] ?? 'unknown'
 
-    const newName = file.replace(/_/g, '-').toLowerCase()
+  for (const file of readdirSync(dir)) {
+    const ext = '.' + file.split('.').pop().toLowerCase()
+    if (!EXTENSIONS.has(ext)) continue
+
+    const newName = normalize(file, osPrefix)
     if (newName !== file) {
       renameSync(join(dir, file), join(dir, newName))
       console.log(`  ${file}  →  ${newName}`)
