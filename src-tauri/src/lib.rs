@@ -1,15 +1,25 @@
 use tauri::menu::{AboutMetadata, Menu, PredefinedMenuItem, Submenu};
+use sys_locale::get_locale;
 
-const APP_BUILD:   &str = env!("APP_BUILD");
-const APP_TARGET:  &str = env!("APP_TARGET");
+const APP_BUILD:  &str = env!("APP_BUILD");
+const APP_TARGET: &str = env!("APP_TARGET");
 
 #[tauri::command]
 fn app_target() -> &'static str {
     APP_TARGET
 }
 
+fn is_german() -> bool {
+    get_locale()
+        .unwrap_or_default()
+        .to_lowercase()
+        .starts_with("de")
+}
+
 fn build_menu(app: &tauri::AppHandle) -> tauri::Result<Menu<tauri::Wry>> {
-    // ── Visemte (App-Menü, macOS) ─────────────────────────────────────────────
+    let de = is_german();
+
+    // ── App menu ──────────────────────────────────────────────────────────────
     let app_menu = Submenu::with_items(
         app,
         "Visemte",
@@ -17,60 +27,60 @@ fn build_menu(app: &tauri::AppHandle) -> tauri::Result<Menu<tauri::Wry>> {
         &[
             &PredefinedMenuItem::about(
                 app,
-                Some("Über Visemte"),
+                Some(if de { "Über Visemte" } else { "About Visemte" }),
                 Some(AboutMetadata {
-                    version: Some(app.package_info().version.to_string()),
+                    version:       Some(app.package_info().version.to_string()),
                     short_version: Some(APP_BUILD.to_string()),
                     ..Default::default()
                 }),
             )?,
             &PredefinedMenuItem::separator(app)?,
-            &PredefinedMenuItem::services(app, Some("Dienste"))?,
+            &PredefinedMenuItem::services(app, Some(if de { "Dienste" } else { "Services" }))?,
             &PredefinedMenuItem::separator(app)?,
-            &PredefinedMenuItem::hide(app, Some("Visemte ausblenden"))?,
-            &PredefinedMenuItem::hide_others(app, Some("Andere ausblenden"))?,
-            &PredefinedMenuItem::show_all(app, Some("Alle einblenden"))?,
+            &PredefinedMenuItem::hide(app, Some(if de { "Visemte ausblenden" } else { "Hide Visemte" }))?,
+            &PredefinedMenuItem::hide_others(app, Some(if de { "Andere ausblenden" } else { "Hide Others" }))?,
+            &PredefinedMenuItem::show_all(app, Some(if de { "Alle einblenden" } else { "Show All" }))?,
             &PredefinedMenuItem::separator(app)?,
-            &PredefinedMenuItem::quit(app, Some("Visemte beenden"))?,
+            &PredefinedMenuItem::quit(app, Some(if de { "Visemte beenden" } else { "Quit Visemte" }))?,
         ],
     )?;
 
-    // ── Bearbeiten ────────────────────────────────────────────────────────────
+    // ── Edit menu ─────────────────────────────────────────────────────────────
     let edit_menu = Submenu::with_items(
         app,
-        "Bearbeiten",
+        if de { "Bearbeiten" } else { "Edit" },
         true,
         &[
-            &PredefinedMenuItem::undo(app, Some("Rückgängig"))?,
-            &PredefinedMenuItem::redo(app, Some("Wiederholen"))?,
+            &PredefinedMenuItem::undo(app, Some(if de { "Rückgängig" } else { "Undo" }))?,
+            &PredefinedMenuItem::redo(app, Some(if de { "Wiederholen" } else { "Redo" }))?,
             &PredefinedMenuItem::separator(app)?,
-            &PredefinedMenuItem::cut(app, Some("Ausschneiden"))?,
-            &PredefinedMenuItem::copy(app, Some("Kopieren"))?,
-            &PredefinedMenuItem::paste(app, Some("Einsetzen"))?,
-            &PredefinedMenuItem::select_all(app, Some("Alles auswählen"))?,
+            &PredefinedMenuItem::cut(app, Some(if de { "Ausschneiden" } else { "Cut" }))?,
+            &PredefinedMenuItem::copy(app, Some(if de { "Kopieren" } else { "Copy" }))?,
+            &PredefinedMenuItem::paste(app, Some(if de { "Einsetzen" } else { "Paste" }))?,
+            &PredefinedMenuItem::select_all(app, Some(if de { "Alles auswählen" } else { "Select All" }))?,
         ],
     )?;
 
-    // ── Darstellung ───────────────────────────────────────────────────────────
+    // ── View menu ─────────────────────────────────────────────────────────────
     let view_menu = Submenu::with_items(
         app,
-        "Darstellung",
+        if de { "Darstellung" } else { "View" },
         true,
         &[
-            &PredefinedMenuItem::fullscreen(app, Some("Vollbild ein/aus"))?,
+            &PredefinedMenuItem::fullscreen(app, Some(if de { "Vollbild ein/aus" } else { "Toggle Full Screen" }))?,
         ],
     )?;
 
-    // ── Fenster ───────────────────────────────────────────────────────────────
+    // ── Window menu ───────────────────────────────────────────────────────────
     let window_menu = Submenu::with_items(
         app,
-        "Fenster",
+        if de { "Fenster" } else { "Window" },
         true,
         &[
-            &PredefinedMenuItem::minimize(app, Some("Im Dock ablegen"))?,
-            &PredefinedMenuItem::maximize(app, Some("Zoomen"))?,
+            &PredefinedMenuItem::minimize(app, Some(if de { "Im Dock ablegen" } else { "Minimize" }))?,
+            &PredefinedMenuItem::maximize(app, Some(if de { "Zoomen" } else { "Zoom" }))?,
             &PredefinedMenuItem::separator(app)?,
-            &PredefinedMenuItem::close_window(app, Some("Fenster schließen"))?,
+            &PredefinedMenuItem::close_window(app, Some(if de { "Fenster schließen" } else { "Close Window" }))?,
         ],
     )?;
 
