@@ -1,8 +1,7 @@
-use tauri::menu::{AboutMetadata, Menu, MenuItem, PredefinedMenuItem, Submenu};
+use tauri::menu::{Menu, MenuItem, PredefinedMenuItem, Submenu};
 use tauri::Emitter;
 use sys_locale::get_locale;
 
-const APP_BUILD:  &str = env!("APP_BUILD");
 const APP_TARGET: &str = env!("APP_TARGET");
 
 #[tauri::command]
@@ -537,6 +536,7 @@ fn build_menu(app: &tauri::AppHandle) -> tauri::Result<Menu<tauri::Wry>> {
     let lang = system_lang();
     let s = menu_strings(&lang);
 
+    let about = MenuItem::with_id(app, "about", s.about, true, None::<&str>)?;
     let check_updates = MenuItem::with_id(app, "check-updates", s.check_updates, true, None::<&str>)?;
 
     let app_menu = Submenu::with_items(
@@ -544,15 +544,7 @@ fn build_menu(app: &tauri::AppHandle) -> tauri::Result<Menu<tauri::Wry>> {
         "Visemte",
         true,
         &[
-            &PredefinedMenuItem::about(
-                app,
-                Some(s.about),
-                Some(AboutMetadata {
-                    version:       Some(app.package_info().version.to_string()),
-                    short_version: Some(APP_BUILD.to_string()),
-                    ..Default::default()
-                }),
-            )?,
+            &about,
             &check_updates,
             &PredefinedMenuItem::separator(app)?,
             &PredefinedMenuItem::services(app, Some(s.services))?,
@@ -624,7 +616,9 @@ pub fn run() {
 
             let handle = app.handle().clone();
             app.on_menu_event(move |_app, event| {
-                if event.id() == "check-updates" {
+                if event.id() == "about" {
+                    let _ = handle.emit("menu:about", ());
+                } else if event.id() == "check-updates" {
                     let _ = handle.emit("menu:check-updates", ());
                 }
             });

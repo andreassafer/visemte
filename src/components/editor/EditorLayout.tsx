@@ -50,6 +50,26 @@ export function EditorLayout() {
 
   const importInputRef = useRef<HTMLInputElement>(null)
 
+  // ── Native menu: About ───────────────────────────────────────────────────────
+  useEffect(() => {
+    if (!('__TAURI_INTERNALS__' in window || '__TAURI__' in window)) return
+    let unlisten: (() => void) | undefined
+    import('@tauri-apps/api/event')
+      .then(({ listen }) => {
+        listen('menu:about', () => {
+          setShowAbout(true)
+        })
+          .then((fn) => {
+            unlisten = fn
+          })
+          .catch(() => {})
+      })
+      .catch(() => {})
+    return () => {
+      unlisten?.()
+    }
+  }, [])
+
   // ── Warn before closing with unsaved changes ─────────────────────────────────
   const tabs = useTemplateStore((s) => s.tabs)
   const hasUnsaved = tabs.some((tab) => {
