@@ -26,6 +26,11 @@
 | State | [Zustand](https://github.com/pmndrs/zustand) + [zundo](https://github.com/charkour/zundo) |
 | i18n | [react-i18next](https://github.com/i18next/react-i18next) |
 
+## Screenshots
+
+![Screenshot 1](screenshots/1.png)
+![Screenshot 2](screenshots/2.png)
+
 ## License
 
 MIT © Andreas Safer
