@@ -92,7 +92,7 @@ export function AboutModal({ onClose }: Props) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/5 backdrop-blur-[1px] p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose()
       }}
@@ -100,54 +100,48 @@ export function AboutModal({ onClose }: Props) {
       aria-modal="true"
       aria-label={t('about.title')}
     >
-      <div className="relative w-full max-w-sm overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-gray-200 dark:ring-white/20 dark:bg-gray-900">
-        {/* Header */}
-        <div className="flex items-center justify-end px-3 pt-2">
-          <button
-            className="rounded p-1 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
-            onClick={onClose}
-            aria-label={t('common.close')}
-          >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <line x1="18" y1="6" x2="6" y2="18" />
-              <line x1="6" y1="6" x2="18" y2="18" />
-            </svg>
-          </button>
-        </div>
+      {/* Backdrop */}
+      <div className="absolute inset-0 bg-black/40" onClick={onClose} />
 
+      {/* Card */}
+      <div className="relative w-72 overflow-hidden rounded-2xl bg-gray-900 shadow-2xl dark:bg-gray-800">
         {/* Logo + name */}
-        <div className="flex flex-col items-center gap-3 px-5 pb-5 pt-2">
-          <VisemteLogo className="h-14 w-14 rounded-2xl shadow-md overflow-hidden" />
-          <div className="flex flex-col gap-1.5 text-center">
-            <p className="text-lg font-bold text-gray-800 dark:text-gray-100">{NAME}</p>
-            <p className="text-xs leading-relaxed text-gray-400 dark:text-gray-500">
-              {t('about.description')}
-            </p>
+        <div className="flex flex-col items-center gap-3 px-6 pt-6 pb-5">
+          <VisemteLogo className="h-16 w-16 rounded-2xl shadow-md overflow-hidden" />
+          <div className="flex flex-col gap-1 text-center">
+            <p className="text-base font-bold text-white">{NAME}</p>
+            <p className="text-xs leading-relaxed text-gray-400">{t('about.description')}</p>
           </div>
         </div>
 
         {/* Info rows */}
-        <div className="divide-y divide-gray-100 border-t border-b border-gray-100 dark:divide-gray-800 dark:border-gray-800">
+        <div className="divide-y divide-white/10 border-t border-white/10">
           {rows.map(({ label, value }) => (
             <div key={label} className="flex items-center justify-between px-5 py-2.5">
-              <span className="text-xs text-gray-400 dark:text-gray-500">{label}</span>
-              <span className="text-xs font-medium text-gray-700 dark:text-gray-300">{value}</span>
+              <span className="text-xs text-gray-500">{label}</span>
+              <span className="text-xs font-medium text-gray-300">{value}</span>
             </div>
           ))}
         </div>
 
-        {/* Footer */}
-        <div className="px-5 py-3 text-center">
-          <p className="text-xs text-gray-400 dark:text-gray-500">
+        {/* Footer / close */}
+        <div className="px-6 py-4 text-center">
+          <p className="mb-3 text-xs text-gray-500">
             © {new Date().getFullYear()} {AUTHOR}
           </p>
+          <button
+            onClick={onClose}
+            className="w-full rounded-xl py-2.5 text-sm font-semibold text-white transition-colors"
+            style={{ backgroundColor: 'var(--accent)' }}
+            onMouseEnter={(e) => {
+              ;(e.currentTarget as HTMLButtonElement).style.backgroundColor = 'var(--accent-hover)'
+            }}
+            onMouseLeave={(e) => {
+              ;(e.currentTarget as HTMLButtonElement).style.backgroundColor = 'var(--accent)'
+            }}
+          >
+            OK
+          </button>
         </div>
       </div>
     </div>
