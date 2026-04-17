@@ -1,4 +1,4 @@
-![Visemte - a template generator for creating responsive emails](public/social-preview-visemte-1.jpg)
+![Visemte - a template generator for creating responsive emails](graphics/social-preview-visemte-1.jpg)
 
 ## Features
 
