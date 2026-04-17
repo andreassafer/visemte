@@ -46,6 +46,16 @@ pnpm tauri:build
 | i18n | [react-i18next](https://github.com/i18next/react-i18next) |
 | Desktop | [Tauri](https://tauri.app) |
 
+## Notes
+
+### macOS – After Every Installation
+
+Since Visemte is not yet notarized with Apple, macOS will block the app after each installation. Run the following command in Terminal after every install or update before launching the app:
+
+```bash
+xattr -dr com.apple.quarantine /Applications/Visemte.app
+```
+
 ## Screenshots
 
 <p align="center">
