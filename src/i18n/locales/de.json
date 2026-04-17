@@ -324,7 +324,7 @@
   },
   "updates": {
     "available": "Version {{latest}} ist verfügbar (aktuell: {{current}}).\n\nZum Download öffnen?",
-    "upToDate": "Du verwendest die aktuelle Version {{current}}.",
-    "error": "Update-Prüfung fehlgeschlagen. Bitte prüfe deine Internetverbindung."
+    "upToDate": "Visemte ist auf dem neuesten Stand ({{current}}).",
+    "error": "Update-Prüfung fehlgeschlagen. Bitte Internetverbindung prüfen."
   }
 }
