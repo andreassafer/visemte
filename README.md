@@ -28,8 +28,8 @@
 
 ## Screenshots
 
-![Screenshot 1](screenshots/1.png)
-![Screenshot 2](screenshots/2.png)
+![Visemte - Screenshot 1](screenshots/scr-20260417-nipy.png =400x)
+![Visemte - Screenshot 2](screenshots/scr-20260417-njhz.png =400x)
 
 ## License
 
