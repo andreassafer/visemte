@@ -325,6 +325,8 @@
   "updates": {
     "available": "Verzia {{latest}} je dostupná (aktuálna: {{current}}).\n\nOtvoriť stránku sťahovania?",
     "upToDate": "Používate najnovšiu verziu {{current}}.",
-    "error": "Kontrola aktualizácií zlyhala. Skontrolujte internetové pripojenie."
+    "error": "Kontrola aktualizácií zlyhala. Skontrolujte internetové pripojenie.",
+    "downloadBtn": "Stiahnuť",
+    "cancelBtn": "Zrušiť"
   }
 }

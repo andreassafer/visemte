@@ -325,6 +325,8 @@
   "updates": {
     "available": "Versio {{latest}} on saatavilla (nykyinen: {{current}}).\n\nAvataanko lataussivu?",
     "upToDate": "Käytät uusinta versiota {{current}}.",
-    "error": "Päivitystarkistus epäonnistui. Tarkista internetyhteytesi."
+    "error": "Päivitystarkistus epäonnistui. Tarkista internetyhteytesi.",
+    "downloadBtn": "Lataa",
+    "cancelBtn": "Peruuta"
   }
 }

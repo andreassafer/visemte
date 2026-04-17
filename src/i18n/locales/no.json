@@ -325,6 +325,8 @@
   "updates": {
     "available": "Versjon {{latest}} er tilgjengelig (gjeldende: {{current}}).\n\nÅpne nedlastingssiden?",
     "upToDate": "Du bruker den nyeste versjonen {{current}}.",
-    "error": "Oppdateringssjekk mislyktes. Sjekk internettforbindelsen din."
+    "error": "Oppdateringssjekk mislyktes. Sjekk internettforbindelsen din.",
+    "downloadBtn": "Last ned",
+    "cancelBtn": "Avbryt"
   }
 }

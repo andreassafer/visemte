@@ -325,6 +325,8 @@
   "updates": {
     "available": "Različica {{latest}} je na voljo (trenutna: {{current}}).\n\nOdpri stran za prenos?",
     "upToDate": "Uporabljate najnovejšo različico {{current}}.",
-    "error": "Preverjanje posodobitev ni uspelo. Preverite internetno povezavo."
+    "error": "Preverjanje posodobitev ni uspelo. Preverite internetno povezavo.",
+    "downloadBtn": "Prenesi",
+    "cancelBtn": "Prekliči"
   }
 }

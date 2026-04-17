@@ -325,6 +325,8 @@
   "updates": {
     "available": "Sürüm {{latest}} mevcut (mevcut: {{current}}).\n\nİndirme sayfası açılsın mı?",
     "upToDate": "En son sürümü {{current}} kullanıyorsunuz.",
-    "error": "Güncelleme kontrolü başarısız. İnternet bağlantınızı kontrol edin."
+    "error": "Güncelleme kontrolü başarısız. İnternet bağlantınızı kontrol edin.",
+    "downloadBtn": "İndir",
+    "cancelBtn": "İptal"
   }
 }

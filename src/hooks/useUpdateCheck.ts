@@ -25,14 +25,28 @@ async function checkForUpdates(t: (key: string, opts?: Record<string, string>) =
     const data = (await res.json()) as { tag_name: string; html_url: string }
     const latest = data.tag_name.replace(/^v/, '')
 
+    const { ask, message } = await import('@tauri-apps/plugin-dialog')
+
     if (isNewer(latest, CURRENT_VERSION)) {
-      const go = window.confirm(t('updates.available', { latest, current: CURRENT_VERSION }))
-      if (go) window.open(data.html_url, '_blank')
+      const go = await ask(t('updates.available', { latest, current: CURRENT_VERSION }), {
+        title: 'Visemte',
+        kind: 'info',
+        okLabel: t('updates.downloadBtn'),
+        cancelLabel: t('updates.cancelBtn'),
+      })
+      if (go) {
+        const { open } = await import('@tauri-apps/plugin-shell')
+        await open(data.html_url)
+      }
     } else {
-      window.alert(t('updates.upToDate', { current: CURRENT_VERSION }))
+      await message(t('updates.upToDate', { current: CURRENT_VERSION }), {
+        title: 'Visemte',
+        kind: 'info',
+      })
     }
   } catch {
-    window.alert(t('updates.error'))
+    const { message } = await import('@tauri-apps/plugin-dialog')
+    await message(t('updates.error'), { title: 'Visemte', kind: 'error' })
   }
 }
 

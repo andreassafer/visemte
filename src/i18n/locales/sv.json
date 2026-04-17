@@ -325,6 +325,8 @@
   "updates": {
     "available": "Version {{latest}} är tillgänglig (nuvarande: {{current}}).\n\nÖppna nedladdningssidan?",
     "upToDate": "Du använder den senaste versionen {{current}}.",
-    "error": "Uppdateringskontroll misslyckades. Kontrollera din internetanslutning."
+    "error": "Uppdateringskontroll misslyckades. Kontrollera din internetanslutning.",
+    "downloadBtn": "Ladda ned",
+    "cancelBtn": "Avbryt"
   }
 }

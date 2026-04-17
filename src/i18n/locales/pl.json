@@ -325,6 +325,8 @@
   "updates": {
     "available": "Wersja {{latest}} jest dostępna (aktualna: {{current}}).\n\nOtworzyć stronę pobierania?",
     "upToDate": "Używasz najnowszej wersji {{current}}.",
-    "error": "Sprawdzanie aktualizacji nie powiodło się. Sprawdź połączenie internetowe."
+    "error": "Sprawdzanie aktualizacji nie powiodło się. Sprawdź połączenie internetowe.",
+    "downloadBtn": "Pobierz",
+    "cancelBtn": "Anuluj"
   }
 }

@@ -325,6 +325,8 @@
   "updates": {
     "available": "A {{latest}} verzió elérhető (jelenlegi: {{current}}).\n\nMegnyitja a letöltési oldalt?",
     "upToDate": "A legújabb {{current}} verziót használja.",
-    "error": "A frissítés ellenőrzése sikertelen. Ellenőrizze az internetkapcsolatot."
+    "error": "A frissítés ellenőrzése sikertelen. Ellenőrizze az internetkapcsolatot.",
+    "downloadBtn": "Letöltés",
+    "cancelBtn": "Mégse"
   }
 }

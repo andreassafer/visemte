@@ -325,6 +325,8 @@
   "updates": {
     "available": "版本 {{latest}} 已可用（当前：{{current}}）。\n\n打开下载页面？",
     "upToDate": "您正在使用最新版本 {{current}}。",
-    "error": "检查更新失败。请检查您的网络连接。"
+    "error": "检查更新失败。请检查您的网络连接。",
+    "downloadBtn": "下载",
+    "cancelBtn": "取消"
   }
 }

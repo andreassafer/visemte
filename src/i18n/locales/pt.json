@@ -325,6 +325,8 @@
   "updates": {
     "available": "A versão {{latest}} está disponível (atual: {{current}}).\n\nAbrir página de download?",
     "upToDate": "Você está usando a versão mais recente {{current}}.",
-    "error": "Falha ao verificar atualizações. Verifique sua conexão com a internet."
+    "error": "Falha ao verificar atualizações. Verifique sua conexão com a internet.",
+    "downloadBtn": "Baixar",
+    "cancelBtn": "Cancelar"
   }
 }

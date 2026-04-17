@@ -325,6 +325,8 @@
   "updates": {
     "available": "La versione {{latest}} è disponibile (attuale: {{current}}).\n\nAprire la pagina di download?",
     "upToDate": "Stai usando la versione più recente {{current}}.",
-    "error": "Controllo aggiornamenti fallito. Verifica la connessione internet."
+    "error": "Controllo aggiornamenti fallito. Verifica la connessione internet.",
+    "downloadBtn": "Scarica",
+    "cancelBtn": "Annulla"
   }
 }
