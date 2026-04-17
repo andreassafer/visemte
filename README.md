@@ -7,12 +7,31 @@
 - **MJML-powered** — renders to battle-tested, cross-client compatible HTML entirely in the browser
 - **Live preview** — see changes instantly as you edit
 - **HTML export** — download the finished HTML or copy it to the clipboard
-- **Template library** — start from a curated set of pre-built templates
+- **Template library** — start from a sample template; save and manage your own presets
 - **Undo / Redo** — full history via Zustand temporal middleware
 - **Multi-tab** — work on multiple templates simultaneously
 - **Dark / Light themes** — theme presets with accent color options
 - **22 languages** — UI fully localized (Arabic, Chinese, Czech, Dutch, English, Finnish, French, German, Greek, Croatian, Hungarian, Italian, Japanese, Norwegian, Polish, Portuguese, Russian, Slovak, Slovenian, Spanish, Swedish, Turkish)
 - **Offline-first** — images stored as Base64 (no backend required)
+- **Desktop app** — native builds for macOS (Universal, Apple Silicon, Intel), Windows and Linux via [Tauri](https://tauri.app)
+
+## Getting Started
+
+```bash
+# Install dependencies
+pnpm install
+
+# Start development server
+pnpm dev
+
+# Build for web
+pnpm build
+
+# Build macOS desktop app (Universal binary)
+pnpm tauri:build
+```
+
+> Requires [Node.js](https://nodejs.org) 20.19+ and [pnpm](https://pnpm.io). For desktop builds, [Rust](https://www.rust-lang.org/tools/install) is required as well.
 
 ## Tech Stack
 
@@ -25,6 +44,7 @@
 | Styling | [Tailwind CSS](https://github.com/tailwindlabs/tailwindcss) |
 | State | [Zustand](https://github.com/pmndrs/zustand) + [zundo](https://github.com/charkour/zundo) |
 | i18n | [react-i18next](https://github.com/i18next/react-i18next) |
+| Desktop | [Tauri](https://tauri.app) |
 
 ## Screenshots
 
