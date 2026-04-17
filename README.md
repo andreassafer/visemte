@@ -13,7 +13,7 @@
 - **Dark / Light themes** — theme presets with accent color options
 - **22 languages** — UI fully localized (Arabic, Chinese, Czech, Dutch, English, Finnish, French, German, Greek, Croatian, Hungarian, Italian, Japanese, Norwegian, Polish, Portuguese, Russian, Slovak, Slovenian, Spanish, Swedish, Turkish)
 - **Offline-first** — images stored as Base64 (no backend required)
-- **Desktop app** — native builds for macOS (Universal, Apple Silicon, Intel), Windows and Linux via [Tauri](https://tauri.app)
+- **Desktop app** — native builds for macOS (Universal, Apple Silicon, Intel), Windows and Linux
 
 ## Getting Started
 
