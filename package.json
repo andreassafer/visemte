@@ -1,8 +1,8 @@
 {
   "name": "Visemte",
   "private": true,
-  "version": "0.1.10",
-  "build": "260417",
+  "version": "0.1.11",
+  "build": "260418",
   "author": "Andreas Safer",
   "license": "MIT",
   "type": "module",
