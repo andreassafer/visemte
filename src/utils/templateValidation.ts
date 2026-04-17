@@ -16,20 +16,24 @@ const BlockTypeSchema = z.enum([
   'quote',
 ])
 
-const EmailBlockSchema = z.object({
-  id: z.string(),
-  type: BlockTypeSchema,
-  props: z.record(z.string(), z.unknown()),
-}).passthrough()
+const EmailBlockSchema = z
+  .object({
+    id: z.string(),
+    type: BlockTypeSchema,
+    props: z.record(z.string(), z.unknown()),
+  })
+  .loose()
 
-const TemplateSettingsSchema = z.object({
-  backgroundColor: z.string(),
-  contentWidth: z.number(),
-  fontFamily: z.string(),
-  fontSize: z.number(),
-  fontColor: z.string().optional().default('#000000'),
-  lineHeight: z.number().optional().default(1.5),
-})
+const TemplateSettingsSchema = z
+  .object({
+    backgroundColor: z.string(),
+    contentWidth: z.number(),
+    fontFamily: z.string(),
+    fontSize: z.number(),
+    fontColor: z.string().optional().default('#000000'),
+    lineHeight: z.number().optional().default(1.5),
+  })
+  .loose()
 
 export const EmailTemplateSchema = z.object({
   id: z.string(),

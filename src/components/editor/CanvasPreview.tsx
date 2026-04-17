@@ -3,10 +3,35 @@ import { useTranslation } from 'react-i18next'
 import { compileMjml } from '@/services'
 import { templateToMjml } from '@/utils'
 import { useEditorStore, useTemplateStore } from '@/store'
-import type { EmailTemplate } from '@/types'
+import type { EmailTemplate, EmailBlock } from '@/types'
 
 const MOBILE_WIDTH = 375
 const COMPILE_DEBOUNCE_MS = 400
+
+// Script injected into the iframe HTML so clicks are forwarded via postMessage.
+// This works reliably in Tauri's WKWebView where contentDocument access is restricted.
+const CLICK_BRIDGE_SCRIPT = `
+<script>
+(function(){
+  var COL_RE = /^col([a-zA-Z0-9]{1,10})i([0-2])$/;
+  document.addEventListener('click', function(e){
+    e.preventDefault();
+    var el = e.target;
+    while (el) {
+      var classes = el.className ? el.className.split(' ') : [];
+      var col = classes.find(function(c){ return COL_RE.test(c); });
+      if (col) { var m = COL_RE.exec(col); window.parent.postMessage({type:'blk-col',prefix:m[1],colIndex:Number(m[2])}, '*'); return; }
+      var blk = classes.find(function(c){ return c.indexOf('blk-') === 0; });
+      if (blk) { window.parent.postMessage({type:'blk-click',cls:blk}, '*'); return; }
+      el = el.parentElement;
+    }
+    window.parent.postMessage({type:'blk-deselect'}, '*');
+  });
+  var s = document.createElement('style');
+  s.textContent = '[class*="blk-"]{cursor:pointer!important}[class*="coli"]{cursor:pointer!important}';
+  document.head && document.head.appendChild(s);
+})();
+</script>`
 
 interface Props {
   template: EmailTemplate
@@ -30,32 +55,39 @@ export function CanvasPreview({ template, previewMode }: Props) {
   const [debouncedTemplate, setDebouncedTemplate] = useState(template)
   const iframeRef = useRef<HTMLIFrameElement>(null)
   const containerRef = useRef<HTMLElement>(null)
-  const clickHandlerRef = useRef<((e: MouseEvent) => void) | null>(null)
   const iframeBodyRoRef = useRef<ResizeObserver | null>(null)
   const [containerHeight, setContainerHeight] = useState(600)
   const [overlayRect, setOverlayRect] = useState<OverlayRect | null>(null)
 
   useEffect(() => {
-    const timer = setTimeout(() => setDebouncedTemplate(template), COMPILE_DEBOUNCE_MS)
-    return () => clearTimeout(timer)
+    const timer = setTimeout(() => {
+      setDebouncedTemplate(template)
+    }, COMPILE_DEBOUNCE_MS)
+    return () => {
+      clearTimeout(timer)
+    }
   }, [template])
 
   const compile = useCallback(async () => {
     setLoading(true)
     setError(null)
     try {
-      const mjml = templateToMjml(debouncedTemplate)
+      const mjml = templateToMjml(debouncedTemplate, previewMode === 'mobile')
       const result = await compileMjml(mjml)
       if (result.errors.length > 0) setError(result.errors.map((e) => e.message).join('\n'))
-      setHtml(result.html)
+      // Inject click bridge script just before </body>
+      const injected = result.html.replace('</body>', `${CLICK_BRIDGE_SCRIPT}</body>`)
+      setHtml(injected)
     } catch (e) {
       setError(e instanceof Error ? e.message : t('errors.mjmlCompile'))
     } finally {
       setLoading(false)
     }
-  }, [debouncedTemplate, t])
+  }, [debouncedTemplate, previewMode, t])
 
-  useEffect(() => { void compile() }, [compile])
+  useEffect(() => {
+    void compile()
+  }, [compile])
 
   const updateOverlay = useCallback(() => {
     if (!selectedBlockId || !iframeRef.current || !containerRef.current) {
@@ -67,18 +99,28 @@ export function CanvasPreview({ template, previewMode }: Props) {
     const scrollTop = containerRef.current.scrollTop
     const scrollLeft = containerRef.current.scrollLeft
 
-    if (selectedBlockId === '__template__') { setOverlayRect(null); return }
+    if (selectedBlockId === '__template__') {
+      setOverlayRect(null)
+      return
+    }
 
     const doc = iframeRef.current.contentDocument
-    if (!doc) { setOverlayRect(null); return }
+    if (!doc) {
+      setOverlayRect(null)
+      return
+    }
 
     // Column selected → use per-column CSS class instead of block-level class
     const sanitized = selectedBlockId.replace(/[^a-zA-Z0-9]/g, '')
-    const cls = selectedColumnIndex !== null
-      ? `col${sanitized.slice(0, 10)}i${selectedColumnIndex}`
-      : `blk-${sanitized}`
-    const el = doc.querySelector(`.${cls}`) as HTMLElement | null
-    if (!el) { setOverlayRect(null); return }
+    const cls =
+      selectedColumnIndex !== null
+        ? `col${sanitized.slice(0, 10)}i${selectedColumnIndex}`
+        : `blk-${sanitized}`
+    const el = doc.querySelector(`.${cls}`)
+    if (!el) {
+      setOverlayRect(null)
+      return
+    }
 
     const blockRect = el.getBoundingClientRect()
 
@@ -90,65 +132,67 @@ export function CanvasPreview({ template, previewMode }: Props) {
     })
   }, [selectedBlockId, selectedColumnIndex])
 
-  const injectClickHandler = useCallback(() => {
-    const doc = iframeRef.current?.contentDocument
-    if (!doc) return
-
-    // Remove previous listener to avoid stacking
-    if (clickHandlerRef.current) {
-      doc.removeEventListener('click', clickHandlerRef.current)
-      clickHandlerRef.current = null
-    }
-
-    // Pointer cursor for clickable blocks
-    let styleEl = doc.getElementById('blk-interaction-style')
-    if (!styleEl) {
-      styleEl = doc.createElement('style')
-      styleEl.id = 'blk-interaction-style'
-      doc.head?.appendChild(styleEl)
-    }
-    styleEl.textContent = '[class*="blk-"] { cursor: pointer !important; } [class*="coli"] { cursor: pointer !important; }'
-
+  // Handle postMessage events from the iframe click bridge
+  useEffect(() => {
     const COL_CLASS_RE = /^col([a-zA-Z0-9]{1,10})i([0-2])$/
 
-    const handleClick = (e: MouseEvent) => {
-      e.preventDefault()
-      let el: HTMLElement | null = e.target as HTMLElement
-      while (el) {
-        const classes = Array.from(el.classList)
+    const handleMessage = (e: MessageEvent) => {
+      if (!e.data || typeof e.data !== 'object') return
+      const { type, cls, prefix, colIndex } = e.data as {
+        type: string
+        cls?: string
+        prefix?: string
+        colIndex?: number
+      }
 
-        // Check for column cell class first (col{prefix}i{n})
-        const colClass = classes.find((c) => COL_CLASS_RE.test(c))
-        if (colClass) {
-          const m = COL_CLASS_RE.exec(colClass)!
-          const prefix = m[1]
-          const colIndex = Number(m[2])
+      if (type === 'blk-deselect') {
+        useEditorStore.getState().selectBlock(null)
+        return
+      }
+
+      if (type === 'blk-col' && prefix !== undefined && colIndex !== undefined) {
+        const { tabs, activeTabId } = useTemplateStore.getState()
+        const active = tabs.find((tab) => tab.id === activeTabId)
+        const colBlock = active?.blocks.find(
+          (b) => b.id.replace(/[^a-zA-Z0-9]/g, '').slice(0, 10) === prefix,
+        )
+        if (colBlock) {
+          const { selectedBlockId, selectedColumnIndex } = useEditorStore.getState()
+          if (selectedBlockId === colBlock.id && selectedColumnIndex === colIndex) {
+            useEditorStore.getState().selectBlock(null)
+          } else {
+            useEditorStore.getState().selectColumn(colBlock.id, colIndex)
+          }
+        }
+        return
+      }
+
+      if (type === 'blk-click' && cls) {
+        // Check column class first
+        const colMatch = COL_CLASS_RE.exec(cls)
+        if (colMatch) {
           const { tabs, activeTabId } = useTemplateStore.getState()
           const active = tabs.find((tab) => tab.id === activeTabId)
           const colBlock = active?.blocks.find(
-            (b) => b.id.replace(/[^a-zA-Z0-9]/g, '').slice(0, 10) === prefix
+            (b) => b.id.replace(/[^a-zA-Z0-9]/g, '').slice(0, 10) === colMatch[1],
           )
           if (colBlock) {
             const { selectedBlockId, selectedColumnIndex } = useEditorStore.getState()
-            if (selectedBlockId === colBlock.id && selectedColumnIndex === colIndex) {
+            if (selectedBlockId === colBlock.id && selectedColumnIndex === Number(colMatch[2])) {
               useEditorStore.getState().selectBlock(null)
             } else {
-              useEditorStore.getState().selectColumn(colBlock.id, colIndex)
+              useEditorStore.getState().selectColumn(colBlock.id, Number(colMatch[2]))
             }
-            return
           }
+          return
         }
 
-        // Check for block class (blk-{sanitizedId}) — top-level or column child
-        const blkClass = classes.find((c) => c.startsWith('blk-'))
-        if (blkClass) {
-          const sanitized = blkClass.slice(4)
+        // Block class (blk-{sanitized})
+        if (cls.startsWith('blk-')) {
+          const sanitized = cls.slice(4)
           const { tabs, activeTabId } = useTemplateStore.getState()
           const active = tabs.find((tab) => tab.id === activeTabId)
-          // Search top-level blocks first
-          const block = active?.blocks.find(
-            (b) => b.id.replace(/[^a-zA-Z0-9]/g, '') === sanitized
-          )
+          const block = active?.blocks.find((b) => b.id.replace(/[^a-zA-Z0-9]/g, '') === sanitized)
           if (block) {
             const current = useEditorStore.getState().selectedBlockId
             useEditorStore.getState().selectBlock(current === block.id ? null : block.id)
@@ -157,37 +201,36 @@ export function CanvasPreview({ template, previewMode }: Props) {
           // Search column children
           for (const topBlock of active?.blocks ?? []) {
             if (topBlock.type !== 'columns') continue
-            const columnBlocks = (topBlock.props['columnBlocks'] as import('@/types').EmailBlock[][] | undefined) ?? []
+            const columnBlocks =
+              (topBlock.props['columnBlocks'] as EmailBlock[][] | undefined) ?? []
             for (const col of columnBlocks) {
-              const childBlock = col.find(
-                (b) => b.id.replace(/[^a-zA-Z0-9]/g, '') === sanitized
-              )
+              const childBlock = col.find((b) => b.id.replace(/[^a-zA-Z0-9]/g, '') === sanitized)
               if (childBlock) {
                 const current = useEditorStore.getState().selectedBlockId
-                useEditorStore.getState().selectBlock(current === childBlock.id ? null : childBlock.id)
+                useEditorStore
+                  .getState()
+                  .selectBlock(current === childBlock.id ? null : childBlock.id)
                 return
               }
             }
           }
-          // Still not found — continue walking up to find the column cell
         }
-
-        el = el.parentElement
       }
-      // Clicked outside any block → deselect
-      useEditorStore.getState().selectBlock(null)
     }
 
-    clickHandlerRef.current = handleClick
-    doc.addEventListener('click', handleClick)
+    window.addEventListener('message', handleMessage)
+    return () => {
+      window.removeEventListener('message', handleMessage)
+    }
   }, [])
 
-  // Update overlay + click handler when selection or compiled HTML changes
+  // Update overlay when selection or compiled HTML changes
   useEffect(() => {
     const t1 = setTimeout(updateOverlay, 50)
-    const t2 = setTimeout(injectClickHandler, 60)
-    return () => { clearTimeout(t1); clearTimeout(t2) }
-  }, [updateOverlay, injectClickHandler, html])
+    return () => {
+      clearTimeout(t1)
+    }
+  }, [updateOverlay, html])
 
   // Scroll canvas so the selected block is visible
   useEffect(() => {
@@ -196,10 +239,11 @@ export function CanvasPreview({ template, previewMode }: Props) {
       const doc = iframeRef.current?.contentDocument
       if (!doc || !iframeRef.current || !containerRef.current) return
       const sanitized = selectedBlockId.replace(/[^a-zA-Z0-9]/g, '')
-      const cls = selectedColumnIndex !== null
-        ? `col${sanitized.slice(0, 10)}i${selectedColumnIndex}`
-        : `blk-${sanitized}`
-      const el = doc.querySelector(`.${cls}`) as HTMLElement | null
+      const cls =
+        selectedColumnIndex !== null
+          ? `col${sanitized.slice(0, 10)}i${selectedColumnIndex}`
+          : `blk-${sanitized}`
+      const el = doc.querySelector(`.${cls}`)
       if (!el) return
       const blockRect = el.getBoundingClientRect()
       const iframeRect = iframeRef.current.getBoundingClientRect()
@@ -213,10 +257,15 @@ export function CanvasPreview({ template, previewMode }: Props) {
       if (blockTop < visibleTop + pad) {
         containerRef.current.scrollTo({ top: blockTop - pad, behavior: 'smooth' })
       } else if (blockBottom > visibleBottom - pad) {
-        containerRef.current.scrollTo({ top: blockBottom - containerRef.current.clientHeight + pad, behavior: 'smooth' })
+        containerRef.current.scrollTo({
+          top: blockBottom - containerRef.current.clientHeight + pad,
+          behavior: 'smooth',
+        })
       }
     }, 60)
-    return () => clearTimeout(timer)
+    return () => {
+      clearTimeout(timer)
+    }
   }, [selectedBlockId, selectedColumnIndex])
 
   // Keep overlay in sync while scrolling
@@ -224,21 +273,32 @@ export function CanvasPreview({ template, previewMode }: Props) {
     const el = containerRef.current
     if (!el) return
     el.addEventListener('scroll', updateOverlay, { passive: true })
-    return () => el.removeEventListener('scroll', updateOverlay)
+    return () => {
+      el.removeEventListener('scroll', updateOverlay)
+    }
   }, [updateOverlay])
 
   useEffect(() => {
     const el = containerRef.current
     if (!el) return
-    const update = () => setContainerHeight(el.clientHeight)
+    const update = () => {
+      setContainerHeight(el.clientHeight)
+    }
     update()
     const ro = new ResizeObserver(update)
     ro.observe(el)
-    return () => ro.disconnect()
+    return () => {
+      ro.disconnect()
+    }
   }, [loading])
 
   // Disconnect iframe body observer on unmount
-  useEffect(() => () => { iframeBodyRoRef.current?.disconnect() }, [])
+  useEffect(
+    () => () => {
+      iframeBodyRoRef.current?.disconnect()
+    },
+    [],
+  )
 
   const maxWidth = previewMode === 'mobile' ? MOBILE_WIDTH : template.settings.contentWidth
 
@@ -269,28 +329,31 @@ export function CanvasPreview({ template, previewMode }: Props) {
         backgroundImage: 'radial-gradient(circle, var(--preview-dot) 1px, transparent 1px)',
         backgroundSize: '20px 20px',
       }}
-      onClick={() => useEditorStore.getState().selectBlock(null)}
+      onClick={() => {
+        useEditorStore.getState().selectBlock(null)
+      }}
     >
       <div
         className="mx-auto w-full overflow-hidden shadow transition-all duration-300"
         style={{ maxWidth: `${maxWidth}px` }}
-        onClick={(e) => e.stopPropagation()}
+        onClick={(e) => {
+          e.stopPropagation()
+        }}
       >
         <iframe
           ref={iframeRef}
           srcDoc={html}
           className="w-full border-0 block"
-          style={{ minHeight: `${containerHeight - 48}px` }}
           title={t('editor.toolbar.preview')}
-          sandbox="allow-same-origin"
-          scrolling="no"
+          sandbox="allow-same-origin allow-scripts"
+          style={{ minHeight: `${containerHeight - 48}px`, overflow: 'hidden' }}
           onLoad={(e) => {
             const iframe = e.currentTarget
             const doc = iframe.contentDocument
             if (!doc) return
             const syncHeight = () => {
               const d = iframe.contentDocument
-              if (d) iframe.style.height = d.documentElement.scrollHeight + 'px'
+              if (d) iframe.style.height = `${d.documentElement.scrollHeight}px`
             }
             syncHeight()
             // Watch iframe body for height changes (responsive reflow when previewMode changes
@@ -300,7 +363,6 @@ export function CanvasPreview({ template, previewMode }: Props) {
             ro.observe(doc.body)
             iframeBodyRoRef.current = ro
             updateOverlay()
-            injectClickHandler()
           }}
         />
       </div>

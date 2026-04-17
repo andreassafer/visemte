@@ -22,7 +22,8 @@
       "enableBlock": "Aktivieren",
       "collapse": "Einklappen",
       "expand": "Ausklappen",
-      "integrate": "Integrieren"
+      "integrate": "Integrieren",
+      "renameTemplate": "Template umbenennen"
     },
     "toolbar": {
       "undo": "Rückgängig (Strg+Z)",
@@ -64,7 +65,9 @@
     "palette": {
       "title": "Blöcke",
       "expand": "Panel erweitern",
-      "collapse": "Panel einklappen"
+      "collapse": "Panel einklappen",
+      "search": "Suchen…",
+      "noResults": "Keine Blöcke gefunden"
     },
     "properties": {
       "title": "Globale Eigenschaften",
@@ -129,7 +132,7 @@
       "imagePlaceholder": "Bild hier einfügen",
       "srcPlaceholder": "https://... oder...",
       "altPlaceholder": "Alt-Text für Barrierefreiheit",
-      "buttonTextPlaceholder": "Klicken Sie hier",
+      "buttonTextPlaceholder": "Hier klicken",
       "hrefPlaceholder": "https://example.com",
       "top": "Oben",
       "bottom": "Unten",
@@ -258,7 +261,9 @@
     "copyMjml": "MJML kopieren",
     "descJson": "Vorlage zum Reimportieren",
     "descMjml": "Quellcode für das MJML-Framework",
-    "descHtml": "Fertiger HTML-Code für E-Mail-Clients"
+    "descHtml": "Fertiger HTML-Code für E-Mail-Clients",
+    "descTs": "TypeScript-Quellcode für src/templates/",
+    "downloadTs": "Als .ts herunterladen"
   },
   "settings": {
     "title": "Einstellungen",
@@ -283,17 +288,21 @@
     "load": "Laden",
     "edit": "Bearbeiten",
     "saveAsPreset": "Als Vorlage speichern",
-    "savedAsPreset": "Als Vorlage gespeichert"
+    "savedAsPreset": "Als Vorlage gespeichert",
+    "importSuccess": "Template importiert"
   },
   "errors": {
     "mjmlCompile": "Fehler bei der MJML-Kompilierung",
     "invalidTemplate": "Ungültiges Template-Format",
-    "unknownBlockType": "Unbekannter Block-Typ: {{type}}"
+    "unknownBlockType": "Unbekannter Block-Typ: {{type}}",
+    "boundaryTitle": "Fehler in: {{label}}",
+    "boundaryRetry": "Erneut versuchen"
   },
   "about": {
     "title": "Über Visemte",
     "version": "Version",
     "build": "Build",
+    "platform": "Plattform",
     "author": "Autor",
     "license": "Lizenz",
     "description": "Vorlagen-Generator zur Erstellung responsiver E-Mails",

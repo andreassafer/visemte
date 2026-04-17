@@ -1,10 +1,14 @@
 import { Component } from 'react'
 import type { ReactNode, ErrorInfo } from 'react'
+import { useTranslation } from 'react-i18next'
 
-interface Props {
+interface CoreProps {
   children: ReactNode
   fallback?: ReactNode
   label?: string
+  // Translated strings injected by the wrapper
+  titleText: string
+  retryText: string
 }
 
 interface State {
@@ -12,8 +16,8 @@ interface State {
   error: Error | null
 }
 
-export class ErrorBoundary extends Component<Props, State> {
-  constructor(props: Props) {
+class ErrorBoundaryCore extends Component<CoreProps, State> {
+  constructor(props: CoreProps) {
     super(props)
     this.state = { hasError: false, error: null }
   }
@@ -26,7 +30,9 @@ export class ErrorBoundary extends Component<Props, State> {
     console.error(`[ErrorBoundary: ${this.props.label ?? 'unknown'}]`, error, info)
   }
 
-  reset = () => this.setState({ hasError: false, error: null })
+  reset = () => {
+    this.setState({ hasError: false, error: null })
+  }
 
   render() {
     if (this.state.hasError) {
@@ -51,9 +57,7 @@ export class ErrorBoundary extends Component<Props, State> {
             <line x1="12" y1="16" x2="12.01" y2="16" />
           </svg>
           <div>
-            <p className="font-medium text-red-700 dark:text-red-400">
-              {this.props.label ? `Fehler in: ${this.props.label}` : 'Unerwarteter Fehler'}
-            </p>
+            <p className="font-medium text-red-700 dark:text-red-400">{this.props.titleText}</p>
             {this.state.error && (
               <p className="mt-1 font-mono text-xs text-red-500 dark:text-red-500">
                 {this.state.error.message}
@@ -64,7 +68,7 @@ export class ErrorBoundary extends Component<Props, State> {
             onClick={this.reset}
             className="rounded bg-red-100 px-3 py-1.5 text-sm font-medium text-red-700 hover:bg-red-200 dark:bg-red-800/40 dark:text-red-400 dark:hover:bg-red-800/60"
           >
-            Erneut versuchen
+            {this.props.retryText}
           </button>
         </div>
       )
@@ -72,4 +76,29 @@ export class ErrorBoundary extends Component<Props, State> {
 
     return this.props.children
   }
+}
+
+interface Props {
+  children: ReactNode
+  fallback?: ReactNode
+  label?: string
+}
+
+export function ErrorBoundary({ children, fallback, label }: Props) {
+  const { t } = useTranslation()
+  const titleText = label
+    ? t('errors.boundaryTitle', { label })
+    : t('errors.unknownError', { defaultValue: 'Error' })
+  const retryText = t('errors.boundaryRetry')
+
+  return (
+    <ErrorBoundaryCore
+      fallback={fallback}
+      label={label}
+      titleText={titleText}
+      retryText={retryText}
+    >
+      {children}
+    </ErrorBoundaryCore>
+  )
 }

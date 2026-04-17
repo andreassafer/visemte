@@ -22,7 +22,8 @@
       "enableBlock": "Włącz",
       "collapse": "Zwiń",
       "expand": "Rozwiń",
-      "integrate": "Integruj"
+      "integrate": "Integruj",
+      "renameTemplate": "Zmień nazwę szablonu"
     },
     "toolbar": {
       "undo": "Cofnij (Ctrl+Z)",
@@ -64,7 +65,9 @@
     "palette": {
       "title": "Bloki",
       "expand": "Rozwiń panel",
-      "collapse": "Zwiń panel"
+      "collapse": "Zwiń panel",
+      "search": "Szukaj…",
+      "noResults": "Nie znaleziono bloków"
     },
     "properties": {
       "title": "Właściwości globalne",
@@ -129,7 +132,7 @@
       "imagePlaceholder": "Wstaw obraz tutaj",
       "srcPlaceholder": "https://... lub...",
       "altPlaceholder": "Tekst alternatywny dla dostępności",
-      "buttonTextPlaceholder": "Kliknij tutaj",
+      "buttonTextPlaceholder": "Kliknij",
       "hrefPlaceholder": "https://example.com",
       "top": "Góra",
       "bottom": "Dół",
@@ -258,7 +261,9 @@
     "copyMjml": "Kopiuj MJML",
     "descJson": "Szablon do ponownego importu",
     "descMjml": "Kod źródłowy dla frameworka MJML",
-    "descHtml": "Gotowy kod HTML dla klientów poczty"
+    "descHtml": "Gotowy kod HTML dla klientów poczty",
+    "descTs": "Kod TypeScript dla src/templates/",
+    "downloadTs": "Pobierz jako .ts"
   },
   "settings": {
     "title": "Ustawienia",
@@ -283,17 +288,21 @@
     "load": "Wczytaj",
     "edit": "Edytuj",
     "saveAsPreset": "Zapisz jako szablon",
-    "savedAsPreset": "Zapisano jako szablon"
+    "savedAsPreset": "Zapisano jako szablon",
+    "importSuccess": "Szablon zaimportowany"
   },
   "errors": {
     "mjmlCompile": "Błąd kompilacji MJML",
     "invalidTemplate": "Nieprawidłowy format szablonu",
-    "unknownBlockType": "Nieznany typ bloku: {{type}}"
+    "unknownBlockType": "Nieznany typ bloku: {{type}}",
+    "boundaryTitle": "Błąd w: {{label}}",
+    "boundaryRetry": "Spróbuj ponownie"
   },
   "about": {
     "title": "O aplikacji Visemte",
     "version": "Wersja",
     "build": "Kompilacja",
+    "platform": "Platforma",
     "author": "Autor",
     "license": "Licencja",
     "description": "Kreator szablonów do tworzenia responsywnych e-maili",

@@ -22,7 +22,8 @@
       "enableBlock": "Inschakelen",
       "collapse": "Inklappen",
       "expand": "Uitklappen",
-      "integrate": "Integreren"
+      "integrate": "Integreren",
+      "renameTemplate": "Sjabloon hernoemen"
     },
     "toolbar": {
       "undo": "Ongedaan maken (Ctrl+Z)",
@@ -64,7 +65,9 @@
     "palette": {
       "title": "Blokken",
       "expand": "Paneel uitklappen",
-      "collapse": "Paneel inklappen"
+      "collapse": "Paneel inklappen",
+      "search": "Zoeken…",
+      "noResults": "Geen blokken gevonden"
     },
     "properties": {
       "title": "Algemene eigenschappen",
@@ -129,7 +132,7 @@
       "imagePlaceholder": "Afbeelding hier plaatsen",
       "srcPlaceholder": "https://... of...",
       "altPlaceholder": "Alt-tekst voor toegankelijkheid",
-      "buttonTextPlaceholder": "Klik hier",
+      "buttonTextPlaceholder": "Klik",
       "hrefPlaceholder": "https://example.com",
       "top": "Boven",
       "bottom": "Onder",
@@ -258,7 +261,9 @@
     "copyMjml": "MJML kopiëren",
     "descJson": "Sjabloon voor herimporten",
     "descMjml": "Broncode voor het MJML-framework",
-    "descHtml": "Kant-en-klare HTML-code voor e-mailclients"
+    "descHtml": "Kant-en-klare HTML-code voor e-mailclients",
+    "descTs": "TypeScript broncode voor src/templates/",
+    "downloadTs": "Downloaden als .ts"
   },
   "settings": {
     "title": "Instellingen",
@@ -283,17 +288,21 @@
     "load": "Laden",
     "edit": "Bewerken",
     "saveAsPreset": "Opslaan als sjabloon",
-    "savedAsPreset": "Opgeslagen als sjabloon"
+    "savedAsPreset": "Opgeslagen als sjabloon",
+    "importSuccess": "Sjabloon geïmporteerd"
   },
   "errors": {
     "mjmlCompile": "MJML-compilatiefout",
     "invalidTemplate": "Ongeldig sjabloonformaat",
-    "unknownBlockType": "Onbekend bloktype: {{type}}"
+    "unknownBlockType": "Onbekend bloktype: {{type}}",
+    "boundaryTitle": "Fout in: {{label}}",
+    "boundaryRetry": "Opnieuw proberen"
   },
   "about": {
     "title": "Over Visemte",
     "version": "Versie",
     "build": "Build",
+    "platform": "Platform",
     "author": "Auteur",
     "license": "Licentie",
     "description": "Sjabloonbouwer voor het maken van responsieve e-mails",

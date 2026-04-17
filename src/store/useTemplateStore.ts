@@ -53,12 +53,38 @@ interface TemplateState {
   removeBlock: (id: string) => void
   updateBlock: (id: string, updates: Partial<Omit<EmailBlock, 'id' | 'type'>>) => void
   reorderBlocks: (startIndex: number, endIndex: number) => void
-  addBlockToColumn: (columnBlockId: string, columnIndex: number, type: BlockType, index?: number) => void
+  addBlockToColumn: (
+    columnBlockId: string,
+    columnIndex: number,
+    type: BlockType,
+    index?: number,
+  ) => void
   removeBlockFromColumn: (columnBlockId: string, columnIndex: number, blockId: string) => void
-  reorderBlocksInColumn: (columnBlockId: string, columnIndex: number, startIndex: number, endIndex: number) => void
-  moveBlockBetweenColumns: (columnBlockId: string, srcColIndex: number, srcIndex: number, destColIndex: number, destIndex: number) => void
-  moveBlockToColumn: (canvasIndex: number, columnBlockId: string, columnIndex: number, insertIdx: number) => void
-  moveBlockFromColumn: (columnBlockId: string, columnIndex: number, blockIndex: number, canvasIndex: number) => void
+  reorderBlocksInColumn: (
+    columnBlockId: string,
+    columnIndex: number,
+    startIndex: number,
+    endIndex: number,
+  ) => void
+  moveBlockBetweenColumns: (
+    columnBlockId: string,
+    srcColIndex: number,
+    srcIndex: number,
+    destColIndex: number,
+    destIndex: number,
+  ) => void
+  moveBlockToColumn: (
+    canvasIndex: number,
+    columnBlockId: string,
+    columnIndex: number,
+    insertIdx: number,
+  ) => void
+  moveBlockFromColumn: (
+    columnBlockId: string,
+    columnIndex: number,
+    blockIndex: number,
+    canvasIndex: number,
+  ) => void
   reorderBlockChildren: (blockId: string, startIndex: number, endIndex: number) => void
   duplicateBlockChild: (blockId: string, index: number) => void
   toggleBlockChildDisabled: (blockId: string, index: number) => void
@@ -86,18 +112,26 @@ const createDefaultTemplate = (): EmailTemplate => ({
 const initialTemplate = createDefaultTemplate()
 
 const buildBlockProps = (type: BlockType): Record<string, unknown> => {
-  const props: Record<string, unknown> = { ...(DEFAULT_BLOCK_PROPS[type] as Record<string, unknown>) }
+  const props: Record<string, unknown> = {
+    ...(DEFAULT_BLOCK_PROPS[type] as Record<string, unknown>),
+  }
   if (type === 'columns') {
     const count = Math.min(Math.max(Number(props['columns'] ?? 2), 1), 3)
     props['columnBlocks'] = Array.from({ length: count }, (): EmailBlock[] => [])
   }
-  if (type === 'text')   props['content']   = i18n.t('editor.blocks.textPlaceholder')
-  if (type === 'hero') { props['line1Text'] = i18n.t('editor.properties.heroHeadlinePlaceholder'); props['line2Text'] = i18n.t('editor.properties.heroSubheadlinePlaceholder') }
-  if (type === 'button') props['text']      = i18n.t('editor.properties.buttonTextPlaceholder')
-  if (type === 'quote') { props['text'] = i18n.t('editor.properties.quotePlaceholder'); props['author'] = i18n.t('editor.properties.authorPlaceholder') }
-if (type === 'countdown') {
-    props['labelDays']    = i18n.t('editor.blocks.countdownDays')
-    props['labelHours']   = i18n.t('editor.blocks.countdownHours')
+  if (type === 'text') props['content'] = i18n.t('editor.blocks.textPlaceholder')
+  if (type === 'hero') {
+    props['line1Text'] = i18n.t('editor.properties.heroHeadlinePlaceholder')
+    props['line2Text'] = i18n.t('editor.properties.heroSubheadlinePlaceholder')
+  }
+  if (type === 'button') props['text'] = i18n.t('editor.properties.buttonTextPlaceholder')
+  if (type === 'quote') {
+    props['text'] = i18n.t('editor.properties.quotePlaceholder')
+    props['author'] = i18n.t('editor.properties.authorPlaceholder')
+  }
+  if (type === 'countdown') {
+    props['labelDays'] = i18n.t('editor.blocks.countdownDays')
+    props['labelHours'] = i18n.t('editor.blocks.countdownHours')
     props['labelMinutes'] = i18n.t('editor.blocks.countdownMinutes')
     props['labelSeconds'] = i18n.t('editor.blocks.countdownSeconds')
   }
@@ -121,38 +155,43 @@ export const useTemplateStore = create<TemplateState>()((set) => ({
 
   // ── Tab management ──────────────────────────────────────────────────────────
 
-  openNewTab: () =>
+  openNewTab: () => {
     set((state) => {
       const t = createDefaultTemplate()
       return { tabs: [...state.tabs, t], activeTabId: t.id }
-    }),
+    })
+  },
 
-  closeTab: (id) =>
+  closeTab: (id) => {
     set((state) => {
       if (state.tabs.length <= 1) return state
       const idx = state.tabs.findIndex((t) => t.id === id)
       const newTabs = state.tabs.filter((t) => t.id !== id)
       const newActiveId =
         state.activeTabId === id
-          ? (newTabs[Math.max(0, idx - 1)]?.id ?? newTabs[0]!.id)
+          ? (newTabs[Math.max(0, idx - 1)]?.id ?? newTabs[0].id)
           : state.activeTabId
-      const { [id]: _removed, ...newHistories } = state.tabHistories
+      const { [id]: __removed, ...newHistories } = state.tabHistories
       return { tabs: newTabs, activeTabId: newActiveId, tabHistories: newHistories }
-    }),
+    })
+  },
 
-  setActiveTab: (id) => set({ activeTabId: id }),
+  setActiveTab: (id) => {
+    set({ activeTabId: id })
+  },
 
-  reorderTabs: (startIndex, endIndex) =>
+  reorderTabs: (startIndex, endIndex) => {
     set((state) => {
       const tabs = [...state.tabs]
       const [removed] = tabs.splice(startIndex, 1)
       if (removed) tabs.splice(endIndex, 0, removed)
       return { tabs }
-    }),
+    })
+  },
 
   // ── Undo / redo ─────────────────────────────────────────────────────────────
 
-  undo: () =>
+  undo: () => {
     set((state) => {
       const history = state.tabHistories[state.activeTabId]
       if (!history?.past.length) return state
@@ -166,9 +205,10 @@ export const useTemplateStore = create<TemplateState>()((set) => ({
           [state.activeTabId]: { past, future: [currentTab, ...history.future] },
         },
       }
-    }),
+    })
+  },
 
-  redo: () =>
+  redo: () => {
     set((state) => {
       const history = state.tabHistories[state.activeTabId]
       if (!history?.future.length) return state
@@ -182,27 +222,30 @@ export const useTemplateStore = create<TemplateState>()((set) => ({
           [state.activeTabId]: { past: [...history.past, currentTab], future },
         },
       }
-    }),
+    })
+  },
 
-  clearHistory: (tabId) =>
+  clearHistory: (tabId) => {
     set((state) => ({
       tabHistories: {
         ...state.tabHistories,
         [tabId ?? state.activeTabId]: { past: [], future: [] },
       },
-    })),
+    }))
+  },
 
   // ── Template mutations ──────────────────────────────────────────────────────
 
-  setTemplateName: (name) =>
+  setTemplateName: (name) => {
     set((state) => ({
       tabHistories: recordHistory(state),
       tabs: state.tabs.map((t) =>
         t.id === state.activeTabId ? { ...t, name, updatedAt: new Date().toISOString() } : t,
       ),
-    })),
+    }))
+  },
 
-  updateSettings: (settings) =>
+  updateSettings: (settings) => {
     set((state) => ({
       tabHistories: recordHistory(state),
       tabs: state.tabs.map((t) =>
@@ -210,9 +253,10 @@ export const useTemplateStore = create<TemplateState>()((set) => ({
           ? { ...t, settings: { ...t.settings, ...settings }, updatedAt: new Date().toISOString() }
           : t,
       ),
-    })),
+    }))
+  },
 
-  addBlock: (type, index) =>
+  addBlock: (type, index) => {
     set((state) => {
       const newBlock: EmailBlock = { id: nanoid(), type, props: buildBlockProps(type) }
       return {
@@ -225,36 +269,43 @@ export const useTemplateStore = create<TemplateState>()((set) => ({
           return { ...t, blocks, updatedAt: new Date().toISOString() }
         }),
       }
-    }),
+    })
+  },
 
-  toggleBlockDisabled: (id) =>
+  toggleBlockDisabled: (id) => {
     set((state) => ({
       tabHistories: recordHistory(state),
       tabs: state.tabs.map((t) => {
         if (t.id !== state.activeTabId) return t
         return {
           ...t,
-          blocks: t.blocks.map((b) => b.id === id ? { ...b, disabled: !b.disabled } : b),
+          blocks: t.blocks.map((b) => (b.id === id ? { ...b, disabled: !b.disabled } : b)),
           updatedAt: new Date().toISOString(),
         }
       }),
-    })),
+    }))
+  },
 
-  clearBlocks: () =>
+  clearBlocks: () => {
     set((state) => ({
       tabHistories: recordHistory(state),
       tabs: state.tabs.map((t) =>
-        t.id !== state.activeTabId ? t : { ...t, blocks: [], updatedAt: new Date().toISOString() }
+        t.id !== state.activeTabId ? t : { ...t, blocks: [], updatedAt: new Date().toISOString() },
       ),
-    })),
+    }))
+  },
 
-  removeBlock: (id) =>
+  removeBlock: (id) => {
     set((state) => ({
       tabHistories: recordHistory(state),
       tabs: state.tabs.map((t) => {
         if (t.id !== state.activeTabId) return t
         if (t.blocks.some((b) => b.id === id)) {
-          return { ...t, blocks: t.blocks.filter((b) => b.id !== id), updatedAt: new Date().toISOString() }
+          return {
+            ...t,
+            blocks: t.blocks.filter((b) => b.id !== id),
+            updatedAt: new Date().toISOString(),
+          }
         }
         return {
           ...t,
@@ -262,20 +313,31 @@ export const useTemplateStore = create<TemplateState>()((set) => ({
             if (b.type !== 'columns') return b
             const cols = b.props['columnBlocks'] as EmailBlock[][] | undefined
             if (!cols) return b
-            return { ...b, props: { ...b.props, columnBlocks: cols.map((col) => col.filter((cb) => cb.id !== id)) } }
+            return {
+              ...b,
+              props: {
+                ...b.props,
+                columnBlocks: cols.map((col) => col.filter((cb) => cb.id !== id)),
+              },
+            }
           }),
           updatedAt: new Date().toISOString(),
         }
       }),
-    })),
+    }))
+  },
 
-  updateBlock: (id, updates) =>
+  updateBlock: (id, updates) => {
     set((state) => ({
       tabHistories: recordHistory(state),
       tabs: state.tabs.map((t) => {
         if (t.id !== state.activeTabId) return t
         if (t.blocks.some((b) => b.id === id)) {
-          return { ...t, blocks: t.blocks.map((b) => (b.id === id ? { ...b, ...updates } : b)), updatedAt: new Date().toISOString() }
+          return {
+            ...t,
+            blocks: t.blocks.map((b) => (b.id === id ? { ...b, ...updates } : b)),
+            updatedAt: new Date().toISOString(),
+          }
         }
         return {
           ...t,
@@ -283,14 +345,23 @@ export const useTemplateStore = create<TemplateState>()((set) => ({
             if (b.type !== 'columns') return b
             const cols = b.props['columnBlocks'] as EmailBlock[][] | undefined
             if (!cols) return b
-            return { ...b, props: { ...b.props, columnBlocks: cols.map((col) => col.map((cb) => (cb.id === id ? { ...cb, ...updates } : cb))) } }
+            return {
+              ...b,
+              props: {
+                ...b.props,
+                columnBlocks: cols.map((col) =>
+                  col.map((cb) => (cb.id === id ? { ...cb, ...updates } : cb)),
+                ),
+              },
+            }
           }),
           updatedAt: new Date().toISOString(),
         }
       }),
-    })),
+    }))
+  },
 
-  reorderBlocks: (startIndex, endIndex) =>
+  reorderBlocks: (startIndex, endIndex) => {
     set((state) => ({
       tabHistories: recordHistory(state),
       tabs: state.tabs.map((t) => {
@@ -300,9 +371,10 @@ export const useTemplateStore = create<TemplateState>()((set) => ({
         if (removed) blocks.splice(endIndex, 0, removed)
         return { ...t, blocks, updatedAt: new Date().toISOString() }
       }),
-    })),
+    }))
+  },
 
-  addBlockToColumn: (columnBlockId, columnIndex, type, index) =>
+  addBlockToColumn: (columnBlockId, columnIndex, type, index) => {
     set((state) => ({
       tabHistories: recordHistory(state),
       tabs: state.tabs.map((t) => {
@@ -312,7 +384,8 @@ export const useTemplateStore = create<TemplateState>()((set) => ({
           blocks: t.blocks.map((b) => {
             if (b.id !== columnBlockId) return b
             const colCount = Math.min(Math.max(Number(b.props['columns'] ?? 2), 1), 3)
-            const existing = (b.props['columnBlocks'] as EmailBlock[][] | undefined) ??
+            const existing =
+              (b.props['columnBlocks'] as EmailBlock[][] | undefined) ??
               Array.from({ length: colCount }, (): EmailBlock[] => [])
             const cols = existing.map((col) => [...col])
             const newBlock: EmailBlock = { id: nanoid(), type, props: buildBlockProps(type) }
@@ -325,9 +398,10 @@ export const useTemplateStore = create<TemplateState>()((set) => ({
           updatedAt: new Date().toISOString(),
         }
       }),
-    })),
+    }))
+  },
 
-  removeBlockFromColumn: (columnBlockId, columnIndex, blockId) =>
+  removeBlockFromColumn: (columnBlockId, columnIndex, blockId) => {
     set((state) => ({
       tabHistories: recordHistory(state),
       tabs: state.tabs.map((t) => {
@@ -344,9 +418,10 @@ export const useTemplateStore = create<TemplateState>()((set) => ({
           updatedAt: new Date().toISOString(),
         }
       }),
-    })),
+    }))
+  },
 
-  reorderBlocksInColumn: (columnBlockId, columnIndex, startIndex, endIndex) =>
+  reorderBlocksInColumn: (columnBlockId, columnIndex, startIndex, endIndex) => {
     set((state) => ({
       tabHistories: recordHistory(state),
       tabs: state.tabs.map((t) => {
@@ -367,9 +442,10 @@ export const useTemplateStore = create<TemplateState>()((set) => ({
           updatedAt: new Date().toISOString(),
         }
       }),
-    })),
+    }))
+  },
 
-  reorderBlockChildren: (blockId, startIndex, endIndex) =>
+  reorderBlockChildren: (blockId, startIndex, endIndex) => {
     set((state) => ({
       tabHistories: recordHistory(state),
       tabs: state.tabs.map((t) => {
@@ -379,16 +455,27 @@ export const useTemplateStore = create<TemplateState>()((set) => ({
           blocks: t.blocks.map((b) => {
             if (b.id !== blockId) return b
             if (b.type === 'accordion') {
-              let items: unknown[] = []
-              try { items = JSON.parse(String(b.props['items'] ?? '[]')) } catch { items = [] }
+              let items: unknown[]
+              try {
+                items = JSON.parse(String(b.props['items'] ?? '[]')) as unknown[]
+              } catch {
+                items = []
+              }
               const next = [...items]
               const [removed] = next.splice(startIndex, 1)
               if (removed !== undefined) next.splice(endIndex, 0, removed)
               return { ...b, props: { ...b.props, items: JSON.stringify(next) } }
             }
             if (b.type === 'columns') {
-              const cols = ((b.props['columnBlocks'] as EmailBlock[][] | undefined) ?? []).map((col) => [...col])
-              const colProps = ((Array.isArray(b.props['columnProps']) ? b.props['columnProps'] : []) as Record<string, string>[]).map((p) => ({ ...p }))
+              const cols = ((b.props['columnBlocks'] as EmailBlock[][] | undefined) ?? []).map(
+                (col) => [...col],
+              )
+              const colProps = (
+                (Array.isArray(b.props['columnProps']) ? b.props['columnProps'] : []) as Record<
+                  string,
+                  string
+                >[]
+              ).map((p) => ({ ...p }))
               const [removedCol] = cols.splice(startIndex, 1)
               const [removedProps] = colProps.splice(startIndex, 1)
               if (removedCol) cols.splice(endIndex, 0, removedCol)
@@ -400,9 +487,10 @@ export const useTemplateStore = create<TemplateState>()((set) => ({
           updatedAt: new Date().toISOString(),
         }
       }),
-    })),
+    }))
+  },
 
-  duplicateBlockChild: (blockId, index) =>
+  duplicateBlockChild: (blockId, index) => {
     set((state) => ({
       tabHistories: recordHistory(state),
       tabs: state.tabs.map((t) => {
@@ -412,34 +500,59 @@ export const useTemplateStore = create<TemplateState>()((set) => ({
           blocks: t.blocks.map((b) => {
             if (b.id !== blockId) return b
             if (b.type === 'accordion') {
-              let items: unknown[] = []
-              try { items = JSON.parse(String(b.props['items'] ?? '[]')) } catch { items = [] }
+              let items: unknown[]
+              try {
+                items = JSON.parse(String(b.props['items'] ?? '[]')) as unknown[]
+              } catch {
+                items = []
+              }
               const next = [...items]
               next.splice(index + 1, 0, { ...(items[index] as object) })
               return { ...b, props: { ...b.props, items: JSON.stringify(next) } }
             }
             if (b.type === 'columns') {
-              const cols = ((b.props['columnBlocks'] as EmailBlock[][] | undefined) ?? []).map((col) => [...col])
-              const colProps = ((Array.isArray(b.props['columnProps']) ? b.props['columnProps'] : []) as Record<string, string>[]).map((p) => ({ ...p }))
-              if (cols[index]) cols.splice(index + 1, 0, [...cols[index]!])
+              const cols = ((b.props['columnBlocks'] as EmailBlock[][] | undefined) ?? []).map(
+                (col) => [...col],
+              )
+              const colProps = (
+                (Array.isArray(b.props['columnProps']) ? b.props['columnProps'] : []) as Record<
+                  string,
+                  string
+                >[]
+              ).map((p) => ({ ...p }))
+              if (cols[index]) cols.splice(index + 1, 0, [...cols[index]])
               if (colProps[index]) {
                 // cols already had the duplicate spliced in, so subtract 1 to get the pre-duplication count
-                const usedCols = new Set(colProps.slice(0, cols.length - 1).map((cp) => cp['col']).filter(Boolean))
+                const usedCols = new Set(
+                  colProps
+                    .slice(0, cols.length - 1)
+                    .map((cp) => cp['col'])
+                    .filter(Boolean),
+                )
                 let n = 1
                 while (usedCols.has(String(n))) n++
-                colProps.splice(index + 1, 0, { ...colProps[index]!, col: String(n) })
+                colProps.splice(index + 1, 0, { ...colProps[index], col: String(n) })
               }
               const newCount = Math.min(cols.length, 3)
-              return { ...b, props: { ...b.props, columns: String(newCount), columnBlocks: cols.slice(0, newCount), columnProps: colProps.slice(0, newCount) } }
+              return {
+                ...b,
+                props: {
+                  ...b.props,
+                  columns: String(newCount),
+                  columnBlocks: cols.slice(0, newCount),
+                  columnProps: colProps.slice(0, newCount),
+                },
+              }
             }
             return b
           }),
           updatedAt: new Date().toISOString(),
         }
       }),
-    })),
+    }))
+  },
 
-  toggleBlockChildDisabled: (blockId, index) =>
+  toggleBlockChildDisabled: (blockId, index) => {
     set((state) => ({
       tabHistories: recordHistory(state),
       tabs: state.tabs.map((t) => {
@@ -449,14 +562,27 @@ export const useTemplateStore = create<TemplateState>()((set) => ({
           blocks: t.blocks.map((b) => {
             if (b.id !== blockId) return b
             if (b.type === 'accordion') {
-              let items: { disabled?: boolean }[] = []
-              try { items = JSON.parse(String(b.props['items'] ?? '[]')) } catch { items = [] }
-              const next = items.map((it, i) => i === index ? { ...it, disabled: !it.disabled } : it)
+              let items: { disabled?: boolean }[]
+              try {
+                items = JSON.parse(String(b.props['items'] ?? '[]')) as { disabled?: boolean }[]
+              } catch {
+                items = []
+              }
+              const next = items.map((it, i) =>
+                i === index ? { ...it, disabled: !it.disabled } : it,
+              )
               return { ...b, props: { ...b.props, items: JSON.stringify(next) } }
             }
             if (b.type === 'columns') {
-              const colProps = ((Array.isArray(b.props['columnProps']) ? b.props['columnProps'] : []) as Record<string, string>[]).map((p) => ({ ...p }))
-              const next = colProps.map((p, i) => i === index ? { ...p, disabled: p['disabled'] === 'true' ? '' : 'true' } : p)
+              const colProps = (
+                (Array.isArray(b.props['columnProps']) ? b.props['columnProps'] : []) as Record<
+                  string,
+                  string
+                >[]
+              ).map((p) => ({ ...p }))
+              const next = colProps.map((p, i) =>
+                i === index ? { ...p, disabled: p['disabled'] === 'true' ? '' : 'true' } : p,
+              )
               return { ...b, props: { ...b.props, columnProps: next } }
             }
             return b
@@ -464,9 +590,10 @@ export const useTemplateStore = create<TemplateState>()((set) => ({
           updatedAt: new Date().toISOString(),
         }
       }),
-    })),
+    }))
+  },
 
-  removeBlockChild: (blockId, index) =>
+  removeBlockChild: (blockId, index) => {
     set((state) => ({
       tabHistories: recordHistory(state),
       tabs: state.tabs.map((t) => {
@@ -476,26 +603,49 @@ export const useTemplateStore = create<TemplateState>()((set) => ({
           blocks: t.blocks.map((b) => {
             if (b.id !== blockId) return b
             if (b.type === 'accordion') {
-              let items: unknown[] = []
-              try { items = JSON.parse(String(b.props['items'] ?? '[]')) } catch { items = [] }
-              return { ...b, props: { ...b.props, items: JSON.stringify(items.filter((_, i) => i !== index)) } }
+              let items: unknown[]
+              try {
+                items = JSON.parse(String(b.props['items'] ?? '[]')) as unknown[]
+              } catch {
+                items = []
+              }
+              return {
+                ...b,
+                props: { ...b.props, items: JSON.stringify(items.filter((_, i) => i !== index)) },
+              }
             }
             if (b.type === 'columns') {
-              const cols = ((b.props['columnBlocks'] as EmailBlock[][] | undefined) ?? []).map((col) => [...col])
-              const colProps = ((Array.isArray(b.props['columnProps']) ? b.props['columnProps'] : []) as Record<string, string>[]).map((p) => ({ ...p }))
+              const cols = ((b.props['columnBlocks'] as EmailBlock[][] | undefined) ?? []).map(
+                (col) => [...col],
+              )
+              const colProps = (
+                (Array.isArray(b.props['columnProps']) ? b.props['columnProps'] : []) as Record<
+                  string,
+                  string
+                >[]
+              ).map((p) => ({ ...p }))
               cols.splice(index, 1)
               colProps.splice(index, 1)
               const newCount = Math.max(cols.length, 1)
-              return { ...b, props: { ...b.props, columns: String(newCount), columnBlocks: cols, columnProps: colProps } }
+              return {
+                ...b,
+                props: {
+                  ...b.props,
+                  columns: String(newCount),
+                  columnBlocks: cols,
+                  columnProps: colProps,
+                },
+              }
             }
             return b
           }),
           updatedAt: new Date().toISOString(),
         }
       }),
-    })),
+    }))
+  },
 
-  moveBlockBetweenColumns: (columnBlockId, srcColIndex, srcIndex, destColIndex, destIndex) =>
+  moveBlockBetweenColumns: (columnBlockId, srcColIndex, srcIndex, destColIndex, destIndex) => {
     set((state) => ({
       tabHistories: recordHistory(state),
       tabs: state.tabs.map((t) => {
@@ -517,9 +667,10 @@ export const useTemplateStore = create<TemplateState>()((set) => ({
           updatedAt: new Date().toISOString(),
         }
       }),
-    })),
+    }))
+  },
 
-  moveBlockToColumn: (canvasIndex, columnBlockId, columnIndex, insertIdx) =>
+  moveBlockToColumn: (canvasIndex, columnBlockId, columnIndex, insertIdx) => {
     set((state) => ({
       tabHistories: recordHistory(state),
       tabs: state.tabs.map((t) => {
@@ -529,7 +680,9 @@ export const useTemplateStore = create<TemplateState>()((set) => ({
         if (!moved) return t
         const newBlocks = blocks.map((b) => {
           if (b.id !== columnBlockId) return b
-          const cols = ((b.props['columnBlocks'] as EmailBlock[][] | undefined) ?? []).map((col) => [...col])
+          const cols = ((b.props['columnBlocks'] as EmailBlock[][] | undefined) ?? []).map(
+            (col) => [...col],
+          )
           const col = cols[columnIndex] ?? []
           col.splice(insertIdx, 0, moved)
           cols[columnIndex] = col
@@ -537,9 +690,10 @@ export const useTemplateStore = create<TemplateState>()((set) => ({
         })
         return { ...t, blocks: newBlocks, updatedAt: new Date().toISOString() }
       }),
-    })),
+    }))
+  },
 
-  moveBlockFromColumn: (columnBlockId, columnIndex, blockIndex, canvasIndex) =>
+  moveBlockFromColumn: (columnBlockId, columnIndex, blockIndex, canvasIndex) => {
     set((state) => ({
       tabHistories: recordHistory(state),
       tabs: state.tabs.map((t) => {
@@ -547,7 +701,9 @@ export const useTemplateStore = create<TemplateState>()((set) => ({
         let moved: EmailBlock | undefined
         const blocks = t.blocks.map((b) => {
           if (b.id !== columnBlockId) return b
-          const cols = ((b.props['columnBlocks'] as EmailBlock[][] | undefined) ?? []).map((col) => [...col])
+          const cols = ((b.props['columnBlocks'] as EmailBlock[][] | undefined) ?? []).map(
+            (col) => [...col],
+          )
           const col = cols[columnIndex] ?? []
           ;[moved] = col.splice(blockIndex, 1)
           cols[columnIndex] = col
@@ -558,16 +714,18 @@ export const useTemplateStore = create<TemplateState>()((set) => ({
         newBlocks.splice(canvasIndex, 0, moved)
         return { ...t, blocks: newBlocks, updatedAt: new Date().toISOString() }
       }),
-    })),
+    }))
+  },
 
-  loadTemplate: (template) =>
+  loadTemplate: (template) => {
     set((state) => {
       const exists = state.tabs.some((t) => t.id === template.id)
       if (exists) return { activeTabId: template.id }
       return { tabs: [...state.tabs, template], activeTabId: template.id }
-    }),
+    })
+  },
 
-  duplicateBlock: (id, newId) =>
+  duplicateBlock: (id, newId) => {
     set((state) => ({
       tabHistories: recordHistory(state),
       tabs: state.tabs.map((t) => {
@@ -575,17 +733,20 @@ export const useTemplateStore = create<TemplateState>()((set) => ({
         // Top-level block
         const idx = t.blocks.findIndex((b) => b.id === id)
         if (idx !== -1) {
-          const orig = t.blocks[idx]!
+          const orig = t.blocks[idx]
           const copy: EmailBlock = {
             ...orig,
             id: newId,
-            props: orig.type === 'columns'
-              ? {
-                  ...orig.props,
-                  columnBlocks: (orig.props['columnBlocks'] as EmailBlock[][] | undefined)
-                    ?.map((col) => col.map((cb) => ({ ...cb, id: nanoid(), props: { ...cb.props } }))) ?? [],
-                }
-              : { ...orig.props },
+            props:
+              orig.type === 'columns'
+                ? {
+                    ...orig.props,
+                    columnBlocks:
+                      (orig.props['columnBlocks'] as EmailBlock[][] | undefined)?.map((col) =>
+                        col.map((cb) => ({ ...cb, id: nanoid(), props: { ...cb.props } })),
+                      ) ?? [],
+                  }
+                : { ...orig.props },
           }
           const blocks = [...t.blocks]
           blocks.splice(idx + 1, 0, copy)
@@ -603,7 +764,7 @@ export const useTemplateStore = create<TemplateState>()((set) => ({
               const ci = col.findIndex((cb) => cb.id === id)
               if (ci === -1) return col
               changed = true
-              const copy: EmailBlock = { ...col[ci]!, id: newId, props: { ...col[ci]!.props } }
+              const copy: EmailBlock = { ...col[ci], id: newId, props: { ...col[ci].props } }
               const next = [...col]
               next.splice(ci + 1, 0, copy)
               return next
@@ -613,9 +774,10 @@ export const useTemplateStore = create<TemplateState>()((set) => ({
           updatedAt: new Date().toISOString(),
         }
       }),
-    })),
+    }))
+  },
 
-  pasteBlock: (block, afterId) =>
+  pasteBlock: (block, afterId) => {
     set((state) => ({
       tabHistories: recordHistory(state),
       tabs: state.tabs.map((t) => {
@@ -651,9 +813,10 @@ export const useTemplateStore = create<TemplateState>()((set) => ({
         // Fallback: append to end of canvas
         return { ...t, blocks: [...t.blocks, block], updatedAt: new Date().toISOString() }
       }),
-    })),
+    }))
+  },
 
-  resetTemplate: () =>
+  resetTemplate: () => {
     set((state) => {
       const blank = createDefaultTemplate()
       return {
@@ -664,19 +827,18 @@ export const useTemplateStore = create<TemplateState>()((set) => ({
             : t,
         ),
       }
-    }),
+    })
+  },
 }))
 
 // ── Selectors ──────────────────────────────────────────────────────────────────
 
 /** Reactive selector – returns the currently active template. */
 export const useActiveTemplate = () =>
-  useTemplateStore(
-    (state) => state.tabs.find((t) => t.id === state.activeTabId) ?? state.tabs[0]!,
-  )
+  useTemplateStore((state) => state.tabs.find((t) => t.id === state.activeTabId) ?? state.tabs[0])
 
 /** Non-reactive getter for use inside callbacks/timeouts. */
 export const getActiveTemplate = () => {
   const state = useTemplateStore.getState()
-  return state.tabs.find((t) => t.id === state.activeTabId) ?? state.tabs[0]!
+  return state.tabs.find((t) => t.id === state.activeTabId) ?? state.tabs[0]
 }

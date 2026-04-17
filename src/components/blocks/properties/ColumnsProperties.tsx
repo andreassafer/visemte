@@ -7,21 +7,30 @@ interface Props {
   onChange: (props: Partial<Record<string, unknown>>) => void
 }
 
-const DEFAULT_GENERAL    = { css: '' }
+const DEFAULT_GENERAL = { css: '' }
 const DEFAULT_BACKGROUND = { sectionBg: 'pageColor' }
-const DEFAULT_COL        = { align: 'left', verticalAlign: 'top', backgroundColor: '', borderRadius: '4px', padding: '0px', borderWidth: '', borderColor: 'borderColor', borderStyle: 'solid' }
+const DEFAULT_COL = {
+  align: 'left',
+  verticalAlign: 'top',
+  backgroundColor: '',
+  borderRadius: '4px',
+  padding: '0px',
+  borderWidth: '',
+  borderColor: 'borderColor',
+  borderStyle: 'solid',
+}
 
 export function ColumnsProperties({ block, onChange }: Props) {
   const { t } = useTranslation()
-  const p = block.props as Record<string, unknown>
+  const p = block.props
   const count = Math.min(Math.max(Number(p['columns'] ?? 2), 1), 3)
 
   const PRESETS_2 = [
-    { value: '50,50',  label: '½ + ½' },
-    { value: '33,67',  label: '⅓ + ⅔' },
-    { value: '67,33',  label: '⅔ + ⅓' },
-    { value: '25,75',  label: '¼ + ¾' },
-    { value: '75,25',  label: '¾ + ¼' },
+    { value: '50,50', label: '½ + ½' },
+    { value: '33,67', label: '⅓ + ⅔' },
+    { value: '67,33', label: '⅔ + ⅓' },
+    { value: '25,75', label: '¼ + ¾' },
+    { value: '75,25', label: '¾ + ¼' },
   ]
   const PRESETS_3 = [
     { value: '34,33,33', label: '⅓ + ⅓ + ⅓' },
@@ -32,7 +41,10 @@ export function ColumnsProperties({ block, onChange }: Props) {
   const presets = count === 3 ? PRESETS_3 : PRESETS_2
   const columnWidths = String(p['columnWidths'] ?? '')
 
-  const colPropsArr = (Array.isArray(p['columnProps']) ? p['columnProps'] : []) as Record<string, string>[]
+  const colPropsArr = (Array.isArray(p['columnProps']) ? p['columnProps'] : []) as Record<
+    string,
+    string
+  >[]
 
   const handleColumnsChange = (newCount: number) => {
     const current = (p['columnBlocks'] as unknown[][] | undefined) ?? []
@@ -55,16 +67,19 @@ export function ColumnsProperties({ block, onChange }: Props) {
       {/* General settings */}
       <CollapsibleSection
         label={t('editor.properties.general')}
-        onReset={() => onChange(DEFAULT_GENERAL)}
+        onReset={() => {
+          onChange(DEFAULT_GENERAL)
+        }}
         tooltip={resetTooltip}
         defaultOpen={false}
       >
-
         <FormField label={t('editor.properties.css')} htmlFor="columns-css">
           <Textarea
             id="columns-css"
             value={String(p['css'] ?? '')}
-            onChange={(e) => onChange({ css: e.target.value })}
+            onChange={(e) => {
+              onChange({ css: e.target.value })
+            }}
             placeholder=""
             rows={3}
             spellCheck={false}
@@ -76,16 +91,19 @@ export function ColumnsProperties({ block, onChange }: Props) {
       {/* Hintergrund */}
       <CollapsibleSection
         label={t('editor.properties.sectionBg')}
-        onReset={() => onChange(DEFAULT_BACKGROUND)}
+        onReset={() => {
+          onChange(DEFAULT_BACKGROUND)
+        }}
         tooltip={resetTooltip}
         defaultOpen={false}
       >
-
         <FormField label={t('editor.properties.sectionBackground')} htmlFor="col-sectionbg">
           <ColorSelect
             id="col-sectionbg"
             value={String(p['sectionBg'] ?? '')}
-            onChange={(v) => onChange({ sectionBg: v || undefined })}
+            onChange={(v) => {
+              onChange({ sectionBg: v || undefined })
+            }}
           />
         </FormField>
       </CollapsibleSection>
@@ -93,15 +111,18 @@ export function ColumnsProperties({ block, onChange }: Props) {
       {/* Spalten */}
       <CollapsibleSection
         label={t('editor.properties.sectionContent')}
-        onReset={() => onChange({ columns: '2', columnWidths: '' })}
+        onReset={() => {
+          onChange({ columns: '2', columnWidths: '' })
+        }}
         tooltip={resetTooltip}
       >
-
         <FormField label={t('editor.properties.columnCount')} htmlFor="col-count">
           <Select
             id="col-count"
             value={String(count)}
-            onChange={(e) => handleColumnsChange(Number(e.target.value))}
+            onChange={(e) => {
+              handleColumnsChange(Number(e.target.value))
+            }}
           >
             <option value="1">{t('editor.properties.columns1')}</option>
             <option value="2">{t('editor.properties.columns2')}</option>
@@ -114,17 +135,20 @@ export function ColumnsProperties({ block, onChange }: Props) {
             <Select
               id="col-widths"
               value={columnWidths}
-              onChange={(e) => onChange({ columnWidths: e.target.value })}
+              onChange={(e) => {
+                onChange({ columnWidths: e.target.value })
+              }}
             >
               <option value="">{count === 3 ? '⅓ + ⅓ + ⅓' : '½ + ½'}</option>
               {presets.slice(1).map((p) => (
-                <option key={p.value} value={p.value}>{p.label}</option>
+                <option key={p.value} value={p.value}>
+                  {p.label}
+                </option>
               ))}
             </Select>
           </FormField>
         )}
       </CollapsibleSection>
-
     </div>
   )
 }

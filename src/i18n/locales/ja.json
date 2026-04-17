@@ -22,7 +22,8 @@
       "enableBlock": "有効化",
       "collapse": "折りたたむ",
       "expand": "展開",
-      "integrate": "追加"
+      "integrate": "追加",
+      "renameTemplate": "テンプレートを名前変更"
     },
     "toolbar": {
       "undo": "元に戻す (Ctrl+Z)",
@@ -64,7 +65,9 @@
     "palette": {
       "title": "ブロック",
       "expand": "パネルを広げる",
-      "collapse": "パネルを折りたたむ"
+      "collapse": "パネルを折りたたむ",
+      "search": "検索…",
+      "noResults": "ブロックが見つかりません"
     },
     "properties": {
       "title": "グローバルプロパティ",
@@ -129,7 +132,7 @@
       "imagePlaceholder": "画像をここに挿入",
       "srcPlaceholder": "https://... または...",
       "altPlaceholder": "アクセシビリティのための代替テキスト",
-      "buttonTextPlaceholder": "ここをクリック",
+      "buttonTextPlaceholder": "クリック",
       "hrefPlaceholder": "https://example.com",
       "top": "上",
       "bottom": "下",
@@ -258,7 +261,9 @@
     "copyMjml": "MJMLをコピー",
     "descJson": "再インポート用テンプレート",
     "descMjml": "MJMLフレームワーク用ソースコード",
-    "descHtml": "メールクライアント用の完成HTMLコード"
+    "descHtml": "メールクライアント用の完成HTMLコード",
+    "descTs": "src/templates/ 用 TypeScript ソース",
+    "downloadTs": ".ts としてダウンロード"
   },
   "settings": {
     "title": "設定",
@@ -283,17 +288,21 @@
     "load": "読み込む",
     "edit": "編集",
     "saveAsPreset": "テンプレートとして保存",
-    "savedAsPreset": "テンプレートとして保存しました"
+    "savedAsPreset": "テンプレートとして保存しました",
+    "importSuccess": "テンプレートをインポートしました"
   },
   "errors": {
     "mjmlCompile": "MJMLコンパイルエラー",
     "invalidTemplate": "無効なテンプレート形式",
-    "unknownBlockType": "不明なブロックタイプ: {{type}}"
+    "unknownBlockType": "不明なブロックタイプ: {{type}}",
+    "boundaryTitle": "エラー：{{label}}",
+    "boundaryRetry": "再試行"
   },
   "about": {
     "title": "Visemte について",
     "version": "バージョン",
     "build": "ビルド",
+    "platform": "プラットフォーム",
     "author": "作者",
     "license": "ライセンス",
     "description": "レスポンシブメール作成のためのテンプレートジェネレーター",

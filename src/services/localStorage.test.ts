@@ -1,7 +1,13 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import {
-  saveTemplate, loadTemplate, listTemplates, deleteTemplate,
-  savePreset, listPresets, deletePreset, initPresets,
+  saveTemplate,
+  loadTemplate,
+  listTemplates,
+  deleteTemplate,
+  savePreset,
+  listPresets,
+  deletePreset,
+  initPresets,
 } from './localStorage'
 import type { EmailTemplate } from '@/types'
 
@@ -21,7 +27,9 @@ const makeTemplate = (id: string, name = 'Test'): EmailTemplate => ({
   blocks: [],
 })
 
-beforeEach(() => localStorage.clear())
+beforeEach(() => {
+  localStorage.clear()
+})
 
 // ── Templates ────────────────────────────────────────────────────────────────
 
@@ -30,7 +38,7 @@ describe('saveTemplate / listTemplates', () => {
     const tpl = makeTemplate('t1', 'Newsletter')
     saveTemplate(tpl)
     expect(listTemplates()).toHaveLength(1)
-    expect(listTemplates()[0]!.name).toBe('Newsletter')
+    expect(listTemplates()[0].name).toBe('Newsletter')
   })
 
   it('updates an existing template with the same id', () => {
@@ -38,7 +46,7 @@ describe('saveTemplate / listTemplates', () => {
     saveTemplate(makeTemplate('t1', 'Updated'))
     const all = listTemplates()
     expect(all).toHaveLength(1)
-    expect(all[0]!.name).toBe('Updated')
+    expect(all[0].name).toBe('Updated')
   })
 
   it('stores multiple templates', () => {
@@ -77,7 +85,7 @@ describe('deleteTemplate', () => {
     deleteTemplate('t1')
     const all = listTemplates()
     expect(all).toHaveLength(1)
-    expect(all[0]!.id).toBe('t2')
+    expect(all[0].id).toBe('t2')
   })
 
   it('does nothing if id does not exist', () => {
@@ -93,14 +101,14 @@ describe('savePreset / listPresets', () => {
   it('saves and retrieves a preset', () => {
     savePreset(makeTemplate('p1', 'Welcome'))
     expect(listPresets()).toHaveLength(1)
-    expect(listPresets()[0]!.name).toBe('Welcome')
+    expect(listPresets()[0].name).toBe('Welcome')
   })
 
   it('updates an existing preset with the same id', () => {
     savePreset(makeTemplate('p1', 'Old Name'))
     savePreset(makeTemplate('p1', 'New Name'))
     expect(listPresets()).toHaveLength(1)
-    expect(listPresets()[0]!.name).toBe('New Name')
+    expect(listPresets()[0].name).toBe('New Name')
   })
 
   it('returns empty array when nothing is stored', () => {
@@ -119,7 +127,7 @@ describe('deletePreset', () => {
     savePreset(makeTemplate('p2'))
     deletePreset('p1')
     expect(listPresets()).toHaveLength(1)
-    expect(listPresets()[0]!.id).toBe('p2')
+    expect(listPresets()[0].id).toBe('p2')
   })
 })
 

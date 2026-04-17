@@ -22,7 +22,8 @@
       "enableBlock": "Enable",
       "collapse": "Collapse",
       "expand": "Expand",
-      "integrate": "Integrate"
+      "integrate": "Integrate",
+      "renameTemplate": "Rename template"
     },
     "toolbar": {
       "undo": "Undo (Ctrl+Z)",
@@ -64,7 +65,9 @@
     "palette": {
       "title": "Blocks",
       "expand": "Expand panel",
-      "collapse": "Collapse panel"
+      "collapse": "Collapse panel",
+      "search": "Search…",
+      "noResults": "No blocks found"
     },
     "properties": {
       "title": "Global Properties",
@@ -258,7 +261,9 @@
     "copyMjml": "Copy MJML",
     "descJson": "Template for re-importing",
     "descMjml": "Source code for the MJML framework",
-    "descHtml": "Ready-to-use HTML code for email clients"
+    "descHtml": "Ready-to-use HTML code for email clients",
+    "descTs": "TypeScript source for src/templates/",
+    "downloadTs": "Download as .ts"
   },
   "settings": {
     "title": "Settings",
@@ -283,17 +288,21 @@
     "load": "Load",
     "edit": "Edit",
     "saveAsPreset": "Save as Template",
-    "savedAsPreset": "Saved as template"
+    "savedAsPreset": "Saved as template",
+    "importSuccess": "Template imported"
   },
   "errors": {
     "mjmlCompile": "MJML compilation error",
     "invalidTemplate": "Invalid template format",
-    "unknownBlockType": "Unknown block type: {{type}}"
+    "unknownBlockType": "Unknown block type: {{type}}",
+    "boundaryTitle": "Error in: {{label}}",
+    "boundaryRetry": "Retry"
   },
   "about": {
     "title": "About Visemte",
     "version": "Version",
     "build": "Build",
+    "platform": "Platform",
     "author": "Author",
     "license": "License",
     "description": "Template generator for creating responsive emails",

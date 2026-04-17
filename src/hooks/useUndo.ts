@@ -22,7 +22,9 @@ export function useUndo() {
       }
     }
     window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+    }
   }, [undo, redo, canUndo, canRedo])
 
   // Expose activeTabId so callers know which tab's history is shown

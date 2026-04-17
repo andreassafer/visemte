@@ -22,7 +22,8 @@
       "enableBlock": "Attiva",
       "collapse": "Comprimi",
       "expand": "Espandi",
-      "integrate": "Integrare"
+      "integrate": "Integrare",
+      "renameTemplate": "Rinomina modello"
     },
     "toolbar": {
       "undo": "Annulla (Ctrl+Z)",
@@ -64,7 +65,9 @@
     "palette": {
       "title": "Blocchi",
       "expand": "Espandi pannello",
-      "collapse": "Comprimi pannello"
+      "collapse": "Comprimi pannello",
+      "search": "Cerca…",
+      "noResults": "Nessun blocco trovato"
     },
     "properties": {
       "title": "Proprietà globali",
@@ -129,7 +132,7 @@
       "imagePlaceholder": "Inserisci immagine qui",
       "srcPlaceholder": "https://... o...",
       "altPlaceholder": "Testo alternativo per l'accessibilità",
-      "buttonTextPlaceholder": "Clicca qui",
+      "buttonTextPlaceholder": "Clicca",
       "hrefPlaceholder": "https://example.com",
       "top": "In alto",
       "bottom": "In basso",
@@ -258,7 +261,9 @@
     "copyMjml": "Copia MJML",
     "descJson": "Modello per reimportare",
     "descMjml": "Codice sorgente per il framework MJML",
-    "descHtml": "Codice HTML pronto per i client di posta"
+    "descHtml": "Codice HTML pronto per i client di posta",
+    "descTs": "Codice TypeScript per src/templates/",
+    "downloadTs": "Scarica come .ts"
   },
   "settings": {
     "title": "Impostazioni",
@@ -283,17 +288,21 @@
     "load": "Carica",
     "edit": "Modifica",
     "saveAsPreset": "Salva come modello",
-    "savedAsPreset": "Salvato come modello"
+    "savedAsPreset": "Salvato come modello",
+    "importSuccess": "Modello importato"
   },
   "errors": {
     "mjmlCompile": "Errore di compilazione MJML",
     "invalidTemplate": "Formato modello non valido",
-    "unknownBlockType": "Tipo di blocco sconosciuto: {{type}}"
+    "unknownBlockType": "Tipo di blocco sconosciuto: {{type}}",
+    "boundaryTitle": "Errore in: {{label}}",
+    "boundaryRetry": "Riprova"
   },
   "about": {
     "title": "Informazioni su Visemte",
     "version": "Versione",
     "build": "Build",
+    "platform": "Piattaforma",
     "author": "Autore",
     "license": "Licenza",
     "description": "Generatore di modelli email per creare email responsive",

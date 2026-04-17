@@ -22,7 +22,8 @@
       "enableBlock": "Omogući",
       "collapse": "Sažmi",
       "expand": "Proširi",
-      "integrate": "Integriraj"
+      "integrate": "Integriraj",
+      "renameTemplate": "Preimenuj predložak"
     },
     "toolbar": {
       "undo": "Poništi (Ctrl+Z)",
@@ -64,7 +65,9 @@
     "palette": {
       "title": "Blokovi",
       "expand": "Proširi ploču",
-      "collapse": "Sažmi ploču"
+      "collapse": "Sažmi ploču",
+      "search": "Pretraži…",
+      "noResults": "Nisu pronađeni blokovi"
     },
     "properties": {
       "title": "Globalna svojstva",
@@ -129,7 +132,7 @@
       "imagePlaceholder": "Umetni sliku ovdje",
       "srcPlaceholder": "https://... ili...",
       "altPlaceholder": "Alternativni tekst za pristupačnost",
-      "buttonTextPlaceholder": "Kliknite ovdje",
+      "buttonTextPlaceholder": "Klikni",
       "hrefPlaceholder": "https://example.com",
       "top": "Gore",
       "bottom": "Dolje",
@@ -258,7 +261,9 @@
     "copyMjml": "Kopiraj MJML",
     "descJson": "Predložak za ponovni uvoz",
     "descMjml": "Izvorni kod za MJML okvir",
-    "descHtml": "Gotov HTML kôd za e-mail klijente"
+    "descHtml": "Gotov HTML kôd za e-mail klijente",
+    "descTs": "TypeScript kôd za src/templates/",
+    "downloadTs": "Preuzmi kao .ts"
   },
   "settings": {
     "title": "Postavke",
@@ -283,17 +288,21 @@
     "load": "Učitaj",
     "edit": "Uredi",
     "saveAsPreset": "Spremi kao predložak",
-    "savedAsPreset": "Spremljeno kao predložak"
+    "savedAsPreset": "Spremljeno kao predložak",
+    "importSuccess": "Predložak uvezen"
   },
   "errors": {
     "mjmlCompile": "Greška pri kompilaciji MJML",
     "invalidTemplate": "Nevažeći format predloška",
-    "unknownBlockType": "Nepoznata vrsta bloka: {{type}}"
+    "unknownBlockType": "Nepoznata vrsta bloka: {{type}}",
+    "boundaryTitle": "Greška u: {{label}}",
+    "boundaryRetry": "Pokušaj ponovo"
   },
   "about": {
     "title": "O aplikaciji Visemte",
     "version": "Verzija",
     "build": "Izgradnja",
+    "platform": "Platforma",
     "author": "Autor",
     "license": "Licenca",
     "description": "Generator predložaka za izradu responzivnih e-poruka",

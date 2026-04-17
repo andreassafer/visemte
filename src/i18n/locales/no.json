@@ -22,7 +22,8 @@
       "enableBlock": "Aktiver",
       "collapse": "Skjul",
       "expand": "Vis",
-      "integrate": "Integrer"
+      "integrate": "Integrer",
+      "renameTemplate": "Gi mal nytt navn"
     },
     "toolbar": {
       "undo": "Angre (Ctrl+Z)",
@@ -64,7 +65,9 @@
     "palette": {
       "title": "Blokker",
       "expand": "Utvid panel",
-      "collapse": "Skjul panel"
+      "collapse": "Skjul panel",
+      "search": "Søk…",
+      "noResults": "Ingen blokker funnet"
     },
     "properties": {
       "title": "Globale egenskaper",
@@ -129,7 +132,7 @@
       "imagePlaceholder": "Sett inn bilde her",
       "srcPlaceholder": "https://... eller...",
       "altPlaceholder": "Alt-tekst for tilgjengelighet",
-      "buttonTextPlaceholder": "Klikk her",
+      "buttonTextPlaceholder": "Klikk",
       "hrefPlaceholder": "https://example.com",
       "top": "Topp",
       "bottom": "Bunn",
@@ -258,7 +261,9 @@
     "copyMjml": "Kopier MJML",
     "descJson": "Mal for gjenimport",
     "descMjml": "Kildekode for MJML-rammeverket",
-    "descHtml": "Ferdig HTML-kode for e-postklienter"
+    "descHtml": "Ferdig HTML-kode for e-postklienter",
+    "descTs": "TypeScript-kildekode for src/templates/",
+    "downloadTs": "Last ned som .ts"
   },
   "settings": {
     "title": "Innstillinger",
@@ -283,17 +288,21 @@
     "load": "Last inn",
     "edit": "Rediger",
     "saveAsPreset": "Lagre som mal",
-    "savedAsPreset": "Lagret som mal"
+    "savedAsPreset": "Lagret som mal",
+    "importSuccess": "Mal importert"
   },
   "errors": {
     "mjmlCompile": "MJML-kompileringsfeil",
     "invalidTemplate": "Ugyldig malformat",
-    "unknownBlockType": "Ukjent blokktype: {{type}}"
+    "unknownBlockType": "Ukjent blokktype: {{type}}",
+    "boundaryTitle": "Feil i: {{label}}",
+    "boundaryRetry": "Prøv igjen"
   },
   "about": {
     "title": "Om Visemte",
     "version": "Versjon",
     "build": "Bygg",
+    "platform": "Plattform",
     "author": "Forfatter",
     "license": "Lisens",
     "description": "Malggenerator for å lage responsive e-poster",

@@ -22,7 +22,8 @@
       "enableBlock": "Activar",
       "collapse": "Contraer",
       "expand": "Expandir",
-      "integrate": "Integrar"
+      "integrate": "Integrar",
+      "renameTemplate": "Renombrar plantilla"
     },
     "toolbar": {
       "undo": "Deshacer (Ctrl+Z)",
@@ -64,7 +65,9 @@
     "palette": {
       "title": "Bloques",
       "expand": "Expandir panel",
-      "collapse": "Contraer panel"
+      "collapse": "Contraer panel",
+      "search": "Buscar…",
+      "noResults": "No se encontraron bloques"
     },
     "properties": {
       "title": "Propiedades globales",
@@ -129,7 +132,7 @@
       "imagePlaceholder": "Insertar imagen aquí",
       "srcPlaceholder": "https://... o...",
       "altPlaceholder": "Texto alternativo para accesibilidad",
-      "buttonTextPlaceholder": "Haga clic aquí",
+      "buttonTextPlaceholder": "Clic aquí",
       "hrefPlaceholder": "https://example.com",
       "top": "Arriba",
       "bottom": "Abajo",
@@ -258,7 +261,9 @@
     "copyMjml": "Copiar MJML",
     "descJson": "Plantilla para reimportar",
     "descMjml": "Código fuente para el framework MJML",
-    "descHtml": "Código HTML listo para clientes de correo"
+    "descHtml": "Código HTML listo para clientes de correo",
+    "descTs": "Código TypeScript para src/templates/",
+    "downloadTs": "Descargar como .ts"
   },
   "settings": {
     "title": "Ajustes",
@@ -283,17 +288,21 @@
     "load": "Cargar",
     "edit": "Editar",
     "saveAsPreset": "Guardar como plantilla",
-    "savedAsPreset": "Guardado como plantilla"
+    "savedAsPreset": "Guardado como plantilla",
+    "importSuccess": "Plantilla importada"
   },
   "errors": {
     "mjmlCompile": "Error de compilación MJML",
     "invalidTemplate": "Formato de plantilla inválido",
-    "unknownBlockType": "Tipo de bloque desconocido: {{type}}"
+    "unknownBlockType": "Tipo de bloque desconocido: {{type}}",
+    "boundaryTitle": "Error en: {{label}}",
+    "boundaryRetry": "Reintentar"
   },
   "about": {
     "title": "Acerca de Visemte",
     "version": "Versión",
     "build": "Compilación",
+    "platform": "Plataforma",
     "author": "Autor",
     "license": "Licencia",
     "description": "Generador de plantillas para crear correos responsivos",

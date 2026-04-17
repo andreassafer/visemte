@@ -5,36 +5,36 @@ import { DEFAULT_TEMPLATE_SETTINGS } from '@/constants'
 
 const DEFAULT_GENERAL = {
   contentWidth: DEFAULT_TEMPLATE_SETTINGS.contentWidth,
-  customCss:    undefined,
+  customCss: undefined,
 }
 
 const DEFAULT_CONTENT = {
-  padding:    DEFAULT_TEMPLATE_SETTINGS.padding,
+  padding: DEFAULT_TEMPLATE_SETTINGS.padding,
   lineHeight: DEFAULT_TEMPLATE_SETTINGS.lineHeight,
 }
 
 const DEFAULT_BORDER = {
-  defaultBorderWidth:  DEFAULT_TEMPLATE_SETTINGS.defaultBorderWidth,
-  defaultBorderStyle:  DEFAULT_TEMPLATE_SETTINGS.defaultBorderStyle,
+  defaultBorderWidth: DEFAULT_TEMPLATE_SETTINGS.defaultBorderWidth,
+  defaultBorderStyle: DEFAULT_TEMPLATE_SETTINGS.defaultBorderStyle,
   defaultBorderRadius: DEFAULT_TEMPLATE_SETTINGS.defaultBorderRadius,
 }
 
 const DEFAULT_FONT = {
   fontFamily: DEFAULT_TEMPLATE_SETTINGS.fontFamily,
-  fontSize:   DEFAULT_TEMPLATE_SETTINGS.fontSize,
-  fontStyle:  'normal',
+  fontSize: DEFAULT_TEMPLATE_SETTINGS.fontSize,
+  fontStyle: 'normal',
 }
 
 const DEFAULT_COLORS = {
-  pageColor:        DEFAULT_TEMPLATE_SETTINGS.pageColor,
-  fontColor:        DEFAULT_TEMPLATE_SETTINGS.fontColor,
-  backgroundColor:  DEFAULT_TEMPLATE_SETTINGS.backgroundColor,
-  borderColor:      DEFAULT_TEMPLATE_SETTINGS.borderColor,
-  primaryColor:     DEFAULT_TEMPLATE_SETTINGS.primaryColor,
-  secondaryColor:   DEFAULT_TEMPLATE_SETTINGS.secondaryColor,
+  pageColor: DEFAULT_TEMPLATE_SETTINGS.pageColor,
+  fontColor: DEFAULT_TEMPLATE_SETTINGS.fontColor,
+  backgroundColor: DEFAULT_TEMPLATE_SETTINGS.backgroundColor,
+  borderColor: DEFAULT_TEMPLATE_SETTINGS.borderColor,
+  primaryColor: DEFAULT_TEMPLATE_SETTINGS.primaryColor,
+  secondaryColor: DEFAULT_TEMPLATE_SETTINGS.secondaryColor,
   alternativeColor: DEFAULT_TEMPLATE_SETTINGS.alternativeColor,
-  designColor:      DEFAULT_TEMPLATE_SETTINGS.designColor,
-  brandColor:       DEFAULT_TEMPLATE_SETTINGS.brandColor,
+  designColor: DEFAULT_TEMPLATE_SETTINGS.designColor,
+  brandColor: DEFAULT_TEMPLATE_SETTINGS.brandColor,
 }
 
 export function TemplateProperties() {
@@ -46,20 +46,22 @@ export function TemplateProperties() {
 
   return (
     <div className="flex flex-col gap-2">
-
       {/* Allgemeines */}
       <CollapsibleSection
         label={t('editor.properties.sectionGeneral')}
-        onReset={() => updateSettings(DEFAULT_GENERAL)}
+        onReset={() => {
+          updateSettings(DEFAULT_GENERAL)
+        }}
         tooltip={resetTooltip}
       >
-
         <FormField label={t('editor.properties.name')} htmlFor="tpl-name">
           <Input
             id="tpl-name"
             type="text"
             value={template.name}
-            onChange={(e) => setTemplateName(e.target.value)}
+            onChange={(e) => {
+              setTemplateName(e.target.value)
+            }}
             placeholder={t('editor.untitled')}
           />
         </FormField>
@@ -72,7 +74,9 @@ export function TemplateProperties() {
               min={320}
               max={800}
               value={s.contentWidth}
-              onChange={(e) => updateSettings({ contentWidth: Number(e.target.value) })}
+              onChange={(e) => {
+                updateSettings({ contentWidth: Number(e.target.value) })
+              }}
               className="flex-1"
             />
             <span className="text-xs text-gray-400">px</span>
@@ -83,7 +87,9 @@ export function TemplateProperties() {
           <Textarea
             id="tpl-css"
             value={s.customCss ?? ''}
-            onChange={(e) => updateSettings({ customCss: e.target.value || undefined })}
+            onChange={(e) => {
+              updateSettings({ customCss: e.target.value || undefined })
+            }}
             placeholder=""
             rows={4}
             spellCheck={false}
@@ -95,18 +101,23 @@ export function TemplateProperties() {
       {/* Inhalt */}
       <CollapsibleSection
         label={t('editor.properties.sectionContent')}
-        onReset={() => updateSettings(DEFAULT_CONTENT)}
+        onReset={() => {
+          updateSettings(DEFAULT_CONTENT)
+        }}
         tooltip={resetTooltip}
       >
-
         <FormField label={t('editor.properties.defaultPadding')} htmlFor="tpl-padding">
           <Select
             id="tpl-padding"
             value={s.padding ?? '2px'}
-            onChange={(e) => updateSettings({ padding: e.target.value })}
+            onChange={(e) => {
+              updateSettings({ padding: e.target.value })
+            }}
           >
             {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((v) => (
-              <option key={v} value={`${v}px`}>{v}px</option>
+              <option key={v} value={`${v}px`}>
+                {v}px
+              </option>
             ))}
           </Select>
         </FormField>
@@ -115,30 +126,39 @@ export function TemplateProperties() {
           <Select
             id="tpl-lineheight"
             value={String(s.lineHeight ?? 1.5)}
-            onChange={(e) => updateSettings({ lineHeight: Number(e.target.value) })}
+            onChange={(e) => {
+              updateSettings({ lineHeight: Number(e.target.value) })
+            }}
           >
             {[1.0, 1.15, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0].map((v) => (
-              <option key={v} value={String(v)}>{v.toFixed(2).replace('.', ',')}×</option>
+              <option key={v} value={String(v)}>
+                {v.toFixed(2).replace('.', ',')}×
+              </option>
             ))}
           </Select>
         </FormField>
       </CollapsibleSection>
 
-      {/* Rahmen */}
+      {/* Rahmen – globale Defaults */}
       <CollapsibleSection
         label={t('editor.properties.sectionBorder')}
-        onReset={() => updateSettings(DEFAULT_BORDER)}
+        onReset={() => {
+          updateSettings(DEFAULT_BORDER)
+        }}
         tooltip={resetTooltip}
       >
-
         <FormField label={t('editor.properties.borderWidth')} htmlFor="tpl-borderwidth">
           <Select
             id="tpl-borderwidth"
-            value={s.defaultBorderWidth ?? '0px'}
-            onChange={(e) => updateSettings({ defaultBorderWidth: e.target.value })}
+            value={s.defaultBorderWidth || DEFAULT_TEMPLATE_SETTINGS.defaultBorderWidth!}
+            onChange={(e) => {
+              updateSettings({ defaultBorderWidth: e.target.value })
+            }}
           >
-            {['0px', '1px', '2px', '3px', '4px'].map((v) => (
-              <option key={v} value={v}>{v}</option>
+            {(['0px', '1px', '2px', '3px', '4px'] as const).map((v) => (
+              <option key={v} value={v}>
+                {v}
+              </option>
             ))}
           </Select>
         </FormField>
@@ -146,11 +166,15 @@ export function TemplateProperties() {
         <FormField label={t('editor.properties.borderStyle')} htmlFor="tpl-borderstyle">
           <Select
             id="tpl-borderstyle"
-            value={s.defaultBorderStyle ?? 'solid'}
-            onChange={(e) => updateSettings({ defaultBorderStyle: e.target.value })}
+            value={s.defaultBorderStyle || DEFAULT_TEMPLATE_SETTINGS.defaultBorderStyle!}
+            onChange={(e) => {
+              updateSettings({ defaultBorderStyle: e.target.value })
+            }}
           >
             {(['solid', 'dashed', 'dotted'] as const).map((v) => (
-              <option key={v} value={v}>{t(`editor.properties.borderStyle${v.charAt(0).toUpperCase() + v.slice(1)}`)}</option>
+              <option key={v} value={v}>
+                {t(`editor.properties.borderStyle${v.charAt(0).toUpperCase() + v.slice(1)}`)}
+              </option>
             ))}
           </Select>
         </FormField>
@@ -158,13 +182,16 @@ export function TemplateProperties() {
         <FormField label={t('editor.properties.borderRadius')} htmlFor="tpl-borderradius">
           <Select
             id="tpl-borderradius"
-            value={s.defaultBorderRadius ?? '8px'}
-            onChange={(e) => updateSettings({ defaultBorderRadius: e.target.value })}
+            value={s.defaultBorderRadius || DEFAULT_TEMPLATE_SETTINGS.defaultBorderRadius!}
+            onChange={(e) => {
+              updateSettings({ defaultBorderRadius: e.target.value })
+            }}
           >
-            {[0,2,4,6,8,10,12].map((v) => (
-              <option key={v} value={`${v}px`}>{v}px</option>
+            {(['0px', '2px', '4px', '6px', '8px', '10px', '12px', '9999px'] as const).map((v) => (
+              <option key={v} value={v}>
+                {v}
+              </option>
             ))}
-            <option value="9999px">9999px</option>
           </Select>
         </FormField>
       </CollapsibleSection>
@@ -172,15 +199,18 @@ export function TemplateProperties() {
       {/* Schrift */}
       <CollapsibleSection
         label={t('editor.properties.sectionFont')}
-        onReset={() => updateSettings(DEFAULT_FONT)}
+        onReset={() => {
+          updateSettings(DEFAULT_FONT)
+        }}
         tooltip={resetTooltip}
       >
-
         <FormField label={t('editor.properties.fontFamily')} htmlFor="tpl-font">
           <Select
             id="tpl-font"
             value={s.fontFamily}
-            onChange={(e) => updateSettings({ fontFamily: e.target.value })}
+            onChange={(e) => {
+              updateSettings({ fontFamily: e.target.value })
+            }}
           >
             <option value="Arial, sans-serif">Arial</option>
             <option value="'Helvetica Neue', Helvetica, sans-serif">Helvetica</option>
@@ -195,10 +225,14 @@ export function TemplateProperties() {
           <Select
             id="tpl-fontsize"
             value={s.fontSize}
-            onChange={(e) => updateSettings({ fontSize: Number(e.target.value) })}
+            onChange={(e) => {
+              updateSettings({ fontSize: Number(e.target.value) })
+            }}
           >
             {[10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26].map((v) => (
-              <option key={v} value={v}>{v}px</option>
+              <option key={v} value={v}>
+                {v}px
+              </option>
             ))}
           </Select>
         </FormField>
@@ -207,7 +241,9 @@ export function TemplateProperties() {
           <Select
             id="tpl-fontstyle"
             value={s.fontStyle ?? 'normal'}
-            onChange={(e) => updateSettings({ fontStyle: e.target.value })}
+            onChange={(e) => {
+              updateSettings({ fontStyle: e.target.value })
+            }}
           >
             <option value="normal">{t('editor.properties.normal')}</option>
             <option value="bold">{t('editor.properties.bold')}</option>
@@ -219,15 +255,18 @@ export function TemplateProperties() {
       {/* Farben */}
       <CollapsibleSection
         label={t('editor.properties.sectionColors')}
-        onReset={() => updateSettings(DEFAULT_COLORS)}
+        onReset={() => {
+          updateSettings(DEFAULT_COLORS)
+        }}
         tooltip={resetTooltip}
       >
-
         <FormField label={t('editor.properties.pageColor')} htmlFor="tpl-pagecolor">
           <ColorInput
             id="tpl-pagecolor"
             value={s.pageColor ?? '#d9d9d9'}
-            onChange={(e) => updateSettings({ pageColor: e.target.value })}
+            onChange={(e) => {
+              updateSettings({ pageColor: e.target.value })
+            }}
           />
         </FormField>
 
@@ -235,7 +274,9 @@ export function TemplateProperties() {
           <ColorInput
             id="tpl-fontcolor"
             value={s.fontColor ?? '#000000'}
-            onChange={(e) => updateSettings({ fontColor: e.target.value })}
+            onChange={(e) => {
+              updateSettings({ fontColor: e.target.value })
+            }}
           />
         </FormField>
 
@@ -243,7 +284,9 @@ export function TemplateProperties() {
           <ColorInput
             id="tpl-bg"
             value={s.backgroundColor}
-            onChange={(e) => updateSettings({ backgroundColor: e.target.value })}
+            onChange={(e) => {
+              updateSettings({ backgroundColor: e.target.value })
+            }}
           />
         </FormField>
 
@@ -251,7 +294,9 @@ export function TemplateProperties() {
           <ColorInput
             id="tpl-bordercolor"
             value={s.borderColor ?? '#e2e8f0'}
-            onChange={(e) => updateSettings({ borderColor: e.target.value })}
+            onChange={(e) => {
+              updateSettings({ borderColor: e.target.value })
+            }}
           />
         </FormField>
 
@@ -259,7 +304,9 @@ export function TemplateProperties() {
           <ColorInput
             id="tpl-primary"
             value={s.primaryColor ?? '#3b82f6'}
-            onChange={(e) => updateSettings({ primaryColor: e.target.value })}
+            onChange={(e) => {
+              updateSettings({ primaryColor: e.target.value })
+            }}
           />
         </FormField>
 
@@ -267,7 +314,9 @@ export function TemplateProperties() {
           <ColorInput
             id="tpl-secondary"
             value={s.secondaryColor ?? '#8b5cf6'}
-            onChange={(e) => updateSettings({ secondaryColor: e.target.value })}
+            onChange={(e) => {
+              updateSettings({ secondaryColor: e.target.value })
+            }}
           />
         </FormField>
 
@@ -275,7 +324,9 @@ export function TemplateProperties() {
           <ColorInput
             id="tpl-alternative"
             value={s.alternativeColor ?? '#10b981'}
-            onChange={(e) => updateSettings({ alternativeColor: e.target.value })}
+            onChange={(e) => {
+              updateSettings({ alternativeColor: e.target.value })
+            }}
           />
         </FormField>
 
@@ -283,7 +334,9 @@ export function TemplateProperties() {
           <ColorInput
             id="tpl-design"
             value={s.designColor ?? '#f59e0b'}
-            onChange={(e) => updateSettings({ designColor: e.target.value })}
+            onChange={(e) => {
+              updateSettings({ designColor: e.target.value })
+            }}
           />
         </FormField>
 
@@ -291,11 +344,12 @@ export function TemplateProperties() {
           <ColorInput
             id="tpl-brand"
             value={s.brandColor ?? '#1e293b'}
-            onChange={(e) => updateSettings({ brandColor: e.target.value })}
+            onChange={(e) => {
+              updateSettings({ brandColor: e.target.value })
+            }}
           />
         </FormField>
       </CollapsibleSection>
-
     </div>
   )
 }

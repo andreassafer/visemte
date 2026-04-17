@@ -22,7 +22,8 @@
       "enableBlock": "Ενεργοποίηση",
       "collapse": "Σύμπτυξη",
       "expand": "Ανάπτυξη",
-      "integrate": "Ενσωμάτωση"
+      "integrate": "Ενσωμάτωση",
+      "renameTemplate": "Μετονομασία προτύπου"
     },
     "toolbar": {
       "undo": "Αναίρεση (Ctrl+Z)",
@@ -64,7 +65,9 @@
     "palette": {
       "title": "Μπλοκ",
       "expand": "Ανάπτυξη πάνελ",
-      "collapse": "Σύμπτυξη πάνελ"
+      "collapse": "Σύμπτυξη πάνελ",
+      "search": "Αναζήτηση…",
+      "noResults": "Δεν βρέθηκαν στοιχεία"
     },
     "properties": {
       "title": "Καθολικές ιδιότητες",
@@ -129,7 +132,7 @@
       "imagePlaceholder": "Εισαγωγή εικόνας εδώ",
       "srcPlaceholder": "https://... ή...",
       "altPlaceholder": "Εναλλακτικό κείμενο για προσβασιμότητα",
-      "buttonTextPlaceholder": "Κάντε κλικ εδώ",
+      "buttonTextPlaceholder": "Κλικ εδώ",
       "hrefPlaceholder": "https://example.com",
       "top": "Πάνω",
       "bottom": "Κάτω",
@@ -258,7 +261,9 @@
     "copyMjml": "Αντιγραφή MJML",
     "descJson": "Πρότυπο για επαναεισαγωγή",
     "descMjml": "Πηγαίος κώδικας για το πλαίσιο MJML",
-    "descHtml": "Έτοιμος κώδικας HTML για προγράμματα email"
+    "descHtml": "Έτοιμος κώδικας HTML για προγράμματα email",
+    "descTs": "Κώδικας TypeScript για src/templates/",
+    "downloadTs": "Λήψη ως .ts"
   },
   "settings": {
     "title": "Ρυθμίσεις",
@@ -283,17 +288,21 @@
     "load": "Φόρτωση",
     "edit": "Επεξεργασία",
     "saveAsPreset": "Αποθήκευση ως πρότυπο",
-    "savedAsPreset": "Αποθηκεύτηκε ως πρότυπο"
+    "savedAsPreset": "Αποθηκεύτηκε ως πρότυπο",
+    "importSuccess": "Το πρότυπο εισήχθη"
   },
   "errors": {
     "mjmlCompile": "Σφάλμα μεταγλώττισης MJML",
     "invalidTemplate": "Μη έγκυρη μορφή προτύπου",
-    "unknownBlockType": "Άγνωστος τύπος μπλοκ: {{type}}"
+    "unknownBlockType": "Άγνωστος τύπος μπλοκ: {{type}}",
+    "boundaryTitle": "Σφάλμα σε: {{label}}",
+    "boundaryRetry": "Επανάληψη"
   },
   "about": {
     "title": "Σχετικά με το Visemte",
     "version": "Έκδοση",
     "build": "Έκδοση κατασκευής",
+    "platform": "Πλατφόρμα",
     "author": "Συγγραφέας",
     "license": "Άδεια",
     "description": "Δημιουργός προτύπων για τη δημιουργία αποκριτικών email",

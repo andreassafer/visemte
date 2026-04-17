@@ -22,7 +22,8 @@
       "enableBlock": "Engedélyezés",
       "collapse": "Összecsukás",
       "expand": "Kibontás",
-      "integrate": "Beillesztés"
+      "integrate": "Beillesztés",
+      "renameTemplate": "Sablon átnevezése"
     },
     "toolbar": {
       "undo": "Visszavonás (Ctrl+Z)",
@@ -64,7 +65,9 @@
     "palette": {
       "title": "Blokkok",
       "expand": "Panel kibontása",
-      "collapse": "Panel összecsukása"
+      "collapse": "Panel összecsukása",
+      "search": "Keresés…",
+      "noResults": "Nem találhatók blokkok"
     },
     "properties": {
       "title": "Globális tulajdonságok",
@@ -129,7 +132,7 @@
       "imagePlaceholder": "Kép beszúrása ide",
       "srcPlaceholder": "https://... vagy...",
       "altPlaceholder": "Alt szöveg az akadálymentesítéshez",
-      "buttonTextPlaceholder": "Kattintson ide",
+      "buttonTextPlaceholder": "Kattintson",
       "hrefPlaceholder": "https://example.com",
       "top": "Felül",
       "bottom": "Alul",
@@ -258,7 +261,9 @@
     "copyMjml": "MJML másolása",
     "descJson": "Sablon visszaimportáláshoz",
     "descMjml": "Forráskód az MJML keretrendszerhez",
-    "descHtml": "Kész HTML-kód e-mail kliensekhez"
+    "descHtml": "Kész HTML-kód e-mail kliensekhez",
+    "descTs": "TypeScript forráskód a src/templates/ mappába",
+    "downloadTs": "Letöltés .ts-ként"
   },
   "settings": {
     "title": "Beállítások",
@@ -283,17 +288,21 @@
     "load": "Betöltés",
     "edit": "Szerkesztés",
     "saveAsPreset": "Mentés sablonként",
-    "savedAsPreset": "Mentve sablonként"
+    "savedAsPreset": "Mentve sablonként",
+    "importSuccess": "Sablon importálva"
   },
   "errors": {
     "mjmlCompile": "MJML fordítási hiba",
     "invalidTemplate": "Érvénytelen sablon formátum",
-    "unknownBlockType": "Ismeretlen blokktípus: {{type}}"
+    "unknownBlockType": "Ismeretlen blokktípus: {{type}}",
+    "boundaryTitle": "Hiba: {{label}}",
+    "boundaryRetry": "Újra próbálkozás"
   },
   "about": {
     "title": "A Visemte-ről",
     "version": "Verzió",
     "build": "Build",
+    "platform": "Platform",
     "author": "Szerző",
     "license": "Licenc",
     "description": "Sablon készítő reszponzív e-mailek létrehozásához",

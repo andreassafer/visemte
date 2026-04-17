@@ -5,7 +5,7 @@ import { ColorSelect } from '@/components/ui'
 import { useTemplateStore, useActiveTemplate } from '@/store'
 
 const BORDER_WIDTH_OPTIONS = ['0px', '1px', '2px', '3px', '4px']
-const BORDER_RADIUS_OPTIONS = ['0px','2px','4px','6px','8px','10px','12px','9999px']
+const BORDER_RADIUS_OPTIONS = ['0px', '2px', '4px', '6px', '8px', '10px', '12px', '9999px']
 const BORDER_STYLES = ['solid', 'dashed', 'dotted']
 
 export function RootNodeProperties() {
@@ -18,11 +18,16 @@ export function RootNodeProperties() {
 
   return (
     <div className="flex flex-col gap-2">
-
       {/* Allgemeines */}
       <CollapsibleSection
         label={t('editor.properties.general')}
-        onReset={() => updateSettings({ bodyPadding: undefined, bodyInnerPadding: undefined, customCss: undefined })}
+        onReset={() => {
+          updateSettings({
+            bodyPadding: undefined,
+            bodyInnerPadding: undefined,
+            customCss: undefined,
+          })
+        }}
         tooltip={resetTooltip}
       >
         <FormField label={t('editor.properties.outerPadding')} htmlFor="root-bodypadding">
@@ -30,7 +35,9 @@ export function RootNodeProperties() {
             id="root-bodypadding"
             value={settings.bodyPadding ?? ''}
             basePx={paddingBasePx}
-            onChange={(e) => updateSettings({ bodyPadding: e.target.value || undefined })}
+            onChange={(e) => {
+              updateSettings({ bodyPadding: e.target.value || undefined })
+            }}
           />
         </FormField>
 
@@ -39,7 +46,9 @@ export function RootNodeProperties() {
             id="root-innerpadding"
             value={settings.bodyInnerPadding ?? ''}
             basePx={paddingBasePx}
-            onChange={(e) => updateSettings({ bodyInnerPadding: e.target.value || undefined })}
+            onChange={(e) => {
+              updateSettings({ bodyInnerPadding: e.target.value || undefined })
+            }}
           />
         </FormField>
 
@@ -47,7 +56,9 @@ export function RootNodeProperties() {
           <Textarea
             id="root-css"
             value={settings.customCss ?? ''}
-            onChange={(e) => updateSettings({ customCss: e.target.value || undefined })}
+            onChange={(e) => {
+              updateSettings({ customCss: e.target.value || undefined })
+            }}
             placeholder=""
             rows={4}
             spellCheck={false}
@@ -59,30 +70,55 @@ export function RootNodeProperties() {
       {/* Rahmen */}
       <CollapsibleSection
         label={t('editor.properties.sectionBorder')}
-        onReset={() => updateSettings({ bodyBorderWidth: undefined, bodyBorderStyle: undefined, bodyBorderColor: undefined, bodyBorderRadius: undefined })}
+        onReset={() => {
+          updateSettings({
+            bodyBorderWidth: undefined,
+            bodyBorderStyle: undefined,
+            bodyBorderColor: undefined,
+            bodyBorderRadius: undefined,
+          })
+        }}
         tooltip={resetTooltip}
       >
         <FormField label={t('editor.properties.borderWidth')} htmlFor="root-borderwidth">
           <Select
             id="root-borderwidth"
-            value={settings.bodyBorderWidth ?? '0px'}
-            onChange={(e) => updateSettings({ bodyBorderWidth: e.target.value === '0px' ? undefined : e.target.value })}
+            value={settings.bodyBorderWidth || '0px'}
+            onChange={(e) => {
+              updateSettings({ bodyBorderWidth: e.target.value })
+            }}
           >
-            {BORDER_WIDTH_OPTIONS.map((v) => (
-              <option key={v} value={v}>{v}</option>
-            ))}
+            {BORDER_WIDTH_OPTIONS.map((v) => {
+              const isGlobal = (settings.defaultBorderWidth || '1px') === v
+              const label = isGlobal ? `${t('common.global')} (${v})` : v
+              return (
+                <option key={v} value={v}>
+                  {label}
+                </option>
+              )
+            })}
           </Select>
         </FormField>
 
         <FormField label={t('editor.properties.borderStyle')} htmlFor="root-borderstyle">
           <Select
             id="root-borderstyle"
-            value={settings.bodyBorderStyle ?? 'solid'}
-            onChange={(e) => updateSettings({ bodyBorderStyle: e.target.value })}
+            value={settings.bodyBorderStyle || settings.defaultBorderStyle || 'solid'}
+            onChange={(e) => {
+              updateSettings({ bodyBorderStyle: e.target.value })
+            }}
           >
-            {BORDER_STYLES.map((v) => (
-              <option key={v} value={v}>{t(`editor.properties.borderStyle${v.charAt(0).toUpperCase() + v.slice(1)}`)}</option>
-            ))}
+            {BORDER_STYLES.map((v) => {
+              const isGlobal = (settings.defaultBorderStyle || 'solid') === v
+              const label = isGlobal
+                ? `${t('common.global')} (${t(`editor.properties.borderStyle${v.charAt(0).toUpperCase() + v.slice(1)}`)})`
+                : t(`editor.properties.borderStyle${v.charAt(0).toUpperCase() + v.slice(1)}`)
+              return (
+                <option key={v} value={v}>
+                  {label}
+                </option>
+              )
+            })}
           </Select>
         </FormField>
 
@@ -90,19 +126,29 @@ export function RootNodeProperties() {
           <ColorSelect
             id="root-bordercolor"
             value={settings.bodyBorderColor ?? 'borderColor'}
-            onChange={(v) => updateSettings({ bodyBorderColor: v })}
+            onChange={(v) => {
+              updateSettings({ bodyBorderColor: v })
+            }}
           />
         </FormField>
 
         <FormField label={t('editor.properties.borderRadius')} htmlFor="root-borderradius">
           <Select
             id="root-borderradius"
-            value={settings.bodyBorderRadius ?? '0px'}
-            onChange={(e) => updateSettings({ bodyBorderRadius: e.target.value === '0px' ? undefined : e.target.value })}
+            value={settings.bodyBorderRadius || settings.defaultBorderRadius || '8px'}
+            onChange={(e) => {
+              updateSettings({ bodyBorderRadius: e.target.value })
+            }}
           >
-            {BORDER_RADIUS_OPTIONS.map((v) => (
-              <option key={v} value={v}>{v}</option>
-            ))}
+            {BORDER_RADIUS_OPTIONS.map((v) => {
+              const isGlobal = (settings.defaultBorderRadius || '8px') === v
+              const label = isGlobal ? `${t('common.global')} (${v})` : v
+              return (
+                <option key={v} value={v}>
+                  {label}
+                </option>
+              )
+            })}
           </Select>
         </FormField>
       </CollapsibleSection>
@@ -110,18 +156,21 @@ export function RootNodeProperties() {
       {/* Hintergrund */}
       <CollapsibleSection
         label={t('editor.properties.sectionBg')}
-        onReset={() => updateSettings({ bodyBackgroundColor: undefined })}
+        onReset={() => {
+          updateSettings({ bodyBackgroundColor: undefined })
+        }}
         tooltip={resetTooltip}
       >
         <FormField label={t('editor.properties.backgroundColorFull')} htmlFor="root-bgcolor">
           <ColorSelect
             id="root-bgcolor"
             value={settings.bodyBackgroundColor ?? 'pageColor'}
-            onChange={(v) => updateSettings({ bodyBackgroundColor: v })}
+            onChange={(v) => {
+              updateSettings({ bodyBackgroundColor: v })
+            }}
           />
         </FormField>
       </CollapsibleSection>
-
     </div>
   )
 }

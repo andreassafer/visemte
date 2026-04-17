@@ -22,7 +22,8 @@
       "enableBlock": "Aktivovat",
       "collapse": "Sbalit",
       "expand": "Rozbalit",
-      "integrate": "Integrovat"
+      "integrate": "Integrovat",
+      "renameTemplate": "Přejmenovat šablonu"
     },
     "toolbar": {
       "undo": "Zpět (Ctrl+Z)",
@@ -64,7 +65,9 @@
     "palette": {
       "title": "Bloky",
       "expand": "Rozšířit panel",
-      "collapse": "Sbalit panel"
+      "collapse": "Sbalit panel",
+      "search": "Hledat…",
+      "noResults": "Žádné bloky nenalezeny"
     },
     "properties": {
       "title": "Globální vlastnosti",
@@ -129,7 +132,7 @@
       "imagePlaceholder": "Vložte obrázek sem",
       "srcPlaceholder": "https://... nebo...",
       "altPlaceholder": "Alternativní text pro přístupnost",
-      "buttonTextPlaceholder": "Klikněte zde",
+      "buttonTextPlaceholder": "Klikni",
       "hrefPlaceholder": "https://example.com",
       "top": "Nahoře",
       "bottom": "Dole",
@@ -258,7 +261,9 @@
     "copyMjml": "Kopírovat MJML",
     "descJson": "Šablona pro opětovný import",
     "descMjml": "Zdrojový kód pro framework MJML",
-    "descHtml": "Hotový HTML kód pro e-mailové klienty"
+    "descHtml": "Hotový HTML kód pro e-mailové klienty",
+    "descTs": "TypeScript kód pro src/templates/",
+    "downloadTs": "Stáhnout jako .ts"
   },
   "settings": {
     "title": "Nastavení",
@@ -283,17 +288,21 @@
     "load": "Načíst",
     "edit": "Upravit",
     "saveAsPreset": "Uložit jako šablonu",
-    "savedAsPreset": "Uloženo jako šablona"
+    "savedAsPreset": "Uloženo jako šablona",
+    "importSuccess": "Šablona importována"
   },
   "errors": {
     "mjmlCompile": "Chyba kompilace MJML",
     "invalidTemplate": "Neplatný formát šablony",
-    "unknownBlockType": "Neznámý typ bloku: {{type}}"
+    "unknownBlockType": "Neznámý typ bloku: {{type}}",
+    "boundaryTitle": "Chyba v: {{label}}",
+    "boundaryRetry": "Zkusit znovu"
   },
   "about": {
     "title": "O aplikaci Visemte",
     "version": "Verze",
     "build": "Sestavení",
+    "platform": "Platforma",
     "author": "Autor",
     "license": "Licence",
     "description": "Nástroj pro tvorbu responzivních e-mailových šablon",

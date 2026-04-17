@@ -1,6 +1,18 @@
 const VOID_TAGS = new Set([
-  'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input',
-  'link', 'meta', 'param', 'source', 'track', 'wbr',
+  'area',
+  'base',
+  'br',
+  'col',
+  'embed',
+  'hr',
+  'img',
+  'input',
+  'link',
+  'meta',
+  'param',
+  'source',
+  'track',
+  'wbr',
 ])
 const INDENT = '  '
 
@@ -15,7 +27,10 @@ export function formatHtml(raw: string): string {
   }
 
   while (i < raw.length) {
-    if (/\s/.test(raw[i]!)) { i++; continue }
+    if (/\s/.test(raw[i])) {
+      i++
+      continue
+    }
 
     if (raw[i] !== '<') {
       const end = raw.indexOf('<', i)
@@ -59,7 +74,7 @@ export function formatHtml(raw: string): string {
       push(rawTagMatch[0].replace(/\s+/g, ' '))
       depth++
       const afterOpen = i + rawTagMatch[0].length
-      const tagName = rawTagMatch[1]!
+      const tagName = rawTagMatch[1]
       const closeRe = new RegExp(`</${tagName}\\s*>`, 'i')
       const rest = raw.slice(afterOpen)
       const closeMatch = rest.match(closeRe)
@@ -80,7 +95,7 @@ export function formatHtml(raw: string): string {
     const j = end === -1 ? raw.length : end + 1
     const tag = raw.slice(i, j).replace(/\s+/g, ' ')
     const nameMatch = tag.match(/^<([\w-]+)/)
-    const tagName = nameMatch ? nameMatch[1]!.toLowerCase() : ''
+    const tagName = nameMatch ? nameMatch[1].toLowerCase() : ''
     const isSelfClose = tag.endsWith('/>') || VOID_TAGS.has(tagName)
     push(tag)
     if (!isSelfClose) depth++

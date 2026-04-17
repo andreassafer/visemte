@@ -22,7 +22,8 @@
       "enableBlock": "Ativar",
       "collapse": "Recolher",
       "expand": "Expandir",
-      "integrate": "Integrar"
+      "integrate": "Integrar",
+      "renameTemplate": "Renomear modelo"
     },
     "toolbar": {
       "undo": "Desfazer (Ctrl+Z)",
@@ -64,7 +65,9 @@
     "palette": {
       "title": "Blocos",
       "expand": "Expandir painel",
-      "collapse": "Recolher painel"
+      "collapse": "Recolher painel",
+      "search": "Pesquisar…",
+      "noResults": "Nenhum bloco encontrado"
     },
     "properties": {
       "title": "Propriedades globais",
@@ -129,7 +132,7 @@
       "imagePlaceholder": "Inserir imagem aqui",
       "srcPlaceholder": "https://... ou...",
       "altPlaceholder": "Texto alternativo para acessibilidade",
-      "buttonTextPlaceholder": "Clique aqui",
+      "buttonTextPlaceholder": "Clique",
       "hrefPlaceholder": "https://example.com",
       "top": "Topo",
       "bottom": "Fundo",
@@ -258,7 +261,9 @@
     "copyMjml": "Copiar MJML",
     "descJson": "Modelo para reimportar",
     "descMjml": "Código fonte para o framework MJML",
-    "descHtml": "Código HTML pronto para clientes de e-mail"
+    "descHtml": "Código HTML pronto para clientes de e-mail",
+    "descTs": "Código TypeScript para src/templates/",
+    "downloadTs": "Baixar como .ts"
   },
   "settings": {
     "title": "Definições",
@@ -283,17 +288,21 @@
     "load": "Carregar",
     "edit": "Editar",
     "saveAsPreset": "Guardar como modelo",
-    "savedAsPreset": "Guardado como modelo"
+    "savedAsPreset": "Guardado como modelo",
+    "importSuccess": "Modelo importado"
   },
   "errors": {
     "mjmlCompile": "Erro de compilação MJML",
     "invalidTemplate": "Formato de modelo inválido",
-    "unknownBlockType": "Tipo de bloco desconhecido: {{type}}"
+    "unknownBlockType": "Tipo de bloco desconhecido: {{type}}",
+    "boundaryTitle": "Erro em: {{label}}",
+    "boundaryRetry": "Tentar novamente"
   },
   "about": {
     "title": "Sobre o Visemte",
     "version": "Versão",
     "build": "Build",
+    "platform": "Plataforma",
     "author": "Autor",
     "license": "Licença",
     "description": "Construtor de modelos para criar e-mails responsivos",

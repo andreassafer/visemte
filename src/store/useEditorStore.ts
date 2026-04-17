@@ -36,32 +36,45 @@ export const useEditorStore = create<EditorState>()((set) => ({
   draggingSourceId: null,
   draggingBlockType: null,
 
-  selectBlock: (id) => set({ selectedBlockId: id, selectedChildIndex: null, selectedColumnIndex: null }),
-  selectChild: (index) => set({ selectedChildIndex: index, selectedColumnIndex: null }),
-  selectColumn: (blockId, colIndex) => set({ selectedBlockId: blockId, selectedChildIndex: colIndex, selectedColumnIndex: colIndex }),
-  setDragging: (sourceId, blockType) => set({ draggingSourceId: sourceId, draggingBlockType: blockType }),
+  selectBlock: (id) => {
+    set({ selectedBlockId: id, selectedChildIndex: null, selectedColumnIndex: null })
+  },
+  selectChild: (index) => {
+    set({ selectedChildIndex: index, selectedColumnIndex: null })
+  },
+  selectColumn: (blockId, colIndex) => {
+    set({ selectedBlockId: blockId, selectedChildIndex: colIndex, selectedColumnIndex: colIndex })
+  },
+  setDragging: (sourceId, blockType) => {
+    set({ draggingSourceId: sourceId, draggingBlockType: blockType })
+  },
 
-  setPreviewMode: (tabId, mode) =>
-    set((state) => ({ tabPreviewModes: { ...state.tabPreviewModes, [tabId]: mode } })),
+  setPreviewMode: (tabId, mode) => {
+    set((state) => ({ tabPreviewModes: { ...state.tabPreviewModes, [tabId]: mode } }))
+  },
 
-  markSaved: (tabId, updatedAt) =>
-    set((state) => ({ tabSavedAt: { ...state.tabSavedAt, [tabId]: updatedAt } })),
+  markSaved: (tabId, updatedAt) => {
+    set((state) => ({ tabSavedAt: { ...state.tabSavedAt, [tabId]: updatedAt } }))
+  },
 
-  markAsPreset: (tabId) =>
-    set((state) => ({ presetTabIds: new Set([...state.presetTabIds, tabId]) })),
+  markAsPreset: (tabId) => {
+    set((state) => ({ presetTabIds: new Set([...state.presetTabIds, tabId]) }))
+  },
 
-  unmarkAsPreset: (tabId) =>
+  unmarkAsPreset: (tabId) => {
     set((state) => {
       const next = new Set(state.presetTabIds)
       next.delete(tabId)
       return { presetTabIds: next }
-    }),
+    })
+  },
 
-  toggleColumnExpand: (id) =>
+  toggleColumnExpand: (id) => {
     set((state) => {
       const next = new Set(state.expandedColumnIds)
       if (next.has(id)) next.delete(id)
       else next.add(id)
       return { expandedColumnIds: next }
-    }),
+    })
+  },
 }))

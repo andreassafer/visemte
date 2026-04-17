@@ -22,7 +22,8 @@
       "enableBlock": "Включить",
       "collapse": "Свернуть",
       "expand": "Развернуть",
-      "integrate": "Встроить"
+      "integrate": "Встроить",
+      "renameTemplate": "Переименовать шаблон"
     },
     "toolbar": {
       "undo": "Отменить (Ctrl+Z)",
@@ -64,7 +65,9 @@
     "palette": {
       "title": "Блоки",
       "expand": "Развернуть панель",
-      "collapse": "Свернуть панель"
+      "collapse": "Свернуть панель",
+      "search": "Поиск…",
+      "noResults": "Блоки не найдены"
     },
     "properties": {
       "title": "Глобальные свойства",
@@ -129,7 +132,7 @@
       "imagePlaceholder": "Вставьте изображение здесь",
       "srcPlaceholder": "https://... или...",
       "altPlaceholder": "Альтернативный текст для доступности",
-      "buttonTextPlaceholder": "Нажмите здесь",
+      "buttonTextPlaceholder": "Нажмите",
       "hrefPlaceholder": "https://example.com",
       "top": "Сверху",
       "bottom": "Снизу",
@@ -258,7 +261,9 @@
     "copyMjml": "Копировать MJML",
     "descJson": "Шаблон для повторного импорта",
     "descMjml": "Исходный код для фреймворка MJML",
-    "descHtml": "Готовый HTML-код для почтовых клиентов"
+    "descHtml": "Готовый HTML-код для почтовых клиентов",
+    "descTs": "Исходный код TypeScript для src/templates/",
+    "downloadTs": "Скачать как .ts"
   },
   "settings": {
     "title": "Настройки",
@@ -283,17 +288,21 @@
     "load": "Загрузить",
     "edit": "Редактировать",
     "saveAsPreset": "Сохранить как шаблон",
-    "savedAsPreset": "Сохранено как шаблон"
+    "savedAsPreset": "Сохранено как шаблон",
+    "importSuccess": "Шаблон импортирован"
   },
   "errors": {
     "mjmlCompile": "Ошибка компиляции MJML",
     "invalidTemplate": "Неверный формат шаблона",
-    "unknownBlockType": "Неизвестный тип блока: {{type}}"
+    "unknownBlockType": "Неизвестный тип блока: {{type}}",
+    "boundaryTitle": "Ошибка в: {{label}}",
+    "boundaryRetry": "Повторить"
   },
   "about": {
     "title": "О Visemte",
     "version": "Версия",
     "build": "Сборка",
+    "platform": "Платформа",
     "author": "Автор",
     "license": "Лицензия",
     "description": "Генератор шаблонов для создания адаптивных писем",

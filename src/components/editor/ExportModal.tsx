@@ -11,7 +11,34 @@ interface Props {
   onClose: () => void
 }
 
-type CopyKey = 'json' | 'mjml' | 'html'
+type CopyKey = 'json' | 'mjml' | 'html' | 'ts'
+
+// ── TypeScript source generator ───────────────────────────────────────────────
+
+function toVarName(name: string): string {
+  return (
+    name
+      .replace(/[^a-zA-Z0-9\s]/g, '')
+      .split(/\s+/)
+      .filter(Boolean)
+      .map((word, i) =>
+        i === 0 ? word.toLowerCase() : word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(),
+      )
+      .join('') + 'Template'
+  )
+}
+
+function templateToTs(template: EmailTemplate): string {
+  const varName = toVarName(template.name) || 'presetTemplate'
+  const id = template.id.startsWith('preset-') ? template.id : `preset-${template.id}`
+
+  // Temporarily replace date strings with a sentinel so we can swap them with
+  // new Date().toISOString() calls in the final source (avoids hardcoded dates).
+  const data = { ...template, id, createdAt: '__TS_DATE__', updatedAt: '__TS_DATE__' }
+  const body = JSON.stringify(data, null, 2).replace(/"__TS_DATE__"/g, 'new Date().toISOString()')
+
+  return `import type { EmailTemplate } from '@/types'\n\nexport const ${varName}: EmailTemplate = ${body}\n`
+}
 
 export function ExportModal({ template, onClose }: Props) {
   const { t } = useTranslation()
@@ -27,7 +54,9 @@ export function ExportModal({ template, onClose }: Props) {
     void copy(text)
     if (timerRef.current) clearTimeout(timerRef.current)
     setCopiedKey(key)
-    timerRef.current = setTimeout(() => setCopiedKey(null), 500)
+    timerRef.current = setTimeout(() => {
+      setCopiedKey(null)
+    }, 500)
   }
 
   const compile = useCallback(async () => {
@@ -48,18 +77,31 @@ export function ExportModal({ template, onClose }: Props) {
     }
   }, [template, t])
 
-  useEffect(() => { void compile() }, [compile])
+  useEffect(() => {
+    void compile()
+  }, [compile])
 
   useEffect(() => {
-    const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose()
+    }
     window.addEventListener('keydown', handler)
-    return () => window.removeEventListener('keydown', handler)
+    return () => {
+      window.removeEventListener('keydown', handler)
+    }
   }, [onClose])
 
-  useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current) }, [])
+  useEffect(
+    () => () => {
+      if (timerRef.current) clearTimeout(timerRef.current)
+    },
+    [],
+  )
 
   const downloadJson = () => {
-    const blob = new Blob([JSON.stringify(template, null, 2)], { type: 'application/json;charset=utf-8' })
+    const blob = new Blob([JSON.stringify(template, null, 2)], {
+      type: 'application/json;charset=utf-8',
+    })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
@@ -79,6 +121,17 @@ export function ExportModal({ template, onClose }: Props) {
     URL.revokeObjectURL(url)
   }
 
+  const downloadTs = () => {
+    const ts = templateToTs(template)
+    const blob = new Blob([ts], { type: 'text/plain;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `${toVarName(template.name) || 'preset'}.ts`
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
   const downloadHtml = () => {
     if (!html) return
     const blob = new Blob([html], { type: 'text/html;charset=utf-8' })
@@ -92,7 +145,14 @@ export function ExportModal({ template, onClose }: Props) {
 
   const CheckIcon = () => (
     <span className="h-4 inline-flex items-center">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+      <svg
+        width="13"
+        height="13"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.5"
+      >
         <polyline points="20 6 9 17 4 12" />
       </svg>
     </span>
@@ -100,7 +160,14 @@ export function ExportModal({ template, onClose }: Props) {
 
   const CopyIcon = () => (
     <span className="h-4 inline-flex items-center">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <svg
+        width="13"
+        height="13"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+      >
         <rect x="9" y="9" width="13" height="13" rx="2" />
         <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
       </svg>
@@ -108,13 +175,28 @@ export function ExportModal({ template, onClose }: Props) {
   )
 
   const FileIcon = () => (
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <svg
+      width="13"
+      height="13"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
       <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
       <polyline points="14 2 14 8 20 8" />
     </svg>
   )
 
-  const CopyButton = ({ copyKey, onClick, disabled }: { copyKey: CopyKey; onClick: () => void; disabled?: boolean }) => {
+  const CopyButton = ({
+    copyKey,
+    onClick,
+    disabled,
+  }: {
+    copyKey: CopyKey
+    onClick: () => void
+    disabled?: boolean
+  }) => {
     const copied = copiedKey === copyKey
     return (
       <Tooltip label={t('export.copy')} side="bottom">
@@ -137,7 +219,9 @@ export function ExportModal({ template, onClose }: Props) {
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/5 backdrop-blur-[1px] p-4"
-      onClick={(e) => { if (e.target === e.currentTarget) onClose() }}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose()
+      }}
       role="dialog"
       aria-modal="true"
       aria-label={t('editor.toolbar.export')}
@@ -146,20 +230,38 @@ export function ExportModal({ template, onClose }: Props) {
         {/* Header */}
         <div className="flex items-center justify-between border-b border-gray-200 px-5 py-3 dark:border-gray-700">
           <div className="flex items-center gap-2">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-gray-500 dark:text-gray-400">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              className="text-gray-500 dark:text-gray-400"
+            >
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
               <polyline points="17 8 12 3 7 8" />
               <line x1="12" y1="3" x2="12" y2="15" />
             </svg>
-            <h2 className="text-sm font-semibold text-gray-800 dark:text-gray-100">{t('editor.toolbar.export')}</h2>
+            <h2 className="text-sm font-semibold text-gray-800 dark:text-gray-100">
+              {t('editor.toolbar.export')}
+            </h2>
           </div>
           <button
             className="rounded p-1 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
             onClick={onClose}
             aria-label={t('common.close')}
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
             </svg>
           </button>
         </div>
@@ -173,9 +275,18 @@ export function ExportModal({ template, onClose }: Props) {
               <p className="text-xs text-gray-400 dark:text-gray-500">{t('export.descJson')}</p>
             </div>
             <div className="flex items-center gap-2">
-              <CopyButton copyKey="json" onClick={() => handleCopy('json', JSON.stringify(template, null, 2))} />
+              <CopyButton
+                copyKey="json"
+                onClick={() => {
+                  handleCopy('json', JSON.stringify(template, null, 2))
+                }}
+              />
               <Tooltip label={t('export.downloadJson')} side="bottom">
-                <button onClick={downloadJson} aria-label={t('export.downloadJson')} className="inline-flex cursor-pointer items-center justify-center gap-1.5 rounded bg-gray-100 px-2 py-1 text-xs font-medium text-gray-700 transition-colors hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600">
+                <button
+                  onClick={downloadJson}
+                  aria-label={t('export.downloadJson')}
+                  className="inline-flex cursor-pointer items-center justify-center gap-1.5 rounded bg-gray-100 px-2 py-1 text-xs font-medium text-gray-700 transition-colors hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+                >
                   <FileIcon /> .json
                 </button>
               </Tooltip>
@@ -189,10 +300,51 @@ export function ExportModal({ template, onClose }: Props) {
               <p className="text-xs text-gray-400 dark:text-gray-500">{t('export.descMjml')}</p>
             </div>
             <div className="flex items-center gap-2">
-              <CopyButton copyKey="mjml" onClick={() => { if (mjml) handleCopy('mjml', mjml) }} disabled={loading || !mjml} />
+              <CopyButton
+                copyKey="mjml"
+                onClick={() => {
+                  if (mjml) handleCopy('mjml', mjml)
+                }}
+                disabled={loading || !mjml}
+              />
               <Tooltip label={t('export.downloadMjml')} side="bottom">
-                <button onClick={downloadMjml} disabled={loading || !mjml} aria-label={t('export.downloadMjml')} className="inline-flex cursor-pointer items-center justify-center gap-1.5 rounded bg-gray-100 px-2 py-1 text-xs font-medium text-gray-700 transition-colors hover:bg-gray-200 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600">
+                <button
+                  onClick={downloadMjml}
+                  disabled={loading || !mjml}
+                  aria-label={t('export.downloadMjml')}
+                  className="inline-flex cursor-pointer items-center justify-center gap-1.5 rounded bg-gray-100 px-2 py-1 text-xs font-medium text-gray-700 transition-colors hover:bg-gray-200 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+                >
                   <FileIcon /> .mjml
+                </button>
+              </Tooltip>
+            </div>
+          </div>
+
+          {/* TypeScript – dev preset source */}
+          <div className="flex items-center justify-between gap-4 px-5 py-4">
+            <div>
+              <div className="flex items-center gap-1.5">
+                <p className="text-sm font-medium text-gray-700 dark:text-gray-200">TypeScript</p>
+                <span className="rounded bg-amber-100 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-amber-700 dark:bg-amber-900/40 dark:text-amber-400">
+                  dev
+                </span>
+              </div>
+              <p className="text-xs text-gray-400 dark:text-gray-500">{t('export.descTs')}</p>
+            </div>
+            <div className="flex items-center gap-2">
+              <CopyButton
+                copyKey="ts"
+                onClick={() => {
+                  handleCopy('ts', templateToTs(template))
+                }}
+              />
+              <Tooltip label={t('export.downloadTs')} side="bottom">
+                <button
+                  onClick={downloadTs}
+                  aria-label={t('export.downloadTs')}
+                  className="inline-flex cursor-pointer items-center justify-center gap-1.5 rounded bg-gray-100 px-2 py-1 text-xs font-medium text-gray-700 transition-colors hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+                >
+                  <FileIcon /> .ts
                 </button>
               </Tooltip>
             </div>
@@ -205,12 +357,25 @@ export function ExportModal({ template, onClose }: Props) {
               <p className="text-xs text-gray-400 dark:text-gray-500">{t('export.descHtml')}</p>
             </div>
             {error && (
-              <p className="rounded bg-red-50 p-2 text-xs text-red-600 dark:bg-red-900/20 dark:text-red-400">{error}</p>
+              <p className="rounded bg-red-50 p-2 text-xs text-red-600 dark:bg-red-900/20 dark:text-red-400">
+                {error}
+              </p>
             )}
             <div className="flex items-center gap-2">
-              <CopyButton copyKey="html" onClick={() => { if (html) handleCopy('html', html) }} disabled={loading || !html} />
+              <CopyButton
+                copyKey="html"
+                onClick={() => {
+                  if (html) handleCopy('html', html)
+                }}
+                disabled={loading || !html}
+              />
               <Tooltip label={t('export.download')} side="bottom">
-                <button onClick={downloadHtml} disabled={loading || !html} aria-label={t('export.download')} className="inline-flex cursor-pointer items-center justify-center gap-1.5 rounded bg-gray-100 px-2 py-1 text-xs font-medium text-gray-700 transition-colors hover:bg-gray-200 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600">
+                <button
+                  onClick={downloadHtml}
+                  disabled={loading || !html}
+                  aria-label={t('export.download')}
+                  className="inline-flex cursor-pointer items-center justify-center gap-1.5 rounded bg-gray-100 px-2 py-1 text-xs font-medium text-gray-700 transition-colors hover:bg-gray-200 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+                >
                   <FileIcon /> {loading ? t('common.loading') : '.html'}
                 </button>
               </Tooltip>

@@ -22,7 +22,8 @@
       "enableBlock": "Aktivera",
       "collapse": "Minimera",
       "expand": "Maximera",
-      "integrate": "Integrera"
+      "integrate": "Integrera",
+      "renameTemplate": "Byt namn på mall"
     },
     "toolbar": {
       "undo": "Ångra (Ctrl+Z)",
@@ -64,7 +65,9 @@
     "palette": {
       "title": "Block",
       "expand": "Expandera panel",
-      "collapse": "Komprimera panel"
+      "collapse": "Komprimera panel",
+      "search": "Sök…",
+      "noResults": "Inga block hittades"
     },
     "properties": {
       "title": "Globala egenskaper",
@@ -129,7 +132,7 @@
       "imagePlaceholder": "Infoga bild här",
       "srcPlaceholder": "https://... eller...",
       "altPlaceholder": "Alt-text för tillgänglighet",
-      "buttonTextPlaceholder": "Klicka här",
+      "buttonTextPlaceholder": "Klicka",
       "hrefPlaceholder": "https://example.com",
       "top": "Överst",
       "bottom": "Längst ned",
@@ -258,7 +261,9 @@
     "copyMjml": "Kopiera MJML",
     "descJson": "Mall för återimport",
     "descMjml": "Källkod för MJML-ramverket",
-    "descHtml": "Färdig HTML-kod för e-postklienter"
+    "descHtml": "Färdig HTML-kod för e-postklienter",
+    "descTs": "TypeScript-källkod för src/templates/",
+    "downloadTs": "Ladda ner som .ts"
   },
   "settings": {
     "title": "Inställningar",
@@ -283,17 +288,21 @@
     "load": "Ladda",
     "edit": "Redigera",
     "saveAsPreset": "Spara som mall",
-    "savedAsPreset": "Sparad som mall"
+    "savedAsPreset": "Sparad som mall",
+    "importSuccess": "Mall importerad"
   },
   "errors": {
     "mjmlCompile": "MJML-kompileringsfel",
     "invalidTemplate": "Ogiltigt mallformat",
-    "unknownBlockType": "Okänd blocktyp: {{type}}"
+    "unknownBlockType": "Okänd blocktyp: {{type}}",
+    "boundaryTitle": "Fel i: {{label}}",
+    "boundaryRetry": "Försök igen"
   },
   "about": {
     "title": "Om Visemte",
     "version": "Version",
     "build": "Bygge",
+    "platform": "Plattform",
     "author": "Skapare",
     "license": "Licens",
     "description": "Mallgenerator för att skapa responsiva e-postmeddelanden",

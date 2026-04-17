@@ -76,12 +76,16 @@ describe('templateToMjml', () => {
     })
 
     it('uses custom alignment', () => {
-      const mjml = templateToMjml(makeTemplate([makeBlock('text', { content: 'x', align: 'center' })]))
+      const mjml = templateToMjml(
+        makeTemplate([makeBlock('text', { content: 'x', align: 'center' })]),
+      )
       expect(mjml).toContain('align="center"')
     })
 
     it('includes color when provided', () => {
-      const mjml = templateToMjml(makeTemplate([makeBlock('text', { content: 'x', color: '#ff0000' })]))
+      const mjml = templateToMjml(
+        makeTemplate([makeBlock('text', { content: 'x', color: '#ff0000' })]),
+      )
       expect(mjml).toContain('color="#ff0000"')
     })
 
@@ -91,13 +95,17 @@ describe('templateToMjml', () => {
     })
 
     it('resolves relative innerPadding offset', () => {
-      const mjml = templateToMjml(makeTemplate([makeBlock('text', { content: 'x', innerPadding: '+2' })]))
+      const mjml = templateToMjml(
+        makeTemplate([makeBlock('text', { content: 'x', innerPadding: '+2' })]),
+      )
       // basePx is 4px, so +2 = 6px
       expect(mjml).toContain('padding:6px')
     })
 
     it('resolves negative innerPadding offset', () => {
-      const mjml = templateToMjml(makeTemplate([makeBlock('text', { content: 'x', innerPadding: '-2' })]))
+      const mjml = templateToMjml(
+        makeTemplate([makeBlock('text', { content: 'x', innerPadding: '-2' })]),
+      )
       // basePx is 4px, so -2 = 2px
       expect(mjml).toContain('padding:2px')
     })
@@ -110,7 +118,9 @@ describe('templateToMjml', () => {
 
   describe('image block', () => {
     it('renders mj-image with src', () => {
-      const mjml = templateToMjml(makeTemplate([makeBlock('image', { src: 'https://example.com/img.jpg' })]))
+      const mjml = templateToMjml(
+        makeTemplate([makeBlock('image', { src: 'https://example.com/img.jpg' })]),
+      )
       expect(mjml).toContain('<mj-image')
       expect(mjml).toContain('src="https://example.com/img.jpg"')
     })
@@ -126,12 +136,16 @@ describe('templateToMjml', () => {
     })
 
     it('includes border-radius when set to non-zero', () => {
-      const mjml = templateToMjml(makeTemplate([makeBlock('image', { src: '', borderRadius: '8px' })]))
+      const mjml = templateToMjml(
+        makeTemplate([makeBlock('image', { src: '', borderRadius: '8px' })]),
+      )
       expect(mjml).toContain('border-radius="8px"')
     })
 
     it('omits border-radius when set to 0px', () => {
-      const mjml = templateToMjml(makeTemplate([makeBlock('image', { src: '', borderRadius: '0px' })]))
+      const mjml = templateToMjml(
+        makeTemplate([makeBlock('image', { src: '', borderRadius: '0px' })]),
+      )
       expect(mjml).not.toContain('border-radius')
     })
 
@@ -143,7 +157,9 @@ describe('templateToMjml', () => {
 
   describe('button block', () => {
     it('renders mj-button with href and text', () => {
-      const mjml = templateToMjml(makeTemplate([makeBlock('button', { href: 'https://example.com', text: 'Click me' })]))
+      const mjml = templateToMjml(
+        makeTemplate([makeBlock('button', { href: 'https://example.com', text: 'Click me' })]),
+      )
       expect(mjml).toContain('<mj-button')
       expect(mjml).toContain('href="https://example.com"')
       expect(mjml).toContain('Click me')
@@ -170,7 +186,9 @@ describe('templateToMjml', () => {
     })
 
     it('resolves relative innerPadding for button', () => {
-      const mjml = templateToMjml(makeTemplate([makeBlock('button', { text: 'Go', innerPadding: '+4' })]))
+      const mjml = templateToMjml(
+        makeTemplate([makeBlock('button', { text: 'Go', innerPadding: '+4' })]),
+      )
       // basePx is 4px, so +4 = 8px
       expect(mjml).toContain('inner-padding="8px')
     })
@@ -202,41 +220,56 @@ describe('templateToMjml', () => {
     })
   })
 
-
   describe('columns block', () => {
     it('renders 2 columns by default', () => {
-      const mjml = templateToMjml(makeTemplate([makeBlock('columns', { columns: '2', columnBlocks: [[], []] })]))
-      const matches = mjml.match(/<td/g)
+      const mjml = templateToMjml(
+        makeTemplate([makeBlock('columns', { columns: '2', columnBlocks: [[], []] })]),
+      )
+      const matches = mjml.match(/<mj-column/g)
       expect(matches?.length).toBe(2)
     })
 
     it('renders 3 columns when configured', () => {
-      const mjml = templateToMjml(makeTemplate([makeBlock('columns', { columns: '3', columnBlocks: [[], [], []] })]))
-      const matches = mjml.match(/<td/g)
+      const mjml = templateToMjml(
+        makeTemplate([makeBlock('columns', { columns: '3', columnBlocks: [[], [], []] })]),
+      )
+      const matches = mjml.match(/<mj-column/g)
       expect(matches?.length).toBe(3)
     })
 
     it('clamps columns to maximum of 3', () => {
-      const mjml = templateToMjml(makeTemplate([makeBlock('columns', { columns: '5', columnBlocks: [] })]))
-      const matches = mjml.match(/<td/g)
+      const mjml = templateToMjml(
+        makeTemplate([makeBlock('columns', { columns: '5', columnBlocks: [] })]),
+      )
+      const matches = mjml.match(/<mj-column/g)
       expect(matches?.length).toBe(3)
     })
 
     it('clamps columns to minimum of 1', () => {
-      const mjml = templateToMjml(makeTemplate([makeBlock('columns', { columns: '0', columnBlocks: [] })]))
-      const matches = mjml.match(/<td/g)
+      const mjml = templateToMjml(
+        makeTemplate([makeBlock('columns', { columns: '0', columnBlocks: [] })]),
+      )
+      const matches = mjml.match(/<mj-column/g)
       expect(matches?.length).toBe(1)
     })
 
     it('renders child blocks inside columns', () => {
-      const childBlock: EmailBlock = { id: 'child', type: 'text', props: { content: 'Inside column' } }
-      const mjml = templateToMjml(makeTemplate([makeBlock('columns', { columns: '2', columnBlocks: [[childBlock], []] })]))
+      const childBlock: EmailBlock = {
+        id: 'child',
+        type: 'text',
+        props: { content: 'Inside column' },
+      }
+      const mjml = templateToMjml(
+        makeTemplate([makeBlock('columns', { columns: '2', columnBlocks: [[childBlock], []] })]),
+      )
       expect(mjml).toContain('Inside column')
     })
 
     it('ignores non-allowed child block types in columns', () => {
       const childBlock: EmailBlock = { id: 'child', type: 'hero', props: {} }
-      const mjml = templateToMjml(makeTemplate([makeBlock('columns', { columns: '2', columnBlocks: [[childBlock], []] })]))
+      const mjml = templateToMjml(
+        makeTemplate([makeBlock('columns', { columns: '2', columnBlocks: [[childBlock], []] })]),
+      )
       expect(mjml).not.toContain('<mj-hero')
     })
   })
@@ -244,7 +277,7 @@ describe('templateToMjml', () => {
   describe('hero block', () => {
     it('renders mj-hero element', () => {
       const mjml = templateToMjml(makeTemplate([makeBlock('hero', {})]))
-      expect(mjml).toContain('<mj-hero')
+      expect(mjml).toContain('<mj-section')
     })
 
     it('uses custom background color', () => {
@@ -253,47 +286,60 @@ describe('templateToMjml', () => {
     })
 
     it('falls back to settings background color when not set', () => {
-      const tpl: EmailTemplate = { ...makeTemplate([makeBlock('hero', {})]), settings: { ...baseSettings, backgroundColor: '#aabbcc' } }
+      const tpl: EmailTemplate = {
+        ...makeTemplate([makeBlock('hero', {})]),
+        settings: { ...baseSettings, backgroundColor: '#aabbcc' },
+      }
       const mjml = templateToMjml(tpl)
       expect(mjml).toContain('background-color="#aabbcc"')
     })
 
     it('includes background-url when src is set', () => {
-      const mjml = templateToMjml(makeTemplate([makeBlock('hero', { src: 'https://img.com/bg.jpg' })]))
-      expect(mjml).toContain('background-url="https://img.com/bg.jpg"')
+      const mjml = templateToMjml(
+        makeTemplate([makeBlock('hero', { src: 'https://img.com/bg.jpg' })]),
+      )
+      expect(mjml).toContain("background-image:url('https://img.com/bg.jpg')")
     })
 
     it('omits background-url when src is empty', () => {
       const mjml = templateToMjml(makeTemplate([makeBlock('hero', { src: '' })]))
-      expect(mjml).not.toContain('background-url')
+      expect(mjml).not.toContain('background-image:url')
     })
 
     it('includes border-radius when set to non-zero', () => {
-      const mjml = templateToMjml(makeTemplate([makeBlock('hero', { borderRadius: '8px' })]))
+      const mjml = templateToMjml(makeTemplate([makeBlock('hero', { secBorderRadius: '8px' })]))
       expect(mjml).toContain('border-radius="8px"')
     })
 
     it('omits border-radius when set to 0px', () => {
-      const mjml = templateToMjml(makeTemplate([makeBlock('hero', { borderRadius: '0px' })]))
-      expect(mjml).not.toContain('border-radius')
+      const mjml = templateToMjml(makeTemplate([makeBlock('hero', { secBorderRadius: '0px' })]))
+      expect(mjml).not.toContain('border-radius=')
     })
 
     it('renders line1Text and line2Text', () => {
-      const mjml = templateToMjml(makeTemplate([makeBlock('hero', { line1Text: 'Headline', line2Text: 'Subline' })]))
+      const mjml = templateToMjml(
+        makeTemplate([makeBlock('hero', { line1Text: 'Headline', line2Text: 'Subline' })]),
+      )
       expect(mjml).toContain('Headline')
       expect(mjml).toContain('Subline')
     })
 
     it('omits text elements when line text is empty', () => {
-      const mjml = templateToMjml(makeTemplate([makeBlock('hero', { line1Text: '', line2Text: '' })]))
-      const heroContent = mjml.slice(mjml.indexOf('<mj-hero'), mjml.indexOf('</mj-hero>'))
-      expect(heroContent).not.toContain('<mj-text')
+      const mjml = templateToMjml(
+        makeTemplate([makeBlock('hero', { line1Text: '', line2Text: '' })]),
+      )
+      // Body section should only contain the single whitespace placeholder <mj-text>, not styled line elements
+      const body = mjml.slice(mjml.indexOf('<mj-body'))
+      const styledTextMatches = body.match(/<mj-text [^>]*align=/g)
+      expect(styledTextMatches).toBeNull()
     })
   })
 
   describe('social block', () => {
     it('renders mj-social with specified networks', () => {
-      const mjml = templateToMjml(makeTemplate([makeBlock('social', { networks: 'facebook,twitter' })]))
+      const mjml = templateToMjml(
+        makeTemplate([makeBlock('social', { networks: 'facebook,twitter' })]),
+      )
       expect(mjml).toContain('<mj-social')
       expect(mjml).toContain('name="facebook"')
       expect(mjml).toContain('name="twitter"')
@@ -301,9 +347,10 @@ describe('templateToMjml', () => {
 
     it('uses default networks (facebook, twitter, instagram)', () => {
       const mjml = templateToMjml(makeTemplate([makeBlock('social', {})]))
-      expect(mjml).toContain('name="facebook"')
-      expect(mjml).toContain('name="twitter"')
-      expect(mjml).toContain('name="instagram"')
+      // All networks use name="custom" with base64 SVG icons
+      const customMatches = mjml.match(/name="custom"/g)
+      expect(customMatches?.length).toBe(3)
+      expect(mjml).toContain('src="data:image/svg+xml;base64,')
     })
 
     it('applies correct brand color for known networks', () => {
@@ -319,12 +366,16 @@ describe('templateToMjml', () => {
 
   describe('quote block', () => {
     it('renders the quote text', () => {
-      const mjml = templateToMjml(makeTemplate([makeBlock('quote', { text: 'To be or not to be', author: '' })]))
+      const mjml = templateToMjml(
+        makeTemplate([makeBlock('quote', { text: 'To be or not to be', author: '' })]),
+      )
       expect(mjml).toContain('To be or not to be')
     })
 
     it('renders author with em dash when set', () => {
-      const mjml = templateToMjml(makeTemplate([makeBlock('quote', { text: 'Quote', author: 'Shakespeare' })]))
+      const mjml = templateToMjml(
+        makeTemplate([makeBlock('quote', { text: 'Quote', author: 'Shakespeare' })]),
+      )
       expect(mjml).toContain('— Shakespeare')
     })
 
@@ -373,16 +424,23 @@ describe('templateToMjml', () => {
 
     it('handles invalid JSON in items gracefully without throwing', () => {
       expect(() =>
-        templateToMjml(makeTemplate([makeBlock('accordion', { items: 'not-valid-json' })]))
+        templateToMjml(makeTemplate([makeBlock('accordion', { items: 'not-valid-json' })])),
       ).not.toThrow()
     })
   })
 
   describe('countdown block', () => {
     it('renders 4 time unit columns', () => {
-      const mjml = templateToMjml(makeTemplate([makeBlock('countdown', {
-        labelDays: 'Tage', labelHours: 'Stunden', labelMinutes: 'Minuten', labelSeconds: 'Sekunden',
-      })]))
+      const mjml = templateToMjml(
+        makeTemplate([
+          makeBlock('countdown', {
+            labelDays: 'Tage',
+            labelHours: 'Stunden',
+            labelMinutes: 'Minuten',
+            labelSeconds: 'Sekunden',
+          }),
+        ]),
+      )
       expect(mjml).toContain('Tage')
       expect(mjml).toContain('Stunden')
       expect(mjml).toContain('Minuten')
@@ -416,24 +474,37 @@ describe('templateToMjml', () => {
 
   describe('navbar block', () => {
     it('renders the correct number of links', () => {
-      const mjml = templateToMjml(makeTemplate([makeBlock('navbar', {
-        linkCount: '3',
-        link1Text: 'Home', link1Href: '/',
-        link2Text: 'About', link2Href: '/about',
-        link3Text: 'Contact', link3Href: '/contact',
-      })]))
+      const mjml = templateToMjml(
+        makeTemplate([
+          makeBlock('navbar', {
+            linkCount: '3',
+            link1Text: 'Home',
+            link1Href: '/',
+            link2Text: 'About',
+            link2Href: '/about',
+            link3Text: 'Contact',
+            link3Href: '/contact',
+          }),
+        ]),
+      )
       expect(mjml).toContain('Home')
       expect(mjml).toContain('About')
       expect(mjml).toContain('Contact')
     })
 
     it('uses default separator', () => {
-      const mjml = templateToMjml(makeTemplate([makeBlock('navbar', { linkCount: '2', link1Text: 'A', link2Text: 'B' })]))
+      const mjml = templateToMjml(
+        makeTemplate([makeBlock('navbar', { linkCount: '2', link1Text: 'A', link2Text: 'B' })]),
+      )
       expect(mjml).toContain(' | ')
     })
 
     it('uses custom separator', () => {
-      const mjml = templateToMjml(makeTemplate([makeBlock('navbar', { linkCount: '2', link1Text: 'A', link2Text: 'B', separator: ' · ' })]))
+      const mjml = templateToMjml(
+        makeTemplate([
+          makeBlock('navbar', { linkCount: '2', link1Text: 'A', link2Text: 'B', separator: ' · ' }),
+        ]),
+      )
       expect(mjml).toContain(' · ')
     })
 
@@ -446,16 +517,22 @@ describe('templateToMjml', () => {
 
   describe('video block', () => {
     it('renders as an mj-image link when src is set', () => {
-      const mjml = templateToMjml(makeTemplate([makeBlock('video', { src: 'https://youtube.com/watch?v=abc' })]))
+      const mjml = templateToMjml(
+        makeTemplate([makeBlock('video', { src: 'https://youtube.com/watch?v=abc' })]),
+      )
       expect(mjml).toContain('<mj-image')
       expect(mjml).toContain('href="https://youtube.com/watch?v=abc"')
     })
 
     it('uses thumbnail src when provided', () => {
-      const mjml = templateToMjml(makeTemplate([makeBlock('video', {
-        src: 'https://yt.com/v=x',
-        thumbnailSrc: 'https://img.com/thumb.jpg',
-      })]))
+      const mjml = templateToMjml(
+        makeTemplate([
+          makeBlock('video', {
+            src: 'https://yt.com/v=x',
+            thumbnailSrc: 'https://img.com/thumb.jpg',
+          }),
+        ]),
+      )
       expect(mjml).toContain('src="https://img.com/thumb.jpg"')
     })
 

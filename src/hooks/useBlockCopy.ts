@@ -13,8 +13,10 @@ function deepCopyWithNewIds(block: EmailBlock): EmailBlock {
       id: nanoid(),
       props: {
         ...block.props,
-        columnBlocks: (block.props['columnBlocks'] as EmailBlock[][] | undefined)
-          ?.map((col) => col.map((cb) => ({ ...cb, id: nanoid(), props: { ...cb.props } }))) ?? [],
+        columnBlocks:
+          (block.props['columnBlocks'] as EmailBlock[][] | undefined)?.map((col) =>
+            col.map((cb) => ({ ...cb, id: nanoid(), props: { ...cb.props } })),
+          ) ?? [],
       },
     }
   }
@@ -28,7 +30,11 @@ function isEditableTarget(): boolean {
   return tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || el.isContentEditable
 }
 
-function findBlock(tabs: ReturnType<typeof useTemplateStore.getState>['tabs'], activeTabId: string, id: string): EmailBlock | undefined {
+function findBlock(
+  tabs: ReturnType<typeof useTemplateStore.getState>['tabs'],
+  activeTabId: string,
+  id: string,
+): EmailBlock | undefined {
   const activeTab = tabs.find((t) => t.id === activeTabId)
   if (!activeTab) return undefined
   const top = activeTab.blocks.find((b) => b.id === id)
@@ -96,6 +102,8 @@ export function useBlockCopy() {
     }
 
     window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+    }
   }, [selectedBlockId, tabs, activeTabId, pasteBlock, removeBlock, updateBlock, selectBlock])
 }

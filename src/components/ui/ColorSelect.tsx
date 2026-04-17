@@ -14,7 +14,7 @@ const COLOR_KEYS = [
   'brandColor',
 ] as const
 
-type ColorKey = typeof COLOR_KEYS[number]
+type ColorKey = (typeof COLOR_KEYS)[number]
 
 interface Props {
   id: string
@@ -27,8 +27,14 @@ export function ColorSelect({ id, value, onChange }: Props) {
   const { settings } = useActiveTemplate()
 
   const resolvedHex = COLOR_KEYS.includes(value as ColorKey)
-    ? ((settings[value as keyof typeof settings] as string | undefined) ?? (DEFAULT_TEMPLATE_SETTINGS[value as keyof typeof DEFAULT_TEMPLATE_SETTINGS] as string | undefined) ?? '')
-    : (value.startsWith('#') || value.startsWith('rgb') ? value : '')
+    ? ((settings[value as keyof typeof settings] as string | undefined) ??
+      (DEFAULT_TEMPLATE_SETTINGS[value as keyof typeof DEFAULT_TEMPLATE_SETTINGS] as
+        | string
+        | undefined) ??
+      '')
+    : value.startsWith('#') || value.startsWith('rgb')
+      ? value
+      : ''
 
   return (
     <div className="flex items-center gap-2">
@@ -39,7 +45,9 @@ export function ColorSelect({ id, value, onChange }: Props) {
       <select
         id={id}
         value={value}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={(e) => {
+          onChange(e.target.value)
+        }}
         className="flex-1 rounded border border-gray-200 bg-white px-2 py-1 text-sm text-gray-800 outline-none focus:border-[var(--accent)] focus:shadow-[0_0_0_2px_var(--accent-ring)] dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
       >
         {COLOR_KEYS.map((key) => (

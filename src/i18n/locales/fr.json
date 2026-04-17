@@ -22,7 +22,8 @@
       "enableBlock": "Activer",
       "collapse": "Réduire",
       "expand": "Développer",
-      "integrate": "Intégrer"
+      "integrate": "Intégrer",
+      "renameTemplate": "Renommer le modèle"
     },
     "toolbar": {
       "undo": "Annuler (Ctrl+Z)",
@@ -64,7 +65,9 @@
     "palette": {
       "title": "Blocs",
       "expand": "Agrandir le panneau",
-      "collapse": "Réduire le panneau"
+      "collapse": "Réduire le panneau",
+      "search": "Rechercher…",
+      "noResults": "Aucun bloc trouvé"
     },
     "properties": {
       "title": "Propriétés globales",
@@ -129,7 +132,7 @@
       "imagePlaceholder": "Insérer une image ici",
       "srcPlaceholder": "https://... ou...",
       "altPlaceholder": "Texte alternatif pour l'accessibilité",
-      "buttonTextPlaceholder": "Cliquez ici",
+      "buttonTextPlaceholder": "Cliquez",
       "hrefPlaceholder": "https://example.com",
       "top": "Haut",
       "bottom": "Bas",
@@ -258,7 +261,9 @@
     "copyMjml": "Copier le MJML",
     "descJson": "Modèle pour réimporter",
     "descMjml": "Code source pour le framework MJML",
-    "descHtml": "Code HTML prêt à l'emploi pour les clients de messagerie"
+    "descHtml": "Code HTML prêt à l'emploi pour les clients de messagerie",
+    "descTs": "Code TypeScript pour src/templates/",
+    "downloadTs": "Télécharger en .ts"
   },
   "settings": {
     "title": "Paramètres",
@@ -283,17 +288,21 @@
     "load": "Charger",
     "edit": "Modifier",
     "saveAsPreset": "Enregistrer comme modèle",
-    "savedAsPreset": "Enregistré comme modèle"
+    "savedAsPreset": "Enregistré comme modèle",
+    "importSuccess": "Modèle importé"
   },
   "errors": {
     "mjmlCompile": "Erreur de compilation MJML",
     "invalidTemplate": "Format de modèle invalide",
-    "unknownBlockType": "Type de bloc inconnu : {{type}}"
+    "unknownBlockType": "Type de bloc inconnu : {{type}}",
+    "boundaryTitle": "Erreur dans : {{label}}",
+    "boundaryRetry": "Réessayer"
   },
   "about": {
     "title": "À propos de Visemte",
     "version": "Version",
     "build": "Build",
+    "platform": "Plateforme",
     "author": "Auteur",
     "license": "Licence",
     "description": "Créateur de modèles d'e-mail pour créer des e-mails responsifs",

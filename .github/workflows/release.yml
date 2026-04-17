@@ -1,0 +1,134 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    permissions:
+      contents: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # ── macOS ────────────────────────────────────────────────────────────
+          - platform: macos-latest
+            target: universal-apple-darwin
+            args: --target universal-apple-darwin
+            label: macOS Universal (Intel + Apple Silicon)
+
+          - platform: macos-latest
+            target: aarch64-apple-darwin
+            args: --target aarch64-apple-darwin
+            label: macOS Apple Silicon (aarch64)
+
+          - platform: macos-13
+            target: x86_64-apple-darwin
+            args: --target x86_64-apple-darwin
+            label: macOS Intel (x86_64)
+
+          # ── Windows ──────────────────────────────────────────────────────────
+          - platform: windows-latest
+            target: x86_64-pc-windows-msvc
+            args: --target x86_64-pc-windows-msvc
+            label: Windows x64
+
+          - platform: windows-latest
+            target: aarch64-pc-windows-msvc
+            args: --target aarch64-pc-windows-msvc
+            label: Windows ARM64
+
+          # ── Linux ────────────────────────────────────────────────────────────
+          - platform: ubuntu-22.04
+            target: x86_64-unknown-linux-gnu
+            args: --target x86_64-unknown-linux-gnu
+            label: Linux amd64
+
+          - platform: ubuntu-22.04-arm
+            target: aarch64-unknown-linux-gnu
+            args: --target aarch64-unknown-linux-gnu
+            label: Linux arm64
+
+    runs-on: ${{ matrix.platform }}
+    name: Build – ${{ matrix.label }}
+
+    steps:
+      # ── Checkout ─────────────────────────────────────────────────────────────
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # ── Node.js ──────────────────────────────────────────────────────────────
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # ── pnpm ─────────────────────────────────────────────────────────────────
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
+
+      - name: Install frontend dependencies
+        run: pnpm install
+
+      # ── Rust ─────────────────────────────────────────────────────────────────
+      - name: Setup Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - name: Cache Rust dependencies
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+
+      # ── Linux system dependencies ────────────────────────────────────────────
+      - name: Install Linux system dependencies
+        if: startsWith(matrix.platform, 'ubuntu')
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libwebkit2gtk-4.1-dev \
+            libappindicator3-dev \
+            librsvg2-dev \
+            patchelf
+
+      # ── macOS: add second arch target for universal build ────────────────────
+      - name: Add x86_64 target for universal build (macOS)
+        if: matrix.target == 'universal-apple-darwin'
+        run: rustup target add x86_64-apple-darwin aarch64-apple-darwin
+
+      # ── Build ────────────────────────────────────────────────────────────────
+      - name: Build Tauri app
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ github.ref_name }}
+          releaseName: 'Visemte ${{ github.ref_name }}'
+          releaseBody: |
+            ## Visemte ${{ github.ref_name }}
+
+            ### Downloads
+            | Platform | File |
+            |---|---|
+            | macOS Universal | `visemte-*-universal.dmg` |
+            | macOS Apple Silicon | `visemte-*-aarch64.dmg` |
+            | macOS Intel | `visemte-*-x86_64.dmg` |
+            | Windows x64 | `visemte-*-x64-setup.exe` |
+            | Windows ARM64 | `visemte-*-arm64-setup.exe` |
+            | Linux amd64 | `visemte-*-amd64.deb` / `.AppImage` |
+            | Linux arm64 | `visemte-*-arm64.deb` / `.AppImage` |
+          releaseDraft: true
+          prerelease: false
+          args: ${{ matrix.args }}
+
+      # ── Rename bundles (macOS DMG only) ──────────────────────────────────────
+      - name: Rename bundle files
+        if: runner.os == 'macOS'
+        run: node scripts/rename-bundles.mjs

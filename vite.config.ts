@@ -5,18 +5,18 @@ import pkg from './package.json'
 
 export default defineConfig({
   define: {
-    __APP_NAME__:    JSON.stringify(pkg.name    ?? ''),
+    __APP_NAME__:    JSON.stringify(pkg.name),
     __APP_VERSION__: JSON.stringify(pkg.version),
-    __APP_BUILD__:   JSON.stringify(pkg.build   ?? ''),
-    __APP_AUTHOR__:  JSON.stringify(pkg.author  ?? ''),
-    __APP_LICENSE__: JSON.stringify(pkg.license ?? ''),
+    __APP_BUILD__:   JSON.stringify((pkg as Record<string, unknown>)['build'] ?? ''),
+    __APP_AUTHOR__:  JSON.stringify((pkg as Record<string, unknown>)['author'] ?? ''),
+    __APP_LICENSE__: JSON.stringify((pkg as Record<string, unknown>)['license'] ?? ''),
   },
   plugins: [
     tailwindcss(),
     react(),
     {
       name: 'html-replace',
-      transformIndexHtml: (html) => html.replace('%APP_NAME%', pkg.name ?? ''),
+      transformIndexHtml: (html) => html.replace('%APP_NAME%', pkg.name),
     },
   ],
   resolve: {

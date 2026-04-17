@@ -8,7 +8,9 @@ export function useClipboard(timeout = 2000) {
       try {
         await navigator.clipboard.writeText(text)
         setCopied(true)
-        setTimeout(() => setCopied(false), timeout)
+        setTimeout(() => {
+          setCopied(false)
+        }, timeout)
       } catch {
         // Fallback for older browsers
         const textarea = document.createElement('textarea')
@@ -17,10 +19,13 @@ export function useClipboard(timeout = 2000) {
         textarea.style.opacity = '0'
         document.body.appendChild(textarea)
         textarea.select()
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         document.execCommand('copy')
         document.body.removeChild(textarea)
         setCopied(true)
-        setTimeout(() => setCopied(false), timeout)
+        setTimeout(() => {
+          setCopied(false)
+        }, timeout)
       }
     },
     [timeout],

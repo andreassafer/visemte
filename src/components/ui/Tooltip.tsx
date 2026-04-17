@@ -12,23 +12,28 @@ interface TooltipProps {
 const GAP = 8
 
 export function Tooltip({ label, children, side = 'bottom', sideOffset = GAP }: TooltipProps) {
-  const wrapperRef                = useRef<HTMLDivElement>(null)
-  const tooltipRef                = useRef<HTMLDivElement>(null)
-  const [visible, setVisible]     = useState(false)
-  const [pos, setPos]             = useState<{ top: number; left: number } | null>(null)
-  const timerRef                  = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const wrapperRef = useRef<HTMLDivElement>(null)
+  const tooltipRef = useRef<HTMLDivElement>(null)
+  const [visible, setVisible] = useState(false)
+  const [pos, setPos] = useState<{ top: number; left: number } | null>(null)
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // ── top mode: follow mouse ─────────────────────────────────────────────────
-  const [mouse, setMouse]         = useState<{ x: number; y: number } | null>(null)
+  const [mouse, setMouse] = useState<{ x: number; y: number } | null>(null)
   const [finalLeft, setFinalLeft] = useState<number | null>(null)
 
   const handleMouseEnter = (e: React.MouseEvent) => {
     if (side === 'top') setMouse({ x: e.clientX, y: e.clientY })
-    timerRef.current = setTimeout(() => setVisible(true), 400)
+    timerRef.current = setTimeout(() => {
+      setVisible(true)
+    }, 400)
   }
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (side === 'top') { setMouse({ x: e.clientX, y: e.clientY }); setFinalLeft(null) }
+    if (side === 'top') {
+      setMouse({ x: e.clientX, y: e.clientY })
+      setFinalLeft(null)
+    }
   }
 
   const handleMouseLeave = () => {
@@ -59,7 +64,12 @@ export function Tooltip({ label, children, side = 'bottom', sideOffset = GAP }: 
     setFinalLeft(clamped)
   }, [visible, side, mouse])
 
-  useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current) }, [])
+  useEffect(
+    () => () => {
+      if (timerRef.current) clearTimeout(timerRef.current)
+    },
+    [],
+  )
 
   const tooltipNode = (() => {
     if (!visible || !label) return null

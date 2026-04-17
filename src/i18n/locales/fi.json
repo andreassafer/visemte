@@ -22,7 +22,8 @@
       "enableBlock": "Ota käyttöön",
       "collapse": "Pienennä",
       "expand": "Laajenna",
-      "integrate": "Lisää"
+      "integrate": "Lisää",
+      "renameTemplate": "Nimeä malli uudelleen"
     },
     "toolbar": {
       "undo": "Kumoa (Ctrl+Z)",
@@ -64,7 +65,9 @@
     "palette": {
       "title": "Lohkot",
       "expand": "Laajenna paneeli",
-      "collapse": "Tiivistä paneeli"
+      "collapse": "Tiivistä paneeli",
+      "search": "Haku…",
+      "noResults": "Lohkoja ei löydy"
     },
     "properties": {
       "title": "Yleiset ominaisuudet",
@@ -129,7 +132,7 @@
       "imagePlaceholder": "Lisää kuva tähän",
       "srcPlaceholder": "https://... tai...",
       "altPlaceholder": "Alt-teksti saavutettavuutta varten",
-      "buttonTextPlaceholder": "Klikkaa tästä",
+      "buttonTextPlaceholder": "Klikkaa",
       "hrefPlaceholder": "https://example.com",
       "top": "Ylhäällä",
       "bottom": "Alhaalla",
@@ -258,7 +261,9 @@
     "copyMjml": "Kopioi MJML",
     "descJson": "Malli uudelleentuontia varten",
     "descMjml": "Lähdekoodi MJML-kehykselle",
-    "descHtml": "Valmis HTML-koodi sähköpostiohjelmille"
+    "descHtml": "Valmis HTML-koodi sähköpostiohjelmille",
+    "descTs": "TypeScript-lähdekoodi kohteelle src/templates/",
+    "downloadTs": "Lataa .ts-tiedostona"
   },
   "settings": {
     "title": "Asetukset",
@@ -283,17 +288,21 @@
     "load": "Lataa",
     "edit": "Muokkaa",
     "saveAsPreset": "Tallenna mallina",
-    "savedAsPreset": "Tallennettu mallina"
+    "savedAsPreset": "Tallennettu mallina",
+    "importSuccess": "Malli tuotu"
   },
   "errors": {
     "mjmlCompile": "MJML-käännösvirhe",
     "invalidTemplate": "Virheellinen pohjamuoto",
-    "unknownBlockType": "Tuntematon lohkotyyppi: {{type}}"
+    "unknownBlockType": "Tuntematon lohkotyyppi: {{type}}",
+    "boundaryTitle": "Virhe: {{label}}",
+    "boundaryRetry": "Yritä uudelleen"
   },
   "about": {
     "title": "Tietoa Visemtestä",
     "version": "Versio",
     "build": "Koontiversio",
+    "platform": "Alusta",
     "author": "Tekijä",
     "license": "Lisenssi",
     "description": "Mallien luonti-työkalu responsiivisten sähköpostien luomiseen",

@@ -22,7 +22,8 @@
       "enableBlock": "تفعيل",
       "collapse": "طي",
       "expand": "توسيع",
-      "integrate": "دمج"
+      "integrate": "دمج",
+      "renameTemplate": "إعادة تسمية القالب"
     },
     "toolbar": {
       "undo": "تراجع (Ctrl+Z)",
@@ -64,7 +65,9 @@
     "palette": {
       "title": "الكتل",
       "expand": "توسيع اللوحة",
-      "collapse": "طي اللوحة"
+      "collapse": "طي اللوحة",
+      "search": "بحث…",
+      "noResults": "لم يتم العثور على كتل"
     },
     "properties": {
       "title": "الخصائص العامة",
@@ -129,7 +132,7 @@
       "imagePlaceholder": "أدرج الصورة هنا",
       "srcPlaceholder": "https://... أو...",
       "altPlaceholder": "النص البديل لإمكانية الوصول",
-      "buttonTextPlaceholder": "انقر هنا",
+      "buttonTextPlaceholder": "اضغط هنا",
       "hrefPlaceholder": "https://example.com",
       "top": "أعلى",
       "bottom": "أسفل",
@@ -258,7 +261,9 @@
     "copyMjml": "نسخ MJML",
     "descJson": "قالب لإعادة الاستيراد",
     "descMjml": "الكود المصدري لإطار عمل MJML",
-    "descHtml": "كود HTML جاهز لعملاء البريد الإلكتروني"
+    "descHtml": "كود HTML جاهز لعملاء البريد الإلكتروني",
+    "descTs": "كود TypeScript لـ src/templates/",
+    "downloadTs": "تنزيل كـ .ts"
   },
   "settings": {
     "title": "الإعدادات",
@@ -283,17 +288,21 @@
     "load": "تحميل",
     "edit": "تحرير",
     "saveAsPreset": "حفظ كقالب",
-    "savedAsPreset": "تم الحفظ كقالب"
+    "savedAsPreset": "تم الحفظ كقالب",
+    "importSuccess": "تم استيراد القالب"
   },
   "errors": {
     "mjmlCompile": "خطأ في تجميع MJML",
     "invalidTemplate": "تنسيق قالب غير صالح",
-    "unknownBlockType": "نوع كتلة غير معروف: {{type}}"
+    "unknownBlockType": "نوع كتلة غير معروف: {{type}}",
+    "boundaryTitle": "خطأ في: {{label}}",
+    "boundaryRetry": "إعادة المحاولة"
   },
   "about": {
     "title": "حول Visemte",
     "version": "الإصدار",
     "build": "البنية",
+    "platform": "المنصة",
     "author": "المؤلف",
     "license": "الترخيص",
     "description": "منشئ قوالب للإنشاء رسائل بريد إلكتروني متجاوبة",

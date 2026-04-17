@@ -22,7 +22,8 @@
       "enableBlock": "Omogoči",
       "collapse": "Skrči",
       "expand": "Razširi",
-      "integrate": "Integriraj"
+      "integrate": "Integriraj",
+      "renameTemplate": "Preimenuj predlogo"
     },
     "toolbar": {
       "undo": "Razveljavi (Ctrl+Z)",
@@ -64,7 +65,9 @@
     "palette": {
       "title": "Bloki",
       "expand": "Razširi ploščo",
-      "collapse": "Strni ploščo"
+      "collapse": "Strni ploščo",
+      "search": "Iskanje…",
+      "noResults": "Ni najdenih blokov"
     },
     "properties": {
       "title": "Globalne lastnosti",
@@ -129,7 +132,7 @@
       "imagePlaceholder": "Vstavi sliko sem",
       "srcPlaceholder": "https://... ali...",
       "altPlaceholder": "Nadomestno besedilo za dostopnost",
-      "buttonTextPlaceholder": "Kliknite tukaj",
+      "buttonTextPlaceholder": "Kliknite",
       "hrefPlaceholder": "https://example.com",
       "top": "Zgoraj",
       "bottom": "Spodaj",
@@ -258,7 +261,9 @@
     "copyMjml": "Kopiraj MJML",
     "descJson": "Predloga za ponovni uvoz",
     "descMjml": "Izvorna koda za ogrodje MJML",
-    "descHtml": "Pripravljena koda HTML za e-poštne odjemalce"
+    "descHtml": "Pripravljena koda HTML za e-poštne odjemalce",
+    "descTs": "Izvorna koda TypeScript za src/templates/",
+    "downloadTs": "Prenesi kot .ts"
   },
   "settings": {
     "title": "Nastavitve",
@@ -283,17 +288,21 @@
     "load": "Naloži",
     "edit": "Uredi",
     "saveAsPreset": "Shrani kot predlogo",
-    "savedAsPreset": "Shranjeno kot predloga"
+    "savedAsPreset": "Shranjeno kot predloga",
+    "importSuccess": "Predloga uvožena"
   },
   "errors": {
     "mjmlCompile": "Napaka pri prevajanju MJML",
     "invalidTemplate": "Neveljavna oblika predloge",
-    "unknownBlockType": "Neznana vrsta bloka: {{type}}"
+    "unknownBlockType": "Neznana vrsta bloka: {{type}}",
+    "boundaryTitle": "Napaka v: {{label}}",
+    "boundaryRetry": "Poskusi znova"
   },
   "about": {
     "title": "O aplikaciji Visemte",
     "version": "Različica",
     "build": "Gradnja",
+    "platform": "Platforma",
     "author": "Avtor",
     "license": "Licenca",
     "description": "Generator predlog za ustvarjanje odzivnih e-sporočil",

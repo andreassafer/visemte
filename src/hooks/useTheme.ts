@@ -11,7 +11,9 @@ function applyTheme(mode: ThemeMode) {
   const resolved = mode === 'auto' ? getSystemTheme() : mode
   const vars = THEME_VARS[resolved]
   const root = document.documentElement
-  Object.entries(vars).forEach(([key, value]) => root.style.setProperty(key, value))
+  Object.entries(vars).forEach(([key, value]) => {
+    root.style.setProperty(key, value)
+  })
   root.setAttribute('data-theme', resolved)
 }
 
@@ -46,9 +48,13 @@ export function useTheme() {
   useEffect(() => {
     if (theme !== 'auto') return
     const mq = window.matchMedia('(prefers-color-scheme: dark)')
-    const handler = () => applyTheme('auto')
+    const handler = () => {
+      applyTheme('auto')
+    }
     mq.addEventListener('change', handler)
-    return () => mq.removeEventListener('change', handler)
+    return () => {
+      mq.removeEventListener('change', handler)
+    }
   }, [theme])
 
   return { theme, accentColor, setTheme, setAccentColor }

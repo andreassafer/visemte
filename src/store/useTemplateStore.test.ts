@@ -5,7 +5,7 @@ vi.mock('@/i18n', () => ({
 }))
 
 import { useTemplateStore } from './useTemplateStore'
-import type { EmailTemplate } from '@/types'
+import type { EmailTemplate, EmailBlock } from '@/types'
 
 // Reset store state before each test
 const resetStore = () => {
@@ -16,7 +16,7 @@ const resetStore = () => {
   })
   useTemplateStore.getState().openNewTab()
   const state = useTemplateStore.getState()
-  useTemplateStore.setState({ activeTabId: state.tabs[0]!.id })
+  useTemplateStore.setState({ activeTabId: state.tabs[0].id })
 }
 
 const getState = () => useTemplateStore.getState()
@@ -39,14 +39,14 @@ describe('useTemplateStore', () => {
       getState().openNewTab()
       const state = getState()
       expect(state.tabs).toHaveLength(2)
-      expect(state.activeTabId).toBe(state.tabs[1]!.id)
+      expect(state.activeTabId).toBe(state.tabs[1].id)
     })
 
     it('setActiveTab switches the active tab', () => {
       getState().openNewTab()
       const [first] = getState().tabs
-      getState().setActiveTab(first!.id)
-      expect(getState().activeTabId).toBe(first!.id)
+      getState().setActiveTab(first.id)
+      expect(getState().activeTabId).toBe(first.id)
     })
 
     it('closeTab removes the tab', () => {
@@ -85,9 +85,9 @@ describe('useTemplateStore', () => {
       const [a, b, c] = getState().tabs
       getState().reorderTabs(0, 2)
       const reordered = getState().tabs
-      expect(reordered[0]!.id).toBe(b!.id)
-      expect(reordered[1]!.id).toBe(c!.id)
-      expect(reordered[2]!.id).toBe(a!.id)
+      expect(reordered[0].id).toBe(b.id)
+      expect(reordered[1].id).toBe(c.id)
+      expect(reordered[2].id).toBe(a.id)
     })
   })
 
@@ -97,14 +97,14 @@ describe('useTemplateStore', () => {
     it('appends a block to the active template', () => {
       getState().addBlock('text')
       expect(getActive().blocks).toHaveLength(1)
-      expect(getActive().blocks[0]!.type).toBe('text')
+      expect(getActive().blocks[0].type).toBe('text')
     })
 
     it('inserts a block at a specified index', () => {
       getState().addBlock('text')
       getState().addBlock('image')
       getState().addBlock('button', 1)
-      expect(getActive().blocks[1]!.type).toBe('button')
+      expect(getActive().blocks[1].type).toBe('button')
     })
 
     it('assigns a unique id to each block', () => {
@@ -132,21 +132,21 @@ describe('useTemplateStore', () => {
   describe('removeBlock', () => {
     it('removes a top-level block by id', () => {
       getState().addBlock('text')
-      const id = getActive().blocks[0]!.id
+      const id = getActive().blocks[0].id
       getState().removeBlock(id)
       expect(getActive().blocks).toHaveLength(0)
     })
 
     it('removes a block inside a columns block', () => {
       getState().addBlock('columns')
-      const colBlock = getActive().blocks[0]!
+      const colBlock = getActive().blocks[0]
       getState().addBlockToColumn(colBlock.id, 0, 'text')
-      const colBlocks = colBlock.props['columnBlocks'] as import('@/types').EmailBlock[][]
+      const colBlocks = colBlock.props['columnBlocks'] as EmailBlock[][]
       // Re-read state after addBlockToColumn
-      const updatedColBlock = getActive().blocks[0]!
-      const childId = (updatedColBlock.props['columnBlocks'] as import('@/types').EmailBlock[][])[0]![0]!.id
+      const updatedColBlock = getActive().blocks[0]
+      const childId = (updatedColBlock.props['columnBlocks'] as EmailBlock[][])[0][0].id
       getState().removeBlock(childId)
-      const finalCol = (getActive().blocks[0]!.props['columnBlocks'] as import('@/types').EmailBlock[][])[0]!
+      const finalCol = (getActive().blocks[0].props['columnBlocks'] as EmailBlock[][])[0]
       expect(finalCol).toHaveLength(0)
       void colBlocks // used to avoid lint warning
     })
@@ -155,18 +155,18 @@ describe('useTemplateStore', () => {
   describe('updateBlock', () => {
     it('updates props of a top-level block', () => {
       getState().addBlock('text')
-      const id = getActive().blocks[0]!.id
+      const id = getActive().blocks[0].id
       getState().updateBlock(id, { props: { content: 'Updated text' } })
-      expect(getActive().blocks[0]!.props['content']).toBe('Updated text')
+      expect(getActive().blocks[0].props['content']).toBe('Updated text')
     })
 
     it('updates props of a block inside a columns block', () => {
       getState().addBlock('columns')
-      const colBlockId = getActive().blocks[0]!.id
+      const colBlockId = getActive().blocks[0].id
       getState().addBlockToColumn(colBlockId, 0, 'text')
-      const childId = (getActive().blocks[0]!.props['columnBlocks'] as import('@/types').EmailBlock[][])[0]![0]!.id
+      const childId = (getActive().blocks[0].props['columnBlocks'] as EmailBlock[][])[0][0].id
       getState().updateBlock(childId, { props: { content: 'Column text' } })
-      const child = (getActive().blocks[0]!.props['columnBlocks'] as import('@/types').EmailBlock[][])[0]![0]!
+      const child = (getActive().blocks[0].props['columnBlocks'] as EmailBlock[][])[0][0]
       expect(child.props['content']).toBe('Column text')
     })
   })
@@ -178,33 +178,33 @@ describe('useTemplateStore', () => {
       getState().addBlock('button')
       getState().reorderBlocks(0, 2)
       const blocks = getActive().blocks
-      expect(blocks[0]!.type).toBe('image')
-      expect(blocks[1]!.type).toBe('button')
-      expect(blocks[2]!.type).toBe('text')
+      expect(blocks[0].type).toBe('image')
+      expect(blocks[1].type).toBe('button')
+      expect(blocks[2].type).toBe('text')
     })
   })
 
   describe('duplicateBlock', () => {
     it('duplicates a top-level block and inserts it after the original', () => {
       getState().addBlock('text')
-      const origId = getActive().blocks[0]!.id
+      const origId = getActive().blocks[0].id
       const newId = 'new-duplicate-id'
       getState().duplicateBlock(origId, newId)
       const blocks = getActive().blocks
       expect(blocks).toHaveLength(2)
-      expect(blocks[1]!.id).toBe(newId)
-      expect(blocks[1]!.type).toBe('text')
+      expect(blocks[1].id).toBe(newId)
+      expect(blocks[1].type).toBe('text')
     })
 
     it('duplicates a block inside a column', () => {
       getState().addBlock('columns')
-      const colBlockId = getActive().blocks[0]!.id
+      const colBlockId = getActive().blocks[0].id
       getState().addBlockToColumn(colBlockId, 0, 'text')
-      const childId = (getActive().blocks[0]!.props['columnBlocks'] as import('@/types').EmailBlock[][])[0]![0]!.id
+      const childId = (getActive().blocks[0].props['columnBlocks'] as EmailBlock[][])[0][0].id
       getState().duplicateBlock(childId, 'dup-child')
-      const col = (getActive().blocks[0]!.props['columnBlocks'] as import('@/types').EmailBlock[][])[0]!
+      const col = (getActive().blocks[0].props['columnBlocks'] as EmailBlock[][])[0]
       expect(col).toHaveLength(2)
-      expect(col[1]!.id).toBe('dup-child')
+      expect(col[1].id).toBe('dup-child')
     })
   })
 
@@ -304,7 +304,7 @@ describe('useTemplateStore', () => {
       getState().undo()
       getState().addBlock('image')
       getState().redo()
-      expect(getActive().blocks[0]!.type).toBe('image')
+      expect(getActive().blocks[0].type).toBe('image')
     })
 
     it('multiple undos traverse the history stack correctly', () => {
@@ -329,44 +329,44 @@ describe('useTemplateStore', () => {
   describe('column operations', () => {
     it('addBlockToColumn inserts a block into the correct column', () => {
       getState().addBlock('columns')
-      const colBlockId = getActive().blocks[0]!.id
+      const colBlockId = getActive().blocks[0].id
       getState().addBlockToColumn(colBlockId, 1, 'image')
-      const cols = getActive().blocks[0]!.props['columnBlocks'] as import('@/types').EmailBlock[][]
+      const cols = getActive().blocks[0].props['columnBlocks'] as EmailBlock[][]
       expect(cols[0]).toHaveLength(0)
       expect(cols[1]).toHaveLength(1)
-      expect(cols[1]![0]!.type).toBe('image')
+      expect(cols[1][0].type).toBe('image')
     })
 
     it('removeBlockFromColumn removes the correct block', () => {
       getState().addBlock('columns')
-      const colBlockId = getActive().blocks[0]!.id
+      const colBlockId = getActive().blocks[0].id
       getState().addBlockToColumn(colBlockId, 0, 'text')
-      const childId = (getActive().blocks[0]!.props['columnBlocks'] as import('@/types').EmailBlock[][])[0]![0]!.id
+      const childId = (getActive().blocks[0].props['columnBlocks'] as EmailBlock[][])[0][0].id
       getState().removeBlockFromColumn(colBlockId, 0, childId)
-      const cols = getActive().blocks[0]!.props['columnBlocks'] as import('@/types').EmailBlock[][]
+      const cols = getActive().blocks[0].props['columnBlocks'] as EmailBlock[][]
       expect(cols[0]).toHaveLength(0)
     })
 
     it('reorderBlocksInColumn moves blocks within the same column', () => {
       getState().addBlock('columns')
-      const colBlockId = getActive().blocks[0]!.id
+      const colBlockId = getActive().blocks[0].id
       getState().addBlockToColumn(colBlockId, 0, 'text')
       getState().addBlockToColumn(colBlockId, 0, 'image')
       getState().reorderBlocksInColumn(colBlockId, 0, 0, 1)
-      const col = (getActive().blocks[0]!.props['columnBlocks'] as import('@/types').EmailBlock[][])[0]!
-      expect(col[0]!.type).toBe('image')
-      expect(col[1]!.type).toBe('text')
+      const col = (getActive().blocks[0].props['columnBlocks'] as EmailBlock[][])[0]
+      expect(col[0].type).toBe('image')
+      expect(col[1].type).toBe('text')
     })
 
     it('moveBlockBetweenColumns moves a block from one column to another', () => {
       getState().addBlock('columns')
-      const colBlockId = getActive().blocks[0]!.id
+      const colBlockId = getActive().blocks[0].id
       getState().addBlockToColumn(colBlockId, 0, 'text')
       getState().moveBlockBetweenColumns(colBlockId, 0, 0, 1, 0)
-      const cols = getActive().blocks[0]!.props['columnBlocks'] as import('@/types').EmailBlock[][]
+      const cols = getActive().blocks[0].props['columnBlocks'] as EmailBlock[][]
       expect(cols[0]).toHaveLength(0)
       expect(cols[1]).toHaveLength(1)
-      expect(cols[1]![0]!.type).toBe('text')
+      expect(cols[1][0].type).toBe('text')
     })
   })
 })

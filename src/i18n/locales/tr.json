@@ -22,7 +22,8 @@
       "enableBlock": "Etkinleştir",
       "collapse": "Daralt",
       "expand": "Genişlet",
-      "integrate": "Entegre et"
+      "integrate": "Entegre et",
+      "renameTemplate": "Şablonu yeniden adlandır"
     },
     "toolbar": {
       "undo": "Geri Al (Ctrl+Z)",
@@ -64,7 +65,9 @@
     "palette": {
       "title": "Bloklar",
       "expand": "Paneli genişlet",
-      "collapse": "Paneli daralt"
+      "collapse": "Paneli daralt",
+      "search": "Ara…",
+      "noResults": "Blok bulunamadı"
     },
     "properties": {
       "title": "Genel özellikler",
@@ -129,7 +132,7 @@
       "imagePlaceholder": "Resmi buraya ekle",
       "srcPlaceholder": "https://... veya...",
       "altPlaceholder": "Erişilebilirlik için alternatif metin",
-      "buttonTextPlaceholder": "Buraya tıklayın",
+      "buttonTextPlaceholder": "Tıkla",
       "hrefPlaceholder": "https://example.com",
       "top": "Üst",
       "bottom": "Alt",
@@ -258,7 +261,9 @@
     "copyMjml": "MJML'yi kopyala",
     "descJson": "Yeniden içe aktarma için şablon",
     "descMjml": "MJML çerçevesi için kaynak kodu",
-    "descHtml": "E-posta istemcileri için hazır HTML kodu"
+    "descHtml": "E-posta istemcileri için hazır HTML kodu",
+    "descTs": "src/templates/ için TypeScript kaynak kodu",
+    "downloadTs": ".ts olarak indir"
   },
   "settings": {
     "title": "Ayarlar",
@@ -283,17 +288,21 @@
     "load": "Yükle",
     "edit": "Düzenle",
     "saveAsPreset": "Şablon olarak kaydet",
-    "savedAsPreset": "Şablon olarak kaydedildi"
+    "savedAsPreset": "Şablon olarak kaydedildi",
+    "importSuccess": "Şablon içe aktarıldı"
   },
   "errors": {
     "mjmlCompile": "MJML derleme hatası",
     "invalidTemplate": "Geçersiz şablon biçimi",
-    "unknownBlockType": "Bilinmeyen blok türü: {{type}}"
+    "unknownBlockType": "Bilinmeyen blok türü: {{type}}",
+    "boundaryTitle": "Hata: {{label}}",
+    "boundaryRetry": "Tekrar dene"
   },
   "about": {
     "title": "Visemte Hakkında",
     "version": "Sürüm",
     "build": "Derleme",
+    "platform": "Platform",
     "author": "Yazar",
     "license": "Lisans",
     "description": "Duyarlı e-postalar oluşturmak için şablon oluşturucu",

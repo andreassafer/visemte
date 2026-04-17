@@ -1,4 +1,13 @@
-import { useState, useRef, useEffect, type ReactNode, type InputHTMLAttributes, type SelectHTMLAttributes, type TextareaHTMLAttributes, type ChangeEvent } from 'react'
+import {
+  useState,
+  useRef,
+  useEffect,
+  type ReactNode,
+  type InputHTMLAttributes,
+  type SelectHTMLAttributes,
+  type TextareaHTMLAttributes,
+  type ChangeEvent,
+} from 'react'
 import { useTranslation } from 'react-i18next'
 
 interface FormFieldProps {
@@ -10,10 +19,7 @@ interface FormFieldProps {
 export function FormField({ label, children, htmlFor }: FormFieldProps) {
   return (
     <div className="flex flex-col gap-1">
-      <label
-        htmlFor={htmlFor}
-        className="text-xs font-medium text-gray-500 dark:text-gray-400"
-      >
+      <label htmlFor={htmlFor} className="text-xs font-medium text-gray-500 dark:text-gray-400">
         {label}
       </label>
       {children}
@@ -48,10 +54,28 @@ export function Textarea({ className, ...props }: TextareaProps) {
 // ─── Format buttons (B / I / U / S) for textarea fields ──────────────────────
 
 const FORMAT_ITEMS = [
-  { open: '<strong>', close: '</strong>', label: 'B', titleKey: 'editor.properties.bold',          cls: 'font-bold' },
-  { open: '<em>',     close: '</em>',     label: 'I', titleKey: 'editor.properties.italic',        cls: 'italic' },
-  { open: '<u>',      close: '</u>',      label: 'U', titleKey: 'editor.properties.underline',     cls: 'underline' },
-  { open: '<s>',      close: '</s>',      label: 'S', titleKey: 'editor.properties.strikethrough', cls: 'line-through' },
+  {
+    open: '<strong>',
+    close: '</strong>',
+    label: 'B',
+    titleKey: 'editor.properties.bold',
+    cls: 'font-bold',
+  },
+  { open: '<em>', close: '</em>', label: 'I', titleKey: 'editor.properties.italic', cls: 'italic' },
+  {
+    open: '<u>',
+    close: '</u>',
+    label: 'U',
+    titleKey: 'editor.properties.underline',
+    cls: 'underline',
+  },
+  {
+    open: '<s>',
+    close: '</s>',
+    label: 'S',
+    titleKey: 'editor.properties.strikethrough',
+    cls: 'line-through',
+  },
 ] as const
 
 interface FormatButtonsProps {
@@ -65,13 +89,14 @@ export function FormatButtons({ id, onWrap }: FormatButtonsProps) {
   const handle = (open: string, close: string) => {
     const el = document.getElementById(id) as HTMLTextAreaElement | null
     if (!el) return
-    const s = el.selectionStart, e = el.selectionEnd
+    const s = el.selectionStart,
+      e = el.selectionEnd
     const newVal = el.value.slice(0, s) + open + el.value.slice(s, e) + close + el.value.slice(e)
     onWrap(newVal)
     requestAnimationFrame(() => {
       el.focus()
       el.selectionStart = s + open.length
-      el.selectionEnd   = e + open.length
+      el.selectionEnd = e + open.length
     })
   }
 
@@ -82,7 +107,10 @@ export function FormatButtons({ id, onWrap }: FormatButtonsProps) {
           key={label}
           type="button"
           title={t(titleKey)}
-          onMouseDown={(ev) => { ev.preventDefault(); handle(open, close) }}
+          onMouseDown={(ev) => {
+            ev.preventDefault()
+            handle(open, close)
+          }}
           className={`flex h-5 w-5 items-center justify-center rounded text-xs text-gray-400 hover:bg-gray-100 hover:text-gray-600 dark:text-gray-500 dark:hover:bg-gray-700 dark:hover:text-gray-300 ${cls}`}
         >
           {label}
@@ -116,14 +144,21 @@ interface OptionalColorInputProps {
   onChange: (value: string) => void
   activateLabel?: string
 }
-export function OptionalColorInput({ id, value, onChange, activateLabel }: OptionalColorInputProps) {
+export function OptionalColorInput({
+  id,
+  value,
+  onChange,
+  activateLabel,
+}: OptionalColorInputProps) {
   const { t } = useTranslation()
   const label = activateLabel ?? t('common.global')
   if (!value) {
     return (
       <button
         type="button"
-        onClick={() => onChange('#000000')}
+        onClick={() => {
+          onChange('#000000')
+        }}
         className="w-full rounded border border-dashed border-gray-200 py-1 text-sm text-gray-400 hover:border-gray-300 hover:text-gray-500 dark:border-gray-600 dark:hover:border-gray-500"
       >
         {label}
@@ -136,12 +171,16 @@ export function OptionalColorInput({ id, value, onChange, activateLabel }: Optio
         <ColorInput
           id={id}
           value={value}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={(e) => {
+            onChange(e.target.value)
+          }}
         />
       </div>
       <button
         type="button"
-        onClick={() => onChange('')}
+        onClick={() => {
+          onChange('')
+        }}
         className="shrink-0 rounded px-1.5 py-1 text-xs text-gray-400 hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-300"
         title={label}
       >
@@ -153,14 +192,19 @@ export function OptionalColorInput({ id, value, onChange, activateLabel }: Optio
 
 // ─── Color picker utilities ───────────────────────────────────────────────────
 
-function isValidHex(s: string): s is string { return /^#[0-9a-fA-F]{6}$/.test(s) }
+function isValidHex(s: string): s is string {
+  return /^#[0-9a-fA-F]{6}$/.test(s)
+}
 
 function hexToHsv(hex: string): [number, number, number] {
   const r = parseInt(hex.slice(1, 3), 16) / 255
   const g = parseInt(hex.slice(3, 5), 16) / 255
   const b = parseInt(hex.slice(5, 7), 16) / 255
-  const max = Math.max(r, g, b), min = Math.min(r, g, b), d = max - min
-  const v = max, s = max === 0 ? 0 : d / max
+  const max = Math.max(r, g, b),
+    min = Math.min(r, g, b),
+    d = max - min
+  const v = max,
+    s = max === 0 ? 0 : d / max
   let h = 0
   if (d !== 0) {
     if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) / 6
@@ -171,10 +215,29 @@ function hexToHsv(hex: string): [number, number, number] {
 }
 
 function hsvToHex(h: number, s: number, v: number): string {
-  const hi = Math.floor(h / 60) % 6, f = h / 60 - Math.floor(h / 60)
-  const p = v * (1 - s), q = v * (1 - f * s), t = v * (1 - (1 - f) * s)
-  const parts = [[v,t,p],[q,v,p],[p,v,t],[p,q,v],[t,p,v],[v,p,q]][hi]
-  return '#' + parts.map(x => Math.round(x * 255).toString(16).padStart(2, '0')).join('')
+  const hi = Math.floor(h / 60) % 6,
+    f = h / 60 - Math.floor(h / 60)
+  const p = v * (1 - s),
+    q = v * (1 - f * s),
+    t = v * (1 - (1 - f) * s)
+  const parts = [
+    [v, t, p],
+    [q, v, p],
+    [p, v, t],
+    [p, q, v],
+    [t, p, v],
+    [v, p, q],
+  ][hi]
+  return (
+    '#' +
+    parts
+      .map((x) =>
+        Math.round(x * 255)
+          .toString(16)
+          .padStart(2, '0'),
+      )
+      .join('')
+  )
 }
 
 // ─── Custom color picker ──────────────────────────────────────────────────────
@@ -203,7 +266,9 @@ export function ColorInput({ value, onChange, id }: InputProps) {
       if (popRef.current && !popRef.current.contains(e.target as Node)) setOpen(false)
     }
     document.addEventListener('mousedown', handler)
-    return () => document.removeEventListener('mousedown', handler)
+    return () => {
+      document.removeEventListener('mousedown', handler)
+    }
   }, [open])
 
   const emit = (hex: string) => {
@@ -211,12 +276,19 @@ export function ColorInput({ value, onChange, id }: InputProps) {
     onChange?.({ target: { value: hex } } as ChangeEvent<HTMLInputElement>)
   }
 
-  const applyHsv = (next: [number, number, number]) => { setHsv(next); emit(hsvToHex(...next)) }
+  const applyHsv = (next: [number, number, number]) => {
+    setHsv(next)
+    emit(hsvToHex(...next))
+  }
 
   const getSb = (e: { clientX: number; clientY: number }) => {
     if (!sbRef.current) return
     const r = sbRef.current.getBoundingClientRect()
-    applyHsv([hsv[0], Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)), Math.max(0, Math.min(1, 1 - (e.clientY - r.top) / r.height))])
+    applyHsv([
+      hsv[0],
+      Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)),
+      Math.max(0, Math.min(1, 1 - (e.clientY - r.top) / r.height)),
+    ])
   }
   const getHue = (e: { clientX: number }) => {
     if (!hueRef.current) return
@@ -231,7 +303,9 @@ export function ColorInput({ value, onChange, id }: InputProps) {
     <div className="relative flex items-center gap-2">
       <button
         type="button"
-        onClick={() => setOpen(v => !v)}
+        onClick={() => {
+          setOpen((v) => !v)
+        }}
         className="h-7 w-7 shrink-0 cursor-pointer rounded border border-gray-300 dark:border-gray-600"
         style={{ backgroundColor: currentHex }}
         aria-label="Farbe wählen"
@@ -260,10 +334,20 @@ export function ColorInput({ value, onChange, id }: InputProps) {
           <div
             ref={sbRef}
             className="relative mb-2.5 h-36 w-full cursor-crosshair select-none overflow-hidden rounded-lg"
-            style={{ background: `linear-gradient(to top,#000,transparent),linear-gradient(to right,#fff,${hueHex})` }}
-            onPointerDown={(e) => { e.currentTarget.setPointerCapture(e.pointerId); draggingSb.current = true; getSb(e) }}
-            onPointerMove={(e) => { if (draggingSb.current) getSb(e) }}
-            onPointerUp={() => { draggingSb.current = false }}
+            style={{
+              background: `linear-gradient(to top,#000,transparent),linear-gradient(to right,#fff,${hueHex})`,
+            }}
+            onPointerDown={(e) => {
+              e.currentTarget.setPointerCapture(e.pointerId)
+              draggingSb.current = true
+              getSb(e)
+            }}
+            onPointerMove={(e) => {
+              if (draggingSb.current) getSb(e)
+            }}
+            onPointerUp={() => {
+              draggingSb.current = false
+            }}
           >
             <div
               className="pointer-events-none absolute h-3.5 w-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white shadow"
@@ -276,9 +360,17 @@ export function ColorInput({ value, onChange, id }: InputProps) {
             ref={hueRef}
             className="relative mb-2.5 h-3 w-full cursor-pointer select-none overflow-visible rounded-full"
             style={{ background: 'linear-gradient(to right,#f00,#ff0,#0f0,#0ff,#00f,#f0f,#f00)' }}
-            onPointerDown={(e) => { e.currentTarget.setPointerCapture(e.pointerId); draggingHue.current = true; getHue(e) }}
-            onPointerMove={(e) => { if (draggingHue.current) getHue(e) }}
-            onPointerUp={() => { draggingHue.current = false }}
+            onPointerDown={(e) => {
+              e.currentTarget.setPointerCapture(e.pointerId)
+              draggingHue.current = true
+              getHue(e)
+            }}
+            onPointerMove={(e) => {
+              if (draggingHue.current) getHue(e)
+            }}
+            onPointerUp={() => {
+              draggingHue.current = false
+            }}
           >
             <div
               className="pointer-events-none absolute top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white shadow"

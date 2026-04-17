@@ -22,7 +22,8 @@
       "enableBlock": "启用",
       "collapse": "折叠",
       "expand": "展开",
-      "integrate": "插入"
+      "integrate": "插入",
+      "renameTemplate": "重命名模板"
     },
     "toolbar": {
       "undo": "撤销 (Ctrl+Z)",
@@ -64,7 +65,9 @@
     "palette": {
       "title": "区块",
       "expand": "展开面板",
-      "collapse": "收起面板"
+      "collapse": "收起面板",
+      "search": "搜索…",
+      "noResults": "未找到块"
     },
     "properties": {
       "title": "全局属性",
@@ -129,7 +132,7 @@
       "imagePlaceholder": "在此插入图片",
       "srcPlaceholder": "https://... 或...",
       "altPlaceholder": "用于无障碍的替代文本",
-      "buttonTextPlaceholder": "点击这里",
+      "buttonTextPlaceholder": "点击",
       "hrefPlaceholder": "https://example.com",
       "top": "顶部",
       "bottom": "底部",
@@ -258,7 +261,9 @@
     "copyMjml": "复制 MJML",
     "descJson": "用于重新导入的模板",
     "descMjml": "MJML 框架的源代码",
-    "descHtml": "适用于邮件客户端的完整 HTML 代码"
+    "descHtml": "适用于邮件客户端的完整 HTML 代码",
+    "descTs": "src/templates/ 的 TypeScript 源码",
+    "downloadTs": "下载为 .ts"
   },
   "settings": {
     "title": "设置",
@@ -283,17 +288,21 @@
     "load": "加载",
     "edit": "编辑",
     "saveAsPreset": "另存为模板",
-    "savedAsPreset": "已另存为模板"
+    "savedAsPreset": "已另存为模板",
+    "importSuccess": "模板已导入"
   },
   "errors": {
     "mjmlCompile": "MJML 编译错误",
     "invalidTemplate": "无效的模板格式",
-    "unknownBlockType": "未知块类型: {{type}}"
+    "unknownBlockType": "未知块类型: {{type}}",
+    "boundaryTitle": "错误：{{label}}",
+    "boundaryRetry": "重试"
   },
   "about": {
     "title": "关于 Visemte",
     "version": "版本",
     "build": "构建",
+    "platform": "平台",
     "author": "作者",
     "license": "许可证",
     "description": "用于创建响应式电子邮件的模板生成器",
