@@ -1,8 +1,4 @@
-![Visemte - a template generator for creating responsive emails](public/social-preview-visemte-2.jpg)
-
-## Status
-
-The project is currently still under development. A release is planned for 2026.
+![Visemte - a template generator for creating responsive emails](public/social-preview-visemte-1.jpg)
 
 ## Features
 
