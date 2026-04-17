@@ -28,8 +28,7 @@ async function checkForUpdates(t: (key: string, opts?: Record<string, string>) =
     const { ask, message } = await import('@tauri-apps/plugin-dialog')
 
     if (isNewer(latest, CURRENT_VERSION)) {
-      const go = await ask(t('updates.available', { latest, current: CURRENT_VERSION }), {
-        title: 'Visemte',
+      const go = await ask(t('updates.available', { latest }), {
         kind: 'info',
         okLabel: t('updates.downloadBtn'),
         cancelLabel: t('updates.cancelBtn'),
@@ -39,14 +38,13 @@ async function checkForUpdates(t: (key: string, opts?: Record<string, string>) =
         await open(data.html_url)
       }
     } else {
-      await message(t('updates.upToDate', { current: CURRENT_VERSION }), {
-        title: 'Visemte',
+      await message(t('updates.upToDate'), {
         kind: 'info',
       })
     }
   } catch {
     const { message } = await import('@tauri-apps/plugin-dialog')
-    await message(t('updates.error'), { title: 'Visemte', kind: 'error' })
+    await message(t('updates.error'), { kind: 'error' })
   }
 }
 

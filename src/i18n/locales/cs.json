@@ -323,8 +323,8 @@
     "save": "Uložit"
   },
   "updates": {
-    "available": "Verze {{latest}} je dostupná (aktuální: {{current}}).\n\nOtevřít stránku ke stažení?",
-    "upToDate": "Používáte nejnovější verzi {{current}}.",
+    "available": "Na GitHubu je dostupná nová verze ({{latest}}).",
+    "upToDate": "Žádná novější verze není k dispozici.",
     "error": "Kontrola aktualizací selhala. Zkontrolujte připojení k internetu.",
     "downloadBtn": "Stáhnout",
     "cancelBtn": "Zrušit"

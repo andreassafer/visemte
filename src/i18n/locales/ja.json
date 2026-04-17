@@ -323,8 +323,8 @@
     "save": "保存"
   },
   "updates": {
-    "available": "バージョン {{latest}} が利用可能です（現在: {{current}}）。\n\nダウンロードページを開きますか？",
-    "upToDate": "最新バージョン {{current}} を使用しています。",
+    "available": "GitHubで新しいバージョン ({{latest}}) が公開されています。",
+    "upToDate": "新しいバージョンはありません。",
     "error": "アップデートの確認に失敗しました。インターネット接続を確認してください。",
     "downloadBtn": "ダウンロード",
     "cancelBtn": "キャンセル"

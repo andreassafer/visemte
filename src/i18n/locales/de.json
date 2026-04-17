@@ -323,8 +323,8 @@
     "mobile": "Mobile (375px)"
   },
   "updates": {
-    "available": "Version {{latest}} ist verfügbar (aktuell: {{current}}).\n\nZum Download öffnen?",
-    "upToDate": "Visemte ist auf dem neuesten Stand ({{current}}).",
+    "available": "Eine neue Version ({{latest}}) ist auf GitHub verfügbar.",
+    "upToDate": "Keine neuere Version verfügbar.",
     "error": "Update-Prüfung fehlgeschlagen. Bitte Internetverbindung prüfen.",
     "downloadBtn": "Herunterladen",
     "cancelBtn": "Abbrechen"

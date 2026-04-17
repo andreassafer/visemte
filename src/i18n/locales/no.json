@@ -323,8 +323,8 @@
     "save": "Lagre"
   },
   "updates": {
-    "available": "Versjon {{latest}} er tilgjengelig (gjeldende: {{current}}).\n\nÅpne nedlastingssiden?",
-    "upToDate": "Du bruker den nyeste versjonen {{current}}.",
+    "available": "En ny versjon ({{latest}}) er tilgjengelig på GitHub.",
+    "upToDate": "Ingen nyere versjon tilgjengelig.",
     "error": "Oppdateringssjekk mislyktes. Sjekk internettforbindelsen din.",
     "downloadBtn": "Last ned",
     "cancelBtn": "Avbryt"

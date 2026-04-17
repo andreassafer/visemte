@@ -323,8 +323,8 @@
     "save": "Opslaan"
   },
   "updates": {
-    "available": "Versie {{latest}} is beschikbaar (huidig: {{current}}).\n\nDownloadpagina openen?",
-    "upToDate": "U gebruikt de nieuwste versie {{current}}.",
+    "available": "Een nieuwe versie ({{latest}}) is beschikbaar op GitHub.",
+    "upToDate": "Geen nieuwere versie beschikbaar.",
     "error": "Updatecontrole mislukt. Controleer uw internetverbinding.",
     "downloadBtn": "Downloaden",
     "cancelBtn": "Annuleren"

@@ -323,8 +323,8 @@
     "mobile": "Mobile (375px)"
   },
   "updates": {
-    "available": "Version {{latest}} is available (current: {{current}}).\n\nOpen download page?",
-    "upToDate": "You are running the latest version {{current}}.",
+    "available": "A new version ({{latest}}) is available on GitHub.",
+    "upToDate": "No newer version available.",
     "error": "Update check failed. Please check your internet connection.",
     "downloadBtn": "Download",
     "cancelBtn": "Cancel"

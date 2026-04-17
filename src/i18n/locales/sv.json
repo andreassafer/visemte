@@ -323,8 +323,8 @@
     "save": "Spara"
   },
   "updates": {
-    "available": "Version {{latest}} är tillgänglig (nuvarande: {{current}}).\n\nÖppna nedladdningssidan?",
-    "upToDate": "Du använder den senaste versionen {{current}}.",
+    "available": "En ny version ({{latest}}) finns tillgänglig på GitHub.",
+    "upToDate": "Ingen nyare version tillgänglig.",
     "error": "Uppdateringskontroll misslyckades. Kontrollera din internetanslutning.",
     "downloadBtn": "Ladda ned",
     "cancelBtn": "Avbryt"

@@ -323,8 +323,8 @@
     "save": "Salva"
   },
   "updates": {
-    "available": "La versione {{latest}} è disponibile (attuale: {{current}}).\n\nAprire la pagina di download?",
-    "upToDate": "Stai usando la versione più recente {{current}}.",
+    "available": "Una nuova versione ({{latest}}) è disponibile su GitHub.",
+    "upToDate": "Nessuna versione più recente disponibile.",
     "error": "Controllo aggiornamenti fallito. Verifica la connessione internet.",
     "downloadBtn": "Scarica",
     "cancelBtn": "Annulla"

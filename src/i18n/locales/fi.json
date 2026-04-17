@@ -323,8 +323,8 @@
     "save": "Tallenna"
   },
   "updates": {
-    "available": "Versio {{latest}} on saatavilla (nykyinen: {{current}}).\n\nAvataanko lataussivu?",
-    "upToDate": "Käytät uusinta versiota {{current}}.",
+    "available": "GitHubissa on saatavilla uusi versio ({{latest}}).",
+    "upToDate": "Uudempaa versiota ei ole saatavilla.",
     "error": "Päivitystarkistus epäonnistui. Tarkista internetyhteytesi.",
     "downloadBtn": "Lataa",
     "cancelBtn": "Peruuta"

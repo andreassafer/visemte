@@ -323,8 +323,8 @@
     "save": "Zapisz"
   },
   "updates": {
-    "available": "Wersja {{latest}} jest dostępna (aktualna: {{current}}).\n\nOtworzyć stronę pobierania?",
-    "upToDate": "Używasz najnowszej wersji {{current}}.",
+    "available": "Nowa wersja ({{latest}}) jest dostępna na GitHubie.",
+    "upToDate": "Brak nowszej wersji.",
     "error": "Sprawdzanie aktualizacji nie powiodło się. Sprawdź połączenie internetowe.",
     "downloadBtn": "Pobierz",
     "cancelBtn": "Anuluj"

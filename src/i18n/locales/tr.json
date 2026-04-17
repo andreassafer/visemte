@@ -323,8 +323,8 @@
     "save": "Kaydet"
   },
   "updates": {
-    "available": "Sürüm {{latest}} mevcut (mevcut: {{current}}).\n\nİndirme sayfası açılsın mı?",
-    "upToDate": "En son sürümü {{current}} kullanıyorsunuz.",
+    "available": "GitHub'da yeni bir sürüm ({{latest}}) mevcut.",
+    "upToDate": "Daha yeni bir sürüm yok.",
     "error": "Güncelleme kontrolü başarısız. İnternet bağlantınızı kontrol edin.",
     "downloadBtn": "İndir",
     "cancelBtn": "İptal"

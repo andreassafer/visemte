@@ -323,8 +323,8 @@
     "save": "Shrani"
   },
   "updates": {
-    "available": "Različica {{latest}} je na voljo (trenutna: {{current}}).\n\nOdpri stran za prenos?",
-    "upToDate": "Uporabljate najnovejšo različico {{current}}.",
+    "available": "Na GitHubu je na voljo nova različica ({{latest}}).",
+    "upToDate": "Ni na voljo novejše različice.",
     "error": "Preverjanje posodobitev ni uspelo. Preverite internetno povezavo.",
     "downloadBtn": "Prenesi",
     "cancelBtn": "Prekliči"

@@ -323,8 +323,8 @@
     "save": "Mentés"
   },
   "updates": {
-    "available": "A {{latest}} verzió elérhető (jelenlegi: {{current}}).\n\nMegnyitja a letöltési oldalt?",
-    "upToDate": "A legújabb {{current}} verziót használja.",
+    "available": "Új verzió ({{latest}}) érhető el a GitHubon.",
+    "upToDate": "Nem érhető el újabb verzió.",
     "error": "A frissítés ellenőrzése sikertelen. Ellenőrizze az internetkapcsolatot.",
     "downloadBtn": "Letöltés",
     "cancelBtn": "Mégse"
