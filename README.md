@@ -28,8 +28,8 @@
 
 ## Screenshots
 
-![Visemte - Screenshot 1](screenshots/scr-20260417-nipy.png)
-![Visemte - Screenshot 2](screenshots/scr-20260417-njhz.png)
+![Visemte - Screenshot 1](screenshots/scr-20260417-nipy.png){width=250}
+![Visemte - Screenshot 2](screenshots/scr-20260417-njhz.png){width=250}
 
 ## License
 
