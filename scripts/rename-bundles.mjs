@@ -61,11 +61,16 @@ function normalize(file, osPrefix) {
   // Strip WiX locale suffix: -en-us.msi → .msi
   name = name.replace(/-[a-z]{2}-[a-z]{2}(\.msi)$/, '$1')
 
-  // Strip RPM release number: -1.x86-64.rpm → .x86-64.rpm
-  name = name.replace(/(-\d+)(\.[a-z0-9-]+\.rpm)$/, '$2')
+  // Strip RPM release number: -1.aarch64.rpm → .aarch64.rpm
+  name = name.replace(/-\d+(\.[a-z0-9-]+\.rpm)$/, '$1')
 
-  // Insert OS prefix after version number (e.g. visemte-0.1.4-universal → visemte-0.1.4-mac-universal)
-  name = name.replace(/^(visemte-\d+\.\d+\.\d+-)/, `$1${osPrefix}-`)
+  // Remove -setup from Windows installers: -x64-setup.exe → -x64.exe
+  name = name.replace(/-setup(\.exe)$/, '$1')
+
+  // Insert OS prefix after version number – handles both hyphen and dot separator
+  // e.g. visemte-0.1.4-universal → visemte-0.1.4-mac-universal
+  //      visemte-0.1.4.aarch64   → visemte-0.1.4-lin-aarch64
+  name = name.replace(/^(visemte-\d+\.\d+\.\d+)([-\.])/, `$1-${osPrefix}-`)
 
   return name
 }
