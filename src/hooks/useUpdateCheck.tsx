@@ -1,5 +1,7 @@
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import { createRoot } from 'react-dom/client'
+import { UpdateDialog } from '@/components/ui/UpdateDialog'
 
 const GITHUB_REPO = 'andreassafer/visemte'
 const CURRENT_VERSION = __APP_VERSION__
@@ -18,6 +20,37 @@ function isNewer(latest: string, current: string): boolean {
   return false
 }
 
+function showDialog(props: {
+  message: string
+  kind: 'info' | 'error' | 'confirm'
+  okLabel?: string
+  cancelLabel?: string
+}): Promise<boolean> {
+  return new Promise((resolve) => {
+    const container = document.createElement('div')
+    document.body.appendChild(container)
+    const root = createRoot(container)
+
+    const cleanup = (result: boolean) => {
+      root.unmount()
+      container.remove()
+      resolve(result)
+    }
+
+    root.render(
+      <UpdateDialog
+        {...props}
+        onOk={() => {
+          cleanup(true)
+        }}
+        onCancel={() => {
+          cleanup(false)
+        }}
+      />,
+    )
+  })
+}
+
 async function checkForUpdates(t: (key: string, opts?: Record<string, string>) => string) {
   try {
     const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/releases/latest`)
@@ -25,12 +58,10 @@ async function checkForUpdates(t: (key: string, opts?: Record<string, string>) =
     const data = (await res.json()) as { tag_name: string; html_url: string }
     const latest = data.tag_name.replace(/^v/, '')
 
-    const { ask, message } = await import('@tauri-apps/plugin-dialog')
-
     if (isNewer(latest, CURRENT_VERSION)) {
-      const go = await ask(t('updates.available', { latest }), {
-        title: ' ',
-        kind: 'info',
+      const go = await showDialog({
+        message: t('updates.available', { latest }),
+        kind: 'confirm',
         okLabel: t('updates.downloadBtn'),
         cancelLabel: t('updates.cancelBtn'),
       })
@@ -39,14 +70,16 @@ async function checkForUpdates(t: (key: string, opts?: Record<string, string>) =
         await open(data.html_url)
       }
     } else {
-      await message(t('updates.upToDate'), {
-        title: ' ',
+      await showDialog({
+        message: t('updates.upToDate'),
         kind: 'info',
       })
     }
   } catch {
-    const { message } = await import('@tauri-apps/plugin-dialog')
-    await message(t('updates.error'), { title: ' ', kind: 'error' })
+    await showDialog({
+      message: t('updates.error'),
+      kind: 'error',
+    })
   }
 }
 
