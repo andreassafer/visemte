@@ -1,4 +1,4 @@
-![Visemte - a template generator for creating responsive emails](graphics/social-preview-visemte-1.jpg)
+![Visemte - a template generator for creating responsive emails](pics/social-preview-visemte-1.jpg)
 
 ## Features
 
@@ -49,8 +49,8 @@ pnpm tauri:build
 ## Screenshots
 
 <p align="center">
-<img src="screenshots/scr-20260417-nipy.png" width="400" alt="Visemte - Screenshot 1">
-<img src="screenshots/scr-20260417-njhz.png" width="400" alt="Visemte - Screenshot 2">
+<img src="pics/scr-20260417-nipy.png" width="400" alt="Visemte - Screenshot 1">
+<img src="pics/scr-20260417-njhz.png" width="400" alt="Visemte - Screenshot 2">
 </p>
 
 ## License
