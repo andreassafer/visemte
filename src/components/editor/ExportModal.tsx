@@ -325,9 +325,6 @@ export function ExportModal({ template, onClose }: Props) {
             <div>
               <div className="flex items-center gap-1.5">
                 <p className="text-sm font-medium text-gray-700 dark:text-gray-200">TypeScript</p>
-                <span className="rounded bg-amber-100 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-amber-700 dark:bg-amber-900/40 dark:text-amber-400">
-                  dev
-                </span>
               </div>
               <p className="text-xs text-gray-400 dark:text-gray-500">{t('export.descTs')}</p>
             </div>
