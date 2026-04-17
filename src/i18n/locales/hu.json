@@ -321,5 +321,10 @@
     "desktop": "Asztali (600px)",
     "mobile": "Mobil (375px)",
     "save": "Mentés"
+  },
+  "updates": {
+    "available": "A {{latest}} verzió elérhető (jelenlegi: {{current}}).\n\nMegnyitja a letöltési oldalt?",
+    "upToDate": "A legújabb {{current}} verziót használja.",
+    "error": "A frissítés ellenőrzése sikertelen. Ellenőrizze az internetkapcsolatot."
   }
 }

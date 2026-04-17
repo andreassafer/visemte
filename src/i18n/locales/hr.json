@@ -321,5 +321,10 @@
     "desktop": "Stolno (600px)",
     "mobile": "Mobilno (375px)",
     "save": "Spremi"
+  },
+  "updates": {
+    "available": "Verzija {{latest}} je dostupna (trenutna: {{current}}).\n\nOtvoriti stranicu za preuzimanje?",
+    "upToDate": "Koristite najnoviju verziju {{current}}.",
+    "error": "Provjera ažuriranja nije uspjela. Provjerite internetsku vezu."
   }
 }

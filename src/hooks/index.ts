@@ -1,4 +1,5 @@
 export { useTheme } from './useTheme'
+export { useUpdateCheck } from './useUpdateCheck'
 export { useUndo } from './useUndo'
 export { useClipboard } from './useClipboard'
 export { useBlockCopy } from './useBlockCopy'

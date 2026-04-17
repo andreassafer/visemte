@@ -321,5 +321,10 @@
     "desktop": "Työpöytä (600px)",
     "mobile": "Mobiili (375px)",
     "save": "Tallenna"
+  },
+  "updates": {
+    "available": "Versio {{latest}} on saatavilla (nykyinen: {{current}}).\n\nAvataanko lataussivu?",
+    "upToDate": "Käytät uusinta versiota {{current}}.",
+    "error": "Päivitystarkistus epäonnistui. Tarkista internetyhteytesi."
   }
 }

@@ -321,5 +321,10 @@
     "desktop": "Počítač (600px)",
     "mobile": "Mobilní (375px)",
     "save": "Uložit"
+  },
+  "updates": {
+    "available": "Verze {{latest}} je dostupná (aktuální: {{current}}).\n\nOtevřít stránku ke stažení?",
+    "upToDate": "Používáte nejnovější verzi {{current}}.",
+    "error": "Kontrola aktualizací selhala. Zkontrolujte připojení k internetu."
   }
 }

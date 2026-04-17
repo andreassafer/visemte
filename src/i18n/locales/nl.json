@@ -321,5 +321,10 @@
     "desktop": "Bureaublad (600px)",
     "mobile": "Mobiel (375px)",
     "save": "Opslaan"
+  },
+  "updates": {
+    "available": "Versie {{latest}} is beschikbaar (huidig: {{current}}).\n\nDownloadpagina openen?",
+    "upToDate": "U gebruikt de nieuwste versie {{current}}.",
+    "error": "Updatecontrole mislukt. Controleer uw internetverbinding."
   }
 }

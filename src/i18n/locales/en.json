@@ -321,5 +321,10 @@
     "redo": "Redo",
     "desktop": "Desktop (600px)",
     "mobile": "Mobile (375px)"
+  },
+  "updates": {
+    "available": "Version {{latest}} is available (current: {{current}}).\n\nOpen download page?",
+    "upToDate": "You are running the latest version {{current}}.",
+    "error": "Update check failed. Please check your internet connection."
   }
 }

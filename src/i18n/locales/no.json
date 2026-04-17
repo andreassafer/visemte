@@ -321,5 +321,10 @@
     "desktop": "Skrivebord (600px)",
     "mobile": "Mobil (375px)",
     "save": "Lagre"
+  },
+  "updates": {
+    "available": "Versjon {{latest}} er tilgjengelig (gjeldende: {{current}}).\n\nÅpne nedlastingssiden?",
+    "upToDate": "Du bruker den nyeste versjonen {{current}}.",
+    "error": "Oppdateringssjekk mislyktes. Sjekk internettforbindelsen din."
   }
 }

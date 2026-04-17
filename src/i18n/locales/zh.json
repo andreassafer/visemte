@@ -321,5 +321,10 @@
     "desktop": "桌面 (600px)",
     "mobile": "移动端 (375px)",
     "save": "保存"
+  },
+  "updates": {
+    "available": "版本 {{latest}} 已可用（当前：{{current}}）。\n\n打开下载页面？",
+    "upToDate": "您正在使用最新版本 {{current}}。",
+    "error": "检查更新失败。请检查您的网络连接。"
   }
 }

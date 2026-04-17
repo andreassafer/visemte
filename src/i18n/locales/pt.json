@@ -321,5 +321,10 @@
     "desktop": "Secretária (600px)",
     "mobile": "Móvel (375px)",
     "save": "Salvar"
+  },
+  "updates": {
+    "available": "A versão {{latest}} está disponível (atual: {{current}}).\n\nAbrir página de download?",
+    "upToDate": "Você está usando a versão mais recente {{current}}.",
+    "error": "Falha ao verificar atualizações. Verifique sua conexão com a internet."
   }
 }

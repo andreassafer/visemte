@@ -1,6 +1,6 @@
 import { Suspense, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useTheme } from '@/hooks'
+import { useTheme, useUpdateCheck } from '@/hooks'
 import { EditorLayout } from '@/components/editor/EditorLayout'
 import { storage } from '@/services'
 import { PRESET_TEMPLATES } from '@/templates'
@@ -25,6 +25,7 @@ function AppLoader() {
 
 function AppContent() {
   useTheme()
+  useUpdateCheck()
   const { t } = useTranslation()
   useEffect(() => {
     document.title = __APP_NAME__

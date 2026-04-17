@@ -321,5 +321,10 @@
     "desktop": "Masaüstü (600px)",
     "mobile": "Mobil (375px)",
     "save": "Kaydet"
+  },
+  "updates": {
+    "available": "Sürüm {{latest}} mevcut (mevcut: {{current}}).\n\nİndirme sayfası açılsın mı?",
+    "upToDate": "En son sürümü {{current}} kullanıyorsunuz.",
+    "error": "Güncelleme kontrolü başarısız. İnternet bağlantınızı kontrol edin."
   }
 }

@@ -321,5 +321,10 @@
     "desktop": "Pulpit (600px)",
     "mobile": "Mobilny (375px)",
     "save": "Zapisz"
+  },
+  "updates": {
+    "available": "Wersja {{latest}} jest dostępna (aktualna: {{current}}).\n\nOtworzyć stronę pobierania?",
+    "upToDate": "Używasz najnowszej wersji {{current}}.",
+    "error": "Sprawdzanie aktualizacji nie powiodło się. Sprawdź połączenie internetowe."
   }
 }
