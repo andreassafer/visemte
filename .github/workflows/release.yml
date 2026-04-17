@@ -103,10 +103,11 @@ jobs:
       - name: Install frontend dependencies
         run: pnpm install
 
+      # universal-apple-darwin is not a real Rust target – pass aarch64+x86_64 instead
       - name: Setup Rust toolchain
         uses: dtolnay/rust-toolchain@stable
         with:
-          targets: ${{ matrix.target }}
+          targets: ${{ matrix.extra_targets != '' && matrix.extra_targets || matrix.target }}
 
       - name: Cache Rust dependencies
         uses: swatinem/rust-cache@v2
@@ -122,10 +123,6 @@ jobs:
             libappindicator3-dev \
             librsvg2-dev \
             patchelf
-
-      - name: Add extra Rust targets (macOS cross-compilation)
-        if: matrix.extra_targets != ''
-        run: rustup target add ${{ matrix.extra_targets }}
 
       # ── Build ──────────────────────────────────────────────────────────────
       - name: Build Tauri app
